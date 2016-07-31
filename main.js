@@ -42,17 +42,28 @@ function player_init () {
 
 function enemies_init () {
 	Blinky.__proto__ = new AI_Prototype();
+	Pinky.__proto__ = new AI_Prototype();
+	Bob.__proto__ = new AI_Prototype();
+	Paul.__proto__ = new AI_Prototype();
 };
 
 function animInit () {
 	init_type();
 	Player.img = imgs[1];
 	Blinky.img = imgs[2];
+	Pinky.img = imgs[2];
+	Bob.img = imgs[2];
+	Paul.img = imgs[2];
 	var aBuf = new AnimBuf(0, Player);
 	anim.push(aBuf);
 	aBuf = new AnimBuf(1, Blinky);
 	anim.push(aBuf);
-	//Blinky.setBehavior(0);
+	aBuf = new AnimBuf(2, Pinky);
+	anim.push(aBuf);
+	aBuf = new AnimBuf(3, Bob);
+	anim.push(aBuf);
+	aBuf = new AnimBuf(4, Paul);
+	anim.push(aBuf);
 	Anim.handle = setInterval(Anim.change_frame, 200);
 	Anim.handle = setInterval(Anim.change_text_frame, 33);
 	initControls();
@@ -61,6 +72,17 @@ function animInit () {
 function initControls () {
 	Controls.keyDown.on();
 	Controls.keyUp.on();
+	active_enemyes();
+};
+
+function active_enemyes () {
+	Controller.start.call(Blinky);
+	Controller.stop.call(Pinky);
+	//room.push(Pinky);
+	Controller.stop.call(Bob);
+	//room.push(Bob);
+	Controller.stop.call(Paul);
+	//room.push(Paul);
 	gl.start();
 };
 

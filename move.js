@@ -28,6 +28,7 @@ var Move = {
 			Col.check_item.call(this);
 			if (Event.status == 1) {
 				var enemy = Col.check_enemy.call(this);
+				console.log(enemy)
 				if (enemy != false) {
 					Anim.show_mess("200", {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
 					Scope.main += 200;

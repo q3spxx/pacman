@@ -70,3 +70,5 @@ function initEnergiser () {
 	arr[3].y = 17;
 	return arr;
 };
+
+var room = [];

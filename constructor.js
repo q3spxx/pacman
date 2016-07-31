@@ -47,9 +47,21 @@ function CellOfGP (x, y, status) {
 function AI_Prototype () {
 	this.go_to_room = function () {
 		Controller.stop.call(this);
-		this.pos.x = 288;
+		if (room.length == 3) {
+			this.exit_from_room.call(this);
+		};
+		this.pos.x = 288 + 32 * room.length;
 		this.pos.y = 288;
-	}
+		room.push(this);
+	};
+	this.exit_from_room = function () {
+		var e = room[room.length - 1];
+		room.splice(2, 1);
+		e.pos.x = 320;
+		e.pos.x = 224;
+		b_Controller.setPassive.call(e);
+		Controller.start.call(e);
+	};
 };
 
 function tBuf (text, pos, size, color, type) {
