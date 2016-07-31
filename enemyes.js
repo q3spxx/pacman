@@ -92,7 +92,7 @@ var Pinky = {
 	path: [],
 	img: null,
 	curAction: 0,
-	behavior: 2,
+	behavior: 3,
 	speed: 12,
 	action: [
 		{
@@ -160,7 +160,7 @@ var Bob = {
 	path: [],
 	img: null,
 	curAction: 0,
-	behavior: 2,
+	behavior: 3,
 	speed: 12,
 	action: [
 		{
@@ -228,7 +228,7 @@ var Paul = {
 	path: [],
 	img: null,
 	curAction: 0,
-	behavior: 2,
+	behavior: 3,
 	speed: 12,
 	action: [
 		{

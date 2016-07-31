@@ -46,21 +46,62 @@ function CellOfGP (x, y, status) {
 
 function AI_Prototype () {
 	this.go_to_room = function () {
-		Controller.stop.call(this);
 		if (room.length == 3) {
-			this.exit_from_room.call(this);
+			room[0].exit_from_room();
 		};
-		this.pos.x = 288 + 32 * room.length;
-		this.pos.y = 288;
+		if (this.id == 0) {
+			this.img = imgs[2];
+		};
+		if (this.id == 1) {
+			this.img = imgs[3];
+		};
+		if (this.id == 2) {
+			this.img = imgs[4];
+		};
+		if (this.id == 3) {
+			this.img = imgs[5];
+		};
+		if (room.length == 0) {
+			this.pos.x = 320;
+			this.pos.y = 288;
+		} else if (room.length == 1) {
+			this.pos.x = 288;
+			this.pos.y = 288;
+		} else if (room.length == 2) {
+			this.pos.x = 352;
+			this.pos.y = 288;
+		};
+		this.behavior = 3;
+		this.path = [];
 		room.push(this);
 	};
 	this.exit_from_room = function () {
-		var e = room[room.length - 1];
-		room.splice(2, 1);
+		open_door();
+
+		b_Controller.set_outroom.call(this, {x: 10, y: 7});
+		room.splice(0, 1);
+
+		if (room.length != 0) {
+			room.forEach(function (enemy, i) {
+				var place = {
+					y: 9
+				};
+				if (i == 0) {
+					place.x = 10
+				} else if (i == 1) {
+					place.x = 9
+				} else if (i == 2) {
+					place.x = 11;
+				};
+				b_Controller.set_free.call(enemy, place);
+			});
+		};
+
+		/*var e = room[room.length - 1];
 		e.pos.x = 320;
-		e.pos.x = 224;
+		e.pos.y = 224;
 		b_Controller.setPassive.call(e);
-		Controller.start.call(e);
+		Controller.start.call(e);*/
 	};
 };
 

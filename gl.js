@@ -19,6 +19,7 @@ var gl = {
 			gl.anim();
 			gl.mess();
 			gl.scope();
+			gl.level();
 			gl.fps_timer();
 		}, 33);
 	},
@@ -65,6 +66,12 @@ var gl = {
 		map.fillStyle = 'rgb(255,255,255)';
 		map.font = "16px Arial";
 		map.textBaseline = "top";
-		map.fillText(Scope.main, 40, 10);
+		map.fillText("Scope: " + Scope.main, 40, 10);
+	},
+	level: function () {
+		map.fillStyle = 'rgb(255,255,255)';
+		map.font = "16px Arial";
+		map.textBaseline = "top";
+		map.fillText("Level: " + _data.level, 200, 10);
 	}
 };

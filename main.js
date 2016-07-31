@@ -1,5 +1,6 @@
 var map, imgs = [], anim = [], text_buf = [];
 var color = [];
+var room_t = null;
 color['white'] = '255,255,255';
 
 function init () {
@@ -9,6 +10,10 @@ function init () {
 	imgs.push(_data.img.load("images/map.png"));
 	imgs.push(_data.img.load("images/pacman.png"));
 	imgs.push(_data.img.load("images/blinky.png"));
+	imgs.push(_data.img.load("images/pinky.png"));
+	imgs.push(_data.img.load("images/bob.png"));
+	imgs.push(_data.img.load("images/paul.png"));
+	imgs.push(_data.img.load("images/fear.png"));
 	_data.img.handle = setInterval(loading, 100);
 };
 
@@ -27,10 +32,10 @@ function createMap () {
 	energiser = initEnergiser();
 	Map.addElem(empty);
 	Map.addElem(walls);
-	Map.addElem(door);
 	Map.addElem(food);
 	Map.addElem(energiser);
 	Map.createGraph();
+	Map.addElem(door);
 	player_init();
 	enemies_init();
 	animInit();
@@ -51,9 +56,9 @@ function animInit () {
 	init_type();
 	Player.img = imgs[1];
 	Blinky.img = imgs[2];
-	Pinky.img = imgs[2];
-	Bob.img = imgs[2];
-	Paul.img = imgs[2];
+	Pinky.img = imgs[3];
+	Bob.img = imgs[4];
+	Paul.img = imgs[5];
 	var aBuf = new AnimBuf(0, Player);
 	anim.push(aBuf);
 	aBuf = new AnimBuf(1, Blinky);
@@ -75,15 +80,24 @@ function initControls () {
 	active_enemyes();
 };
 
+function room_timer () {
+	if (room.length != 0) {
+		room[0].exit_from_room();
+	};
+};
+
 function active_enemyes () {
+	room.push(Pinky);
+	room.push(Bob);
+	room.push(Paul);
 	Controller.start.call(Blinky);
-	Controller.stop.call(Pinky);
-	//room.push(Pinky);
-	Controller.stop.call(Bob);
-	//room.push(Bob);
-	Controller.stop.call(Paul);
-	//room.push(Paul);
+	Controller.start.call(Pinky);
+	Controller.start.call(Bob);
+	Controller.start.call(Paul);
 	gl.start();
+	room_t = setInterval(function () {
+		room_timer();
+	}, 5000);
 };
 
 window.onload = init();

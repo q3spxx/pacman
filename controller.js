@@ -14,6 +14,12 @@ var Controller = {
 					if (self.behavior == 2) {
 						ai.passive.call(self);
 					};
+					if (self.behavior == 4) {
+						ai.free.call(self);
+					};
+					if (self.behavior == 5) {
+						ai.free.call(self);
+					};
 					Move.ai_arrows.call(self);
 				};
 				if (self.id == 4) {
@@ -25,7 +31,7 @@ var Controller = {
 		 		if (!res) {
 		 			Controller.stop.call(self);
 		 		};
-			}, self.speed);
+			}, self.speed - Math.round(_data.level * _data.game_speed / 256));
 		},
 		stop: function () {
 			clearInterval(this.handle);
@@ -97,6 +103,14 @@ var Controller = {
 		},
 		set_waiting: function () {
 			this.behavior = 3;
+		},
+		set_free: function (point) {
+			this.point_pos = point;
+			this.behavior = 4;
+		},
+		set_outroom: function (point) {
+			this.point_pos = point;
+			this.behavior = 5;
 		}
 	};
 
@@ -110,7 +124,10 @@ var Controller = {
 			Event.date = date.getTime();
 			Event.status = 1;
 			enemy_arr.forEach(function (enemy) {
-				b_Controller.set_fear.call(enemy);
+				if (enemy.behavior == 0 || enemy.behavior == 2) {
+					enemy.img = imgs[6];
+					b_Controller.set_fear.call(enemy);
+				};
 			});
 			console.log("start");
 			if (Event.handle != null) {
@@ -126,6 +143,18 @@ var Controller = {
 			Event.date = null;
 			Event.status = 0;
 			enemy_arr.forEach(function (enemy) {
+				if (enemy.id == 0) {
+					enemy.img = imgs[2];
+				};
+				if (enemy.id == 1) {
+					enemy.img = imgs[3];
+				};
+				if (enemy.id == 2) {
+					enemy.img = imgs[4];
+				};
+				if (enemy.id == 3) {
+					enemy.img = imgs[5];
+				};
 				b_Controller.set_passive.call(enemy);
 			});
 			console.log("stop");

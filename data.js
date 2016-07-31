@@ -1,4 +1,6 @@
 var _data = {
+	game_speed: 6,
+	level: 1,
 	canvas: {
 		elem: document.getElementById("map"),
 		setSize: function (width, height) {

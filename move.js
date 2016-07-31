@@ -28,7 +28,6 @@ var Move = {
 			Col.check_item.call(this);
 			if (Event.status == 1) {
 				var enemy = Col.check_enemy.call(this);
-				console.log(enemy)
 				if (enemy != false) {
 					Anim.show_mess("200", {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
 					Scope.main += 200;
@@ -62,11 +61,24 @@ var Move = {
 						this.curAction = 3;
 					};
 				};
+			} else if (this.behavior == 5) {
+				close_door();
+				if (Event.status != 0) {
+					this.img = imgs[6];
+					b_Controller.set_fear.call(this);
+					return;
+				};
+				b_Controller.set_passive.call(this);
 			};
 			return;
 		};
 		if (this.pos.x == this.path[0].x * 32 && this.pos.y == this.path[0].y * 32) {
 			this.path.splice(0, 1);
+		};
+		if (this.path.length != 0 && this.behavior != 4 && this.behavior != 5) {
+				if (this.path[0].x == 10 && this.path[0].y == 8) {
+					this.path = [];
+				};
 		};
 		if (this.path.length == 0) {
 			this.m_pos.x = 0;
