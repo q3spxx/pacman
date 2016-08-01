@@ -1,4 +1,12 @@
 var _data = {
+	volume: 0.05,
+	change_volume: function (input) {
+		_data.volume = Number(input.value) / 100;
+		audio.forEach( function (sound) {
+			sound.volume = _data.volume;
+		});
+	},
+	status: null,
 	game_speed: 6,
 	level: 1,
 	canvas: {
@@ -26,5 +34,19 @@ var _data = {
 			};
 			return img;
 		}
+	},
+	audio: {
+		load: function (path) {
+			var sound = new Audio();
+			sound.src = path;
+			return sound;
+		}
+	},
+	gen_id: function () {
+		var random = "";
+		for (var i = 0; i < 8; i++) {
+			random += Math.floor(Math.random() * 9);
+		}
+		return Number(random);
 	}
 };

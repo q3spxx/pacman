@@ -5,8 +5,14 @@ var Anim = {
 	change_frame: function () {
 		anim.forEach(function (buf) {
 			buf.curFrame += 1;
-			if (buf.curFrame >= buf.tFrames) {
-				buf.curFrame = 0;
+			if (buf.repeat) {
+				if (buf.curFrame >= buf.tFrames) {
+					buf.curFrame = 0;
+				};
+			} else {
+				if (buf.curFrame >= buf.tFrames) {
+					buf.curFrame = buf.tFrames - 1;
+				};
 			};
 		});
 	},

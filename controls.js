@@ -17,6 +17,9 @@ var Controls = {
 		}
 	},
 	handler: function (e) {
+		if (_data.status != "play") {
+			return;
+		};
 		if (e.type == "keydown") {
 			if (e.keyCode == 37) {
 				//left
@@ -67,6 +70,12 @@ var Controls = {
 					return false;
 				}
 				Controller.start.call(Player);
+			} else if (e.keyCode == 81) {
+				Special.get_over_here.start();
+			} else if (e.keyCode == 32) {
+				if (Special.yo.status) {
+					Event.start();
+				};
 			};
 		} else if (e.type == "keyup") {
 			if (Controls.down) {

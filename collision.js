@@ -92,5 +92,37 @@ var Col = {
 				this.pos.y + 16 < Player.pos.y + 32) {
 			return true;
 		};
+	},
+	special_check: function () {
+		var x = Math.floor((this.x + this.w) / 32);
+		var y = Math.floor((this.y + this.h) / 32);
+		var w = Math.floor((this.x + this.w + this.img.w) / 32);
+		var h = Math.floor((this.y + this.h + this.img.h) / 32);
+
+		if (
+			Map.grid[x][y].block ||
+			Map.grid[x][h].block ||
+			Map.grid[w][y].block ||
+			Map.grid[w][h].block
+			) {
+			return true;
+		};
+		return false;
+	},
+	special_check_enemy: function () {
+		var x = Math.floor(this.x + this.w - 4 + this.img.w / 2);
+		var y = Math.floor(this.y + this.h - 4 + this.img.h / 2);
+
+		for (var i = 0; i < enemy_arr.length; i++) {
+			if (
+				x > enemy_arr[i].pos.x + 12 &&
+				x < enemy_arr[i].pos.x + 20 &&
+				y > enemy_arr[i].pos.y + 12 &&
+				y < enemy_arr[i].pos.y + 20 
+				) {
+				return enemy_arr[i];
+			};
+		};
+		return false
 	}
 };

@@ -14,11 +14,15 @@ var Controller = {
 					if (self.behavior == 2) {
 						ai.passive.call(self);
 					};
+					if (self.behavior == 3) {
+					};
 					if (self.behavior == 4) {
 						ai.free.call(self);
 					};
 					if (self.behavior == 5) {
 						ai.free.call(self);
+					};
+					if (self.behavior == 6) {
 					};
 					Move.ai_arrows.call(self);
 				};
@@ -31,10 +35,24 @@ var Controller = {
 		 		if (!res) {
 		 			Controller.stop.call(self);
 		 		};
-			}, self.speed - Math.round(_data.level * _data.game_speed / 256));
+			}, self.speed/* - Math.round(_data.level * _data.game_speed / 256)*/);
 		},
 		stop: function () {
 			clearInterval(this.handle);
+		},
+		game_pause: function () {
+			_data.status = "pause";
+			enemy_arr.forEach(function (enemy) {
+				Controller.stop.call(enemy);
+			});
+			Controller.stop.call(Player);
+		},
+		game_continue: function () {
+			_data.status = "play";
+			enemy_arr.forEach(function (enemy) {
+				Controller.start.call(enemy)
+			});
+			Controller.start.call(Player);
 		}
 	};
 
@@ -111,14 +129,35 @@ var Controller = {
 		set_outroom: function (point) {
 			this.point_pos = point;
 			this.behavior = 5;
+		},
+		set_grab: function () {
+			this.behavior = 6;
+			this.m_pos.x = 0;
+			this.m_pos.y = 0;
+			this.path = [];
 		}
 	};
 
 	var Event = {
+		random_event_date: null,
+		random_event_handle: null,
 		handle: null,
 		date: null,
 		status: 0,
 		duration: 10000,
+		set_random_event: function () {
+			var date = new Date();
+			Event.random_event_date = date.getTime();
+			Event.random_event_date += Math.random() * 60000;
+			Event.random_event_handle = setInterval(function () {
+				var new_date = new Date();
+				var time = new_date.getTime();
+				if (time > Event.random_event_date) {
+					clearInterval(Event.random_event_handle);
+					Special.yo.start();
+				};
+			}, 100)
+		},
 		start: function () {
 			var date = new Date();
 			Event.date = date.getTime();

@@ -1,6 +1,8 @@
-var map, imgs = [], anim = [], text_buf = [];
+var map, imgs = [], anim = [], text_buf = [], audio = [];
 var color = [];
 var room_t = null;
+var Sounds = {};
+var Imgs = {};
 color['white'] = '255,255,255';
 
 function init () {
@@ -14,14 +16,29 @@ function init () {
 	imgs.push(_data.img.load("images/bob.png"));
 	imgs.push(_data.img.load("images/paul.png"));
 	imgs.push(_data.img.load("images/fear.png"));
+	imgs.push(_data.img.load("images/dead.png"));
+	Imgs.cord = _data.img.load("images/special.png");
+	imgs.push(Imgs.cord);
+	Imgs.yo = _data.img.load("images/yo.png");
+	imgs.push(Imgs.yo);
 	_data.img.handle = setInterval(loading, 100);
 };
 
 function loading () {
 	if (_data.img.count == _data.img.loaded) {
 		clearInterval(_data.img.handle);
-		createMap();
+		load_audio();
 	};
+};
+function load_audio () {
+	Sounds.get_over_here = _data.audio.load("audio/goh.mp3");
+	audio.push(Sounds.get_over_here);
+	Sounds.yo = _data.audio.load("audio/yo.mp3");
+	audio.push(Sounds.yo);
+	audio.forEach(function (sound) {
+		sound.volume = _data.volume;
+	});
+	createMap();
 };
 
 function createMap () {
@@ -59,15 +76,15 @@ function animInit () {
 	Pinky.img = imgs[3];
 	Bob.img = imgs[4];
 	Paul.img = imgs[5];
-	var aBuf = new AnimBuf(0, Player);
+	var aBuf = new AnimBuf(0, Player, 2, true);
 	anim.push(aBuf);
-	aBuf = new AnimBuf(1, Blinky);
+	aBuf = new AnimBuf(1, Blinky, 2, true);
 	anim.push(aBuf);
-	aBuf = new AnimBuf(2, Pinky);
+	aBuf = new AnimBuf(2, Pinky, 2, true);
 	anim.push(aBuf);
-	aBuf = new AnimBuf(3, Bob);
+	aBuf = new AnimBuf(3, Bob, 2, true);
 	anim.push(aBuf);
-	aBuf = new AnimBuf(4, Paul);
+	aBuf = new AnimBuf(4, Paul, 2, true);
 	anim.push(aBuf);
 	Anim.handle = setInterval(Anim.change_frame, 200);
 	Anim.handle = setInterval(Anim.change_text_frame, 33);
@@ -95,6 +112,8 @@ function active_enemyes () {
 	Controller.start.call(Bob);
 	Controller.start.call(Paul);
 	gl.start();
+	_data.status = "play";
+	Event.set_random_event();
 	room_t = setInterval(function () {
 		room_timer();
 	}, 5000);

@@ -20,6 +20,8 @@ var Move = {
 			var res = Col.check_player.call(this);
 			if (res) {
 				if (Event.status == 0) {
+					Controller.game_pause();
+					Player.is_dead();
 					console.log("Game over");
 				};
 			};
@@ -88,10 +90,10 @@ var Move = {
 		if (this.pos.x == this.path[0].x * 32) {
 			this.m_pos.x = 0;
 			if (this.pos.y > this.path[0].y * 32) {
-				this.m_pos.y = -1;
+				this.m_pos.y = -1 * this.m_speed;
 				this.curAction = 1;
 			} else {
-				this.m_pos.y = 1;
+				this.m_pos.y = 1 * this.m_speed;
 				this.curAction = 3;
 			};
 		};
@@ -99,17 +101,17 @@ var Move = {
 			this.m_pos.y = 0;
 			if (this.pos.x > this.path[0].x * 32) {
 				if (Math.abs(Math.floor(this.pos.x / 32) - this.path[0].x) > 1) {
-					this.m_pos.x = 1;
+					this.m_pos.x = 1 * this.m_speed;
 					return;
 				};
-				this.m_pos.x = -1;
+				this.m_pos.x = -1 * this.m_speed;
 				this.curAction = 0;
 			} else {
 				if (Math.abs(Math.floor(this.pos.x / 32) - this.path[0].x) > 1) {
-					this.m_pos.x = -1;
+					this.m_pos.x = -1 * this.m_speed;
 					return;
 				};
-				this.m_pos.x = 1;
+				this.m_pos.x = 1 * this.m_speed;
 				this.curAction = 2;
 			};
 		}

@@ -32,11 +32,12 @@ function Cell (x, y) {
 	this.y = y;
 	this.type = 0;
 };
-function AnimBuf (id, person) {
+function AnimBuf (id, person, tf, repeat) {
 	this.__proto__ = person;
 	this.id = id;
 	this.curFrame = 0;
-	this.tFrames = 2;
+	this.tFrames = tf;
+	this.repeat = repeat;
 };
 function CellOfGP (x, y, status) {
 	this.status = status;
@@ -45,6 +46,10 @@ function CellOfGP (x, y, status) {
 };
 
 function AI_Prototype () {
+	this.m_speed = 1;
+	this.grab = function () {
+		b_Controller.set_grab.call(this);
+	},
 	this.go_to_room = function () {
 		if (room.length == 3) {
 			room[0].exit_from_room();
@@ -96,12 +101,6 @@ function AI_Prototype () {
 				b_Controller.set_free.call(enemy, place);
 			});
 		};
-
-		/*var e = room[room.length - 1];
-		e.pos.x = 320;
-		e.pos.y = 224;
-		b_Controller.setPassive.call(e);
-		Controller.start.call(e);*/
 	};
 };
 
@@ -113,4 +112,20 @@ function tBuf (text, pos, size, color, type) {
 	this.type = type;
 	this.cur_frame = 0;
 	this.t_frame = Anim.type[type].length - 1;
+};
+
+function Special_buf (img, w, h) {
+	this.id = _data.gen_id();
+	this.img = img;
+	this.x = Player.pos.x + 14;
+	this.y = Player.pos.y + 14;
+	this.w = w;
+	this.h = h;
+};
+
+function Event_buf (img, x, y) {
+	this.id = _data.gen_id();
+	this.img = img;
+	this.x = x;
+	this.y = y;
 };
