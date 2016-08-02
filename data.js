@@ -1,5 +1,43 @@
 var _data = {
+	kill: false,
+	kills: 0,
+	kill_date: null,
+	kill_handle: null,
+	kill_timer: function () {
+		if (_data.kill_handle != null) {
+			clearInterval(_data.kill_handle)
+		};
+
+		_data.kill = true;
+
+		var date = new Date();
+		_data.kill_date = date.getTime();
+
+		_data.kill_handle = setInterval(function () {
+			var new_date = new Date();
+			if (new_date.getTime() - _data.kill_date > 3000) {
+				if (_data.kills > 1) {
+					var say = false
+					switch (_data.kills) {
+						case 2: say = Sounds.dominating
+						break
+						case 3: say = Sounds.unstoppable
+						break
+						case 4: say = Sounds.rampage
+					}
+					if(say != false) {
+						say.play()
+					}
+				};
+				_data.kill = false;
+				_data.kills = 0;
+				clearInterval(_data.kill_handle);
+				_data.kill_handle = null;
+			};
+		}, 100);
+	},
 	volume: 0.05,
+	firstblood: true,
 	change_volume: function (input) {
 		_data.volume = Number(input.value) / 100;
 		audio.forEach( function (sound) {
@@ -9,6 +47,26 @@ var _data = {
 	status: null,
 	game_speed: 6,
 	level: 1,
+	lives: 3,
+	reinit_level: function () {
+		setTimeout(function () {
+			console.log("reinit")
+			var aBuf = new AnimBuf(0, Player, 2, true);
+
+			Player.img = imgs[1];
+			Player.curAction = 0;
+
+			anim[0] = aBuf;
+
+			Player.pos.x = 320;
+			Player.pos.y = 480;
+
+			Sounds.signal.play();
+
+			Controller.game_continue();
+
+		}, 1600);
+	},
 	canvas: {
 		elem: document.getElementById("map"),
 		setSize: function (width, height) {

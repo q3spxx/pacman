@@ -62,6 +62,7 @@ var Col = {
 		var type = Map.grid[x][y].type;
 		if (type != 0) {
 			if (type == 2) {
+				Sounds.step.play()
 				Map.grid[x][y].makeEmpty();
 				Scope.points += 1;
 				Scope.main += 20;

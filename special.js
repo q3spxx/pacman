@@ -37,13 +37,16 @@ var Special = {
 
 				if (enemy != false) {
 					Special.get_over_here.stop();
+					Sounds.scream.play()
 					enemy.grab();
 					Special.get_over_here.return_cord.call(this, enemy);
+					return;
 				};
 
 				if (Col.special_check.call(this)) {
 					Special.get_over_here.stop();
 					Special.get_over_here.return_cord.call(this);
+					return;
 				};
 			}.bind(special_buf), 1);
 		},
@@ -68,6 +71,37 @@ var Special = {
 					Special.get_over_here.stop();
 
 					if (enemy) {
+						Sounds.eatghost.play()
+						if (_data.firstblood) {
+							_data.firstblood = false;
+							setTimeout(function () {
+								Sounds.firstblood.play()
+							}, 1000);
+						};
+
+						_data.kills += 1;
+
+						if (_data.kill) {
+							var say;
+
+							switch (_data.kills) {
+								case 2: say = Sounds.doublekill
+								break
+								case 3: say = Sounds.multikill
+								break
+								case 4: say = Sounds.megakill
+								break
+							}
+
+							if (say != false) {						
+								setTimeout(function () {
+									say.play()
+								}, 200);
+							};
+						};
+
+						_data.kill_timer();
+
 						Anim.show_mess("200", {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
 						Scope.main += 200;
 						enemy.go_to_room();

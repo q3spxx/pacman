@@ -35,6 +35,37 @@ function load_audio () {
 	audio.push(Sounds.get_over_here);
 	Sounds.yo = _data.audio.load("audio/yo.mp3");
 	audio.push(Sounds.yo);
+	Sounds.dead = _data.audio.load("audio/dead.mp3");
+	audio.push(Sounds.dead);
+	Sounds.begin = _data.audio.load("audio/begin.mp3");
+	audio.push(Sounds.begin);
+	Sounds.step = _data.audio.load("audio/step.mp3");
+	audio.push(Sounds.step);
+	Sounds.eatghost = _data.audio.load("audio/eatghost.mp3");
+	audio.push(Sounds.eatghost);
+	Sounds.eatghost = _data.audio.load("audio/eatghost.mp3");
+	audio.push(Sounds.eatghost);
+	Sounds.signal = _data.audio.load("audio/signal.mp3");
+	Sounds.signal.loop = true;
+	audio.push(Sounds.signal);
+	Sounds.fear = _data.audio.load("audio/fear.mp3");
+	audio.push(Sounds.fear);
+	Sounds.firstblood = _data.audio.load("audio/firstblood.mp3");
+	audio.push(Sounds.firstblood);
+	Sounds.doublekill = _data.audio.load("audio/doublekill.mp3");
+	audio.push(Sounds.doublekill);
+	Sounds.scream = _data.audio.load("audio/scream.mp3");
+	audio.push(Sounds.scream);
+	Sounds.multikill = _data.audio.load("audio/multikill.mp3");
+	audio.push(Sounds.multikill);
+	Sounds.megakill = _data.audio.load("audio/megakill.mp3");
+	audio.push(Sounds.megakill);
+	Sounds.rampage = _data.audio.load("audio/rampage.mp3");
+	audio.push(Sounds.rampage);
+	Sounds.unstoppable = _data.audio.load("audio/unstoppable.mp3");
+	audio.push(Sounds.unstoppable);
+	Sounds.dominating = _data.audio.load("audio/dominating.mp3");
+	audio.push(Sounds.dominating);
 	audio.forEach(function (sound) {
 		sound.volume = _data.volume;
 	});
@@ -113,10 +144,18 @@ function active_enemyes () {
 	Controller.start.call(Paul);
 	gl.start();
 	_data.status = "play";
+	Controller.game_pause();
+	Sounds.begin.play();
+	setTimeout(start_game, 4000);
+};
+
+function start_game () {
+	Sounds.signal.play()
 	Event.set_random_event();
 	room_t = setInterval(function () {
 		room_timer();
 	}, 5000);
+	Controller.game_continue();
 };
 
 window.onload = init();

@@ -18,6 +18,9 @@ var Controls = {
 	},
 	handler: function (e) {
 		if (_data.status != "play") {
+			Controls.down = false;
+			Player.m_pos.x = 0;
+			Player.m_pos.y = 0;
 			return;
 		};
 		if (e.type == "keydown") {

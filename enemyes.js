@@ -25,7 +25,7 @@ var Blinky = {
 	img: null,
 	curAction: 0,
 	behavior: 2,
-	speed: 12,
+	speed: 9,
 	action: [
 		{
 			frames: [
@@ -93,7 +93,7 @@ var Pinky = {
 	img: null,
 	curAction: 0,
 	behavior: 3,
-	speed: 12,
+	speed: 11,
 	action: [
 		{
 			frames: [
@@ -161,7 +161,7 @@ var Bob = {
 	img: null,
 	curAction: 0,
 	behavior: 3,
-	speed: 12,
+	speed: 10,
 	action: [
 		{
 			frames: [
@@ -229,7 +229,7 @@ var Paul = {
 	img: null,
 	curAction: 0,
 	behavior: 3,
-	speed: 12,
+	speed: 10,
 	action: [
 		{
 			frames: [

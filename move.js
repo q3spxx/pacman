@@ -22,7 +22,15 @@ var Move = {
 				if (Event.status == 0) {
 					Controller.game_pause();
 					Player.is_dead();
-					console.log("Game over");
+					Sounds.dead.play()
+					_data.lives -= 1;
+					Sounds.signal.pause();
+					Sounds.signal.currentTime = 0;
+					if (_data.lives == 0) {
+						console.log("Game over");
+					} else {
+						_data.reinit_level();
+					};
 				};
 			};
 		};
@@ -31,6 +39,36 @@ var Move = {
 			if (Event.status == 1) {
 				var enemy = Col.check_enemy.call(this);
 				if (enemy != false) {
+					Sounds.eatghost.play()
+					if (_data.firstblood) {
+						_data.firstblood = false;
+						setTimeout(function () {
+							Sounds.firstblood.play()
+						}, 1000);
+					};
+
+					_data.kills += 1;
+
+					if (_data.kill) {
+						var say = false;
+
+						switch (_data.kills) {
+							case 2: say = Sounds.doublekill
+							break
+							case 3: say = Sounds.multikill
+							break
+							case 4: say = Sounds.megakill
+							break
+						}
+						if (say != false) {						
+							setTimeout(function () {
+								say.play()
+							}, 200);
+						};
+					};
+
+					_data.kill_timer();
+
 					Anim.show_mess("200", {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
 					Scope.main += 200;
 					enemy.go_to_room();

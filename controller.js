@@ -52,7 +52,6 @@ var Controller = {
 			enemy_arr.forEach(function (enemy) {
 				Controller.start.call(enemy)
 			});
-			Controller.start.call(Player);
 		}
 	};
 
@@ -168,6 +167,10 @@ var Controller = {
 					b_Controller.set_fear.call(enemy);
 				};
 			});
+			Sounds.signal.pause();
+			Sounds.signal.currentTime = 0;
+
+			Sounds.fear.play()
 			console.log("start");
 			if (Event.handle != null) {
 				clearInterval(Event.handle);
@@ -196,6 +199,9 @@ var Controller = {
 				};
 				b_Controller.set_passive.call(enemy);
 			});
+			Sounds.fear.pause()
+			Sounds.fear.currentTime = 0;
+			Sounds.signal.play();
 			console.log("stop");
 		},
 		check_end: function () {
