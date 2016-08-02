@@ -148,7 +148,7 @@ var Controller = {
 		set_random_event: function () {
 			var date = new Date();
 			Event.random_event_date = date.getTime();
-			Event.random_event_date += Math.random() * 60000;
+			Event.random_event_date += Math.random() * 300000;
 			Event.random_event_handle = setInterval(function () {
 				var new_date = new Date();
 				var time = new_date.getTime();

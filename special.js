@@ -66,6 +66,13 @@ var Special = {
 				}
 				if (this.w == 4 && this.h == 4) {
 					Special.get_over_here.stop();
+
+					if (enemy) {
+						Anim.show_mess("200", {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
+						Scope.main += 200;
+						enemy.go_to_room();
+					};
+
 					for (var i = 0; i < gl.special.length; i++) {
 						if (this.id == gl.special[i].id) {
 							gl.special.splice(i, 1);

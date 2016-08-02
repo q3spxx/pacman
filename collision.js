@@ -100,6 +100,13 @@ var Col = {
 		var h = Math.floor((this.y + this.h + this.img.h) / 32);
 
 		if (
+			w > 20 && y == 9 ||
+			x < 0 && y == 9
+			) {
+			return true;
+		};
+
+		if (
 			Map.grid[x][y].block ||
 			Map.grid[x][h].block ||
 			Map.grid[w][y].block ||
