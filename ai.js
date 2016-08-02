@@ -163,9 +163,17 @@ var ai = {
 
 		var num = Astar.defineNum(current_pos);
 
-		var random = Math.round((Map.graph[num].neighs.length - 1) * Math.random());
+		var random;
+
+		do {
+			random = Math.round((Map.graph[num].neighs.length - 1) * Math.random());
+		} while (Map.grid[Map.graph[num].neighs[random].x][Map.graph[num].neighs[random].y].block);
+
 		self.point_pos = Map.graph[num].neighs[random];
 
 		ai.search_path.call(self);
+	},
+	free: function () {
+		ai.search_path.call(this);
 	}
 };

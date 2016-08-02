@@ -20,7 +20,17 @@ var Move = {
 			var res = Col.check_player.call(this);
 			if (res) {
 				if (Event.status == 0) {
-					console.log("Game over");
+					Controller.game_pause();
+					Player.is_dead();
+					Sounds.dead.play()
+					_data.lives -= 1;
+					Sounds.signal.pause();
+					Sounds.signal.currentTime = 0;
+					if (_data.lives == 0) {
+						console.log("Game over");
+					} else {
+						_data.reinit_level();
+					};
 				};
 			};
 		};
@@ -29,6 +39,36 @@ var Move = {
 			if (Event.status == 1) {
 				var enemy = Col.check_enemy.call(this);
 				if (enemy != false) {
+					Sounds.eatghost.play()
+					if (_data.firstblood) {
+						_data.firstblood = false;
+						setTimeout(function () {
+							Sounds.firstblood.play()
+						}, 1000);
+					};
+
+					_data.kills += 1;
+
+					if (_data.kill) {
+						var say = false;
+
+						switch (_data.kills) {
+							case 2: say = Sounds.doublekill
+							break
+							case 3: say = Sounds.multikill
+							break
+							case 4: say = Sounds.megakill
+							break
+						}
+						if (say != false) {						
+							setTimeout(function () {
+								say.play()
+							}, 200);
+						};
+					};
+
+					_data.kill_timer();
+
 					Anim.show_mess("200", {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
 					Scope.main += 200;
 					enemy.go_to_room();
@@ -61,11 +101,24 @@ var Move = {
 						this.curAction = 3;
 					};
 				};
+			} else if (this.behavior == 5) {
+				close_door();
+				if (Event.status != 0) {
+					this.img = imgs[6];
+					b_Controller.set_fear.call(this);
+					return;
+				};
+				b_Controller.set_passive.call(this);
 			};
 			return;
 		};
 		if (this.pos.x == this.path[0].x * 32 && this.pos.y == this.path[0].y * 32) {
 			this.path.splice(0, 1);
+		};
+		if (this.path.length != 0 && this.behavior != 4 && this.behavior != 5) {
+				if (this.path[0].x == 10 && this.path[0].y == 8) {
+					this.path = [];
+				};
 		};
 		if (this.path.length == 0) {
 			this.m_pos.x = 0;
@@ -75,10 +128,10 @@ var Move = {
 		if (this.pos.x == this.path[0].x * 32) {
 			this.m_pos.x = 0;
 			if (this.pos.y > this.path[0].y * 32) {
-				this.m_pos.y = -1;
+				this.m_pos.y = -1 * this.m_speed;
 				this.curAction = 1;
 			} else {
-				this.m_pos.y = 1;
+				this.m_pos.y = 1 * this.m_speed;
 				this.curAction = 3;
 			};
 		};
@@ -86,17 +139,17 @@ var Move = {
 			this.m_pos.y = 0;
 			if (this.pos.x > this.path[0].x * 32) {
 				if (Math.abs(Math.floor(this.pos.x / 32) - this.path[0].x) > 1) {
-					this.m_pos.x = 1;
+					this.m_pos.x = 1 * this.m_speed;
 					return;
 				};
-				this.m_pos.x = -1;
+				this.m_pos.x = -1 * this.m_speed;
 				this.curAction = 0;
 			} else {
 				if (Math.abs(Math.floor(this.pos.x / 32) - this.path[0].x) > 1) {
-					this.m_pos.x = -1;
+					this.m_pos.x = -1 * this.m_speed;
 					return;
 				};
-				this.m_pos.x = 1;
+				this.m_pos.x = 1 * this.m_speed;
 				this.curAction = 2;
 			};
 		}

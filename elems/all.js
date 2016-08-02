@@ -25,7 +25,7 @@ function initDoor () {
 			pic: imgs[0],
 			pos: imgElems.door
 		},
-		block: false,
+		block: true,
 		x: 10,
 		y: 8,
 		type: 3
@@ -70,3 +70,5 @@ function initEnergiser () {
 	arr[3].y = 17;
 	return arr;
 };
+
+var room = [];

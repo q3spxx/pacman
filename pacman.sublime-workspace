@@ -1,0 +1,647 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"margi",
+				"margin-top"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"ta",
+				"table-cell"
+			],
+			[
+				"margin",
+				"margin-right"
+			],
+			[
+				"pad",
+				"padding"
+			],
+			[
+				"ma",
+				"margin-left"
+			],
+			[
+				"borde",
+				"border-radius"
+			],
+			[
+				"c",
+				"center"
+			],
+			[
+				"border-r",
+				"border-radius"
+			],
+			[
+				"padd",
+				"padding-top"
+			],
+			[
+				"marg",
+				"margin-left"
+			],
+			[
+				"lis",
+				"list_view"
+			],
+			[
+				"list",
+				"list-view"
+			],
+			[
+				"border-b",
+				"border-box"
+			],
+			[
+				"border-s",
+				"border-spacing"
+			],
+			[
+				"border",
+				"border-collapse"
+			],
+			[
+				"pa",
+				"padding-left"
+			],
+			[
+				"fon",
+				"font-size"
+			],
+			[
+				"fo",
+				"font-size"
+			],
+			[
+				"mar",
+				"margin-left"
+			],
+			[
+				"lan",
+				"languages"
+			],
+			[
+				"magin",
+				"margin-right"
+			],
+			[
+				"product",
+				"product_info"
+			],
+			[
+				"entry",
+				"entry_price"
+			],
+			[
+				"di",
+				"display"
+			],
+			[
+				"max",
+				"max-width"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"z",
+				"z-index"
+			],
+			[
+				"tran",
+				"transform"
+			],
+			[
+				"coll",
+				"collback_effect"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"bac",
+				"background-color"
+			],
+			[
+				"mo",
+				"movie"
+			],
+			[
+				"cop",
+				"copyFC"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"fu",
+				"function"
+			],
+			[
+				"cu",
+				"current"
+			],
+			[
+				"cur",
+				"curTable"
+			],
+			[
+				"data",
+				"dataset"
+			],
+			[
+				"get",
+				"getElementById"
+			],
+			[
+				"d",
+				"div	Tag"
+			],
+			[
+				"js",
+				"json_encode"
+			],
+			[
+				"da",
+				"date_arr"
+			],
+			[
+				"blo",
+				"blog_names"
+			],
+			[
+				"_",
+				"_GET"
+			],
+			[
+				"blog",
+				"blogpack"
+			],
+			[
+				"ar",
+				"article"
+			],
+			[
+				"s",
+				"space"
+			],
+			[
+				"res",
+				"result_name"
+			],
+			[
+				"html",
+				"html_links"
+			],
+			[
+				"str_re",
+				"str_replace"
+			],
+			[
+				"preg",
+				"preg_match"
+			],
+			[
+				"for",
+				"foreach	foreach …"
+			],
+			[
+				"json",
+				"json_decode"
+			],
+			[
+				"str",
+				"str_array_blog"
+			],
+			[
+				"arr",
+				"arr_json"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"prin",
+				"print_r"
+			],
+			[
+				"te",
+				"temp_articles"
+			],
+			[
+				"num",
+				"num_blog"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "pacman.sublime-project",
+			"settings":
+			{
+				"buffer_size": 73,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"Open Resource",
+			"`PackageResourceViewer: Open Resource`",
+			"PackageResourceViewer: Open Resource",
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/G/node/pacman"
+	],
+	"file_history":
+	[
+		"/G/node/server.js",
+		"/G/node/test/index.html",
+		"/G/node/test/README.md",
+		"/C/tmp/fz3temp-1/footer.tpl",
+		"/C/tmp/fz3temp-1/header.tpl",
+		"/C/tmp/fz3temp-1/stylesheet.css",
+		"/C/tmp/fz3temp-1/category.tpl",
+		"/C/tmp/fz3temp-1/manufacturer_info.tpl",
+		"/C/tmp/fz3temp-1/manufacturer_list.tpl",
+		"/C/tmp/fz3temp-1/home.tpl",
+		"/C/tmp/fz3temp-1/footer.php",
+		"/C/tmp/fz3temp-1/featured.php",
+		"/C/tmp/fz3temp-1/featured.tpl",
+		"/C/tmp/fz3temp-1/product.tpl",
+		"/C/tmp/fz3temp-1/common.js",
+		"/C/tmp/fz3temp-1/special.tpl",
+		"/C/tmp/fz3temp-1/callback.css",
+		"/C/tmp/fz3temp-1/bootstrap.min.css",
+		"/C/tmp/fz3temp-1/myscript.js",
+		"/c/tmp/FTP7E3A.tmp/owl.carousel.js",
+		"/c/tmp/FTP8A65.tmp/common.js",
+		"/c/tmp/FTP23FE.tmp/home.tpl",
+		"/c/tmp/FTPE5F4.tmp/content_top.tpl",
+		"/c/tmp/FTPE8E5.tmp/document.php",
+		"/c/tmp/FTP34E2.tmp/index.php",
+		"/c/tmp/FTP20D4.tmp/header.php",
+		"/c/tmp/FTP2257.tmp/header.tpl",
+		"/C/server/home/localhost/www/leden/index.php",
+		"/c/tmp/FTP5E8B.tmp/owl.carousel.min.js",
+		"/C/tmp/FTPCF89.tmp/stylesheet.css",
+		"/C/server/home/localhost/www/leden/system/library/session.php",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/common/footer.tpl",
+		"/C/tmp/FTP3CAE.tmp/footer.php",
+		"/C/tmp/FTP4B9D.tmp/stylesheet.css",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/common/header.tpl",
+		"/C/server/home/localhost/www/leden/catalog/controller/common/header.php",
+		"/C/server/home/localhost/www/leden/catalog/controller/common/footer.php",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/stylesheet/stylesheet.css",
+		"/C/tmp/FTP86B6.tmp/footer.tpl",
+		"/C/server/home/localhost/www/leden/catalog/view/javascript/bootstrap/css/bootstrap.min.css",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/stylesheet/callback.css",
+		"/C/server/home/localhost/www/leden/catalog/language/english/account/return.php",
+		"/C/server/home/localhost/www/leden/catalog/model/localisation/return_reason.php",
+		"/C/server/home/localhost/www/leden/catalog/language/russian/product/product.php",
+		"/C/server/home/localhost/www/leden/admin/language/russian/catalog/product.php",
+		"/C/server/home/localhost/www/leden/catalog/model/catalog/product.php",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/product/product.tpl",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/account/return_form.tpl",
+		"/C/server/home/localhost/www/leden/catalog/controller/module/special.php",
+		"/C/server/home/localhost/www/leden/config.php",
+		"/C/server/home/localhost/www/leden/catalog/controller/product/product.php",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/module/featured.tpl",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/module/special.tpl",
+		"/C/tmp/FTP160E.tmp/footer.tpl",
+		"/C/tmp/FTP9B7F.tmp/config.php",
+		"/C/tmp/FTP1A3E.tmp/config.php",
+		"/C/tmp/FTP1A9A.tmp/session.php",
+		"/C/tmp/FTP597C.tmp/registry.php",
+		"/C/tmp/FTPE2B1.tmp/index.php",
+		"/C/tmp/FTP9856.tmp/header.tpl",
+		"/C/tmp/FTP6719.tmp/config.php",
+		"/G/_leden/products_13.xml",
+		"/C/server/home/localhost/www/leden/admin/controller/catalog/product.php",
+		"/C/tmp/FTPFDA8.tmp/footer.tpl",
+		"/C/tmp/FTP95B1.tmp/stylesheet.css",
+		"/C/server/home/localhost/www/leden/catalog/view/javascript/myscript.js",
+		"/C/tmp/FTP94A4.tmp/stylesheet.css",
+		"/C/tmp/FTP37F3.tmp/config.php",
+		"/C/tmp/FTP52F.tmp/config.php",
+		"/C/tmp/FTP1FE5.tmp/header.tpl",
+		"/C/tmp/FTPFDF5.tmp/index.php",
+		"/C/tmp/FTP8FCE.tmp/index.php",
+		"/C/tmp/FTPF7E2.tmp/config.php",
+		"/C/tmp/FTP20ED.tmp/vqmod.php",
+		"/C/tmp/FTPFF8F.tmp/session.php",
+		"/C/tmp/FTP352B.tmp/startup.php",
+		"/C/tmp/FTP577D.tmp/action.php",
+		"/C/tmp/FTP3108.tmp/controller.php",
+		"/C/tmp/FTPE613.tmp/registry.php",
+		"/C/tmp/FTPAED9.tmp/index.php",
+		"/C/tmp/FTP6843.tmp/config.php",
+		"/C/tmp/FTPFAB9.tmp/startup.php",
+		"/C/tmp/FTP84FA.tmp/crossdomain.xml",
+		"/C/server/home/localhost/www/leden/vqmod/pathReplaces.php",
+		"/C/server/home/localhost/www/leden/vqmod/vqmod.php",
+		"/C/tmp/FTP86FB.tmp/pathReplaces.php",
+		"/C/tmp/FTP2341.tmp/config.php",
+		"/C/tmp/FTPB68B.tmp/index.php",
+		"/C/tmp/FTP9EF7.tmp/index.php",
+		"/C/server/usr/local/apache/conf/httpd.conf",
+		"/C/tmp/FTPA4F6.tmp/config.php",
+		"/C/tmp/FTP6260.tmp/index.php",
+		"/C/tmp/FTP3EA8.tmp/wp-settings.php",
+		"/C/tmp/FTPF690.tmp/wp-config.php",
+		"/C/server/home/localhost/www/leden/admin/view/template/catalog/product_form.tpl",
+		"/C/server/home/localhost/www/leden/admin/model/catalog/product.php",
+		"/C/server/home/localhost/www/leden/admin/view/template/catalog/product_list.tpl",
+		"/C/server/home/localhost/www/leden/catalog/controller/module/featured.php",
+		"/C/server/home/localhost/www/leden/catalog/language/russian/module/featured.php",
+		"/C/server/home/localhost/www/leden/catalog/language/russian/account/return.php",
+		"/C/server/home/localhost/www/leden/catalog/controller/account/return.php",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/product/category.tpl",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/common/search.tpl",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/product/search.tpl",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/product/special.tpl",
+		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/PackageResourceViewer/README.md",
+		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/PackageResourceViewer/PackageResourceViewer.sublime-settings",
+		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/User/PackageResourceViewer.sublime-settings",
+		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/User/if.sublime-snippet",
+		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/User/cl.sublime-snippet",
+		"/C/tmp/fz3temp-1/script.js",
+		"/C/tmp/fz3temp-1/core.js",
+		"/C/tmp/fz3temp-1/sportnews.php",
+		"/C/tmp/fz3temp-1/sportnews.html",
+		"/C/tmp/fz3temp-1/index.php",
+		"/C/tmp/fz3temp-1/index.html",
+		"/C/tmp/fz3temp-1/fotorama.css",
+		"/G/_web/_shkola/sportnews.html",
+		"/C/tmp/fz3temp-1/news_css.css",
+		"/C/tmp/fz3temp-1/script 2.js",
+		"/C/tmp/fz3temp-1/index.css",
+		"/F/_web/home/localhost/www/smarty/page.html",
+		"/G/_Documents/Organizatsia_kak_sistema_Proyavlenie_sistemnykh_svoystv_organizatsiy_Vneshnyaya_i_vnutrennyaya_sreda_organizatsii.docx",
+		"//Q3SPXX/_web/server/home/localhost/www/news/_css/site_global.css",
+		"//Q3SPXX/_web/server/home/localhost/www/news/_css/master_______-a.css",
+		"//Q3SPXX/_web/server/home/localhost/www/news/_css/index.css"
+	],
+	"find":
+	{
+		"height": 21.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"footer",
+			"content",
+			"// ",
+			".text-right",
+			"col-md-4",
+			"col-sm-9",
+			".caption",
+			"slideSpeed",
+			"Carousel.play",
+			"carousel.play",
+			"setInter",
+			"addres",
+			"Z:/home/localhost/www",
+			"php",
+			"#header",
+			"price_w",
+			"price",
+			"price_w",
+			";\n",
+			"return_reason",
+			"return_res",
+			"input-group",
+			"col-sm-10",
+			"input-fi",
+			"col-sm-12",
+			"tab_hei",
+			"tabs",
+			"content"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "pacman.sublime-project",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 73,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 21.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
+			],
+			[
+				1,
+				1,
+				2,
+				2
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			0.5,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "pacman.sublime-project",
+	"replace":
+	{
+		"height": 38.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"G:\\node\\pacman\\pacman.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 3,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
