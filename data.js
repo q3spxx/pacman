@@ -1,42 +1,40 @@
 var _data = {
 	kill: false,
 	kills: 0,
-	kill_date: null,
-	kill_handle: null,
+	kill_update: 0,
 	kill_timer: function () {
-		if (_data.kill_handle != null) {
-			clearInterval(_data.kill_handle)
+
+		if (_data.kill) {
+			_data.kill_update += 1;
 		};
 
 		_data.kill = true;
 
-		var date = new Date();
-		_data.kill_date = date.getTime();
+		setTimeout(function () {
 
-		_data.kill_handle = setInterval(function () {
-			var new_date = new Date();
-			if (new_date.getTime() - _data.kill_date > 3000) {
-				if (_data.kills > 1) {
-					var say = false
-					switch (_data.kills) {
-						case 2: say = Sounds.dominating
-						break
-						case 3: say = Sounds.unstoppable
-						break
-						case 4: say = Sounds.rampage
-					}
-					if(say != false) {
-						say.play()
-					}
-				};
-				_data.kill = false;
-				_data.kills = 0;
-				clearInterval(_data.kill_handle);
-				_data.kill_handle = null;
+			if (_data.kill_update > 0) {
+				_data.kill_update -= 1;
+				return;
 			};
-		}, 100);
+
+			if (_data.kills > 1) {
+				var say = false
+				switch (_data.kills) {
+					case 2: say = Sounds.dominating
+					break
+					case 3: say = Sounds.unstoppable
+					break
+					case 4: say = Sounds.rampage
+				}
+				if(say != false) {
+					say.play()
+				}
+			};
+			_data.kill = false;
+			_data.kills = 0;
+		}, 3000);
 	},
-	volume: 0.05,
+	volume: 0.0,
 	firstblood: true,
 	change_volume: function (input) {
 		_data.volume = Number(input.value) / 100;

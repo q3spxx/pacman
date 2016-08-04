@@ -78,12 +78,13 @@ var Move = {
 		return true;
 	},
 	ai_arrows: function () {
+		//действия при окончании пути
 		if (this.path.length == 0) {
-			this.m_pos.x = 0;
-			this.m_pos.y = 0;
-			if (this.behavior == 0) {
+			this.stop();
+			// при чейзе подгон положения под игрока
+			if (this.behavior == 'chase') {
 				if (Player.pos.x != this.pos.x ||
-						Player.pos.y != this.pos.y) {
+					Player.pos.y != this.pos.y) {
 					var x = Player.pos.x - this.pos.x;
 					var y = Player.pos.y - this.pos.y;
 					if (x < 0) {
@@ -112,49 +113,50 @@ var Move = {
 			};
 			return;
 		};
+		//Удаление достигнутой точки
 		if (this.pos.x == this.path[0].x * 32 && this.pos.y == this.path[0].y * 32) {
 			this.path.splice(0, 1);
 		};
+		//фикс двери
 		if (this.path.length != 0 && this.behavior != 4 && this.behavior != 5) {
 				if (this.path[0].x == 10 && this.path[0].y == 8) {
 					this.path = [];
 				};
 		};
+		//Остановка после достижения конечной точки
 		if (this.path.length == 0) {
-			this.m_pos.x = 0;
-			this.m_pos.y = 0;
+			this.stop();
 			return;
 		};
+
+		if (this.path[0].x == 10 && this.path[0].y == 8) {
+			open_door();
+		}
+
 		if (this.pos.x == this.path[0].x * 32) {
-			this.m_pos.x = 0;
 			if (this.pos.y > this.path[0].y * 32) {
-				this.m_pos.y = -1 * this.m_speed;
-				this.curAction = 1;
+				this.up()
 			} else {
-				this.m_pos.y = 1 * this.m_speed;
-				this.curAction = 3;
+				this.down()
 			};
 		};
 		if (this.pos.y == this.path[0].y * 32) {
-			this.m_pos.y = 0;
 			if (this.pos.x > this.path[0].x * 32) {
-				if (Math.abs(Math.floor(this.pos.x / 32) - this.path[0].x) > 1) {
+				/*if (Math.abs(Math.floor(this.pos.x / 32) - this.path[0].x) > 1) {
 					this.m_pos.x = 1 * this.m_speed;
 					return;
-				};
-				this.m_pos.x = -1 * this.m_speed;
-				this.curAction = 0;
+				};*/
+				this.left();
 			} else {
-				if (Math.abs(Math.floor(this.pos.x / 32) - this.path[0].x) > 1) {
+				/*if (Math.abs(Math.floor(this.pos.x / 32) - this.path[0].x) > 1) {
 					this.m_pos.x = -1 * this.m_speed;
 					return;
-				};
-				this.m_pos.x = 1 * this.m_speed;
-				this.curAction = 2;
+				};*/
+				this.right();
 			};
 		}
-
-		if (this.behavior == 2) {
+		// проверка видимости цели
+		if (this.behavior == "passive") {
 			var res = b_Controller.check_visibility.call(this);
 			if (res) {
 				b_Controller.set_chase.call(this);

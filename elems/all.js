@@ -71,4 +71,38 @@ function initEnergiser () {
 	return arr;
 };
 
-var room = [];
+var Room = {
+	list: [],
+	position: [
+		{
+			x: 10,
+			y: 9
+		},
+		{
+			x: 9,
+			y: 9
+		},
+		{
+			x: 11,
+			y: 9
+		}
+	],
+	go: function () {
+		this.pointPos = {
+			x: 10,
+			y: 7
+		}
+	},
+	enter: function () {
+		Room.list.push(this);
+		this.pointPos = Room.position[Room.list.length - 1];
+		b_Controller.set_enter_to_room.call(this);
+	},
+	exit: function () {
+		this.pointPos = {
+			x: 10,
+			y: 7
+		}
+		b_Controller.set_exit_from_room.call(this)
+	}
+};

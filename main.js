@@ -9,18 +9,32 @@ function init () {
 	_data.canvas.setSize(672, 672);
 	map = _data.canvas.getContext();
 
-	imgs.push(_data.img.load("images/map.png"));
-	imgs.push(_data.img.load("images/pacman.png"));
-	imgs.push(_data.img.load("images/blinky.png"));
-	imgs.push(_data.img.load("images/pinky.png"));
-	imgs.push(_data.img.load("images/bob.png"));
-	imgs.push(_data.img.load("images/paul.png"));
-	imgs.push(_data.img.load("images/fear.png"));
-	imgs.push(_data.img.load("images/dead.png"));
+	document.getElementById('volume').value = _data.volume * 100;
+
+	Imgs.map = _data.img.load("images/map.png") 
+	imgs.push(Imgs.map);
+	Imgs.pacman = _data.img.load("images/pacman.png")
+	imgs.push(Imgs.pacman);
+	Imgs.blinky = _data.img.load("images/blinky.png")
+	imgs.push(Imgs.blinky);
+	Imgs.pinky = _data.img.load("images/pinky.png")
+	imgs.push(Imgs.pinky);
+	Imgs.bob = _data.img.load("images/bob.png")
+	imgs.push(Imgs.bob);
+	Imgs.paul = _data.img.load("images/paul.png")
+	imgs.push(Imgs.paul);
+	Imgs.fear = _data.img.load("images/fear.png")
+	imgs.push(Imgs.fear);
+	Imgs.fear_pre_timeout = _data.img.load("images/fear_pre_timeout.png")
+	imgs.push(Imgs.fear_pre_timeout);
+	Imgs.dead = _data.img.load("images/dead.png")
+	imgs.push(Imgs.dead);
 	Imgs.cord = _data.img.load("images/special.png");
 	imgs.push(Imgs.cord);
 	Imgs.yo = _data.img.load("images/yo.png");
 	imgs.push(Imgs.yo);
+	Imgs.go_to_room = _data.img.load("images/go_to_room.png");
+	imgs.push(Imgs.go_to_room);
 	_data.img.handle = setInterval(loading, 100);
 };
 
@@ -102,11 +116,11 @@ function enemies_init () {
 
 function animInit () {
 	init_type();
-	Player.img = imgs[1];
-	Blinky.img = imgs[2];
-	Pinky.img = imgs[3];
-	Bob.img = imgs[4];
-	Paul.img = imgs[5];
+	Player.img = Imgs.pacman;
+	Blinky.set_original_img();
+	Pinky.set_original_img();
+	Bob.set_original_img();
+	Paul.set_original_img();
 	var aBuf = new AnimBuf(0, Player, 2, true);
 	anim.push(aBuf);
 	aBuf = new AnimBuf(1, Blinky, 2, true);
@@ -129,19 +143,20 @@ function initControls () {
 };
 
 function room_timer () {
-	if (room.length != 0) {
-		room[0].exit_from_room();
+	if (Room.list.length != 0) {
+		Room.list[0].exit_from_room();
 	};
 };
 
 function active_enemyes () {
-	room.push(Pinky);
-	room.push(Bob);
-	room.push(Paul);
+	Room.enter.call(Pinky);
+	Room.enter.call(Bob);
+	Room.enter.call(Paul);
 	Controller.start.call(Blinky);
 	Controller.start.call(Pinky);
 	Controller.start.call(Bob);
 	Controller.start.call(Paul);
+	Controller.start.call(Player);
 	gl.start();
 	_data.status = "play";
 	Controller.game_pause();
@@ -152,9 +167,10 @@ function active_enemyes () {
 function start_game () {
 	Sounds.signal.play()
 	Event.set_random_event();
-	room_t = setInterval(function () {
+	setInterval(function () {
 		room_timer();
 	}, 5000);
+	console.log("start game")
 	Controller.game_continue();
 };
 

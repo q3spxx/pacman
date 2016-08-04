@@ -46,10 +46,39 @@ function CellOfGP (x, y, status) {
 };
 
 function AI_Prototype () {
-	this.m_speed = 1;
-	this.grab = function () {
-		b_Controller.set_grab.call(this);
-	},
+	this.left = function () {
+		this.m_pos.x = -1;
+		this.m_pos.y = 0;
+		this.curAction = 0;
+	}
+	this.right = function () {
+		this.m_pos.x = 1;
+		this.m_pos.y = 0;
+		this.curAction = 2;
+	}
+	this.up = function () {
+		this.m_pos.x = 0;
+		this.m_pos.y = -1;
+		this.curAction = 1;
+	}
+	this.down = function () {
+		this.m_pos.x = 0;
+		this.m_pos.y = 1;
+		this.curAction = 3;
+	}
+	this.stop = function () {
+		this.m_pos.x = 0;
+		this.m_pos.y = 0;
+	}
+	this.set_fear_img = function () {
+		this.img = Imgs.fear;
+	};
+	this.set_fear_pre_timeout_img = function () {
+		this.img = Imgs.fear_pre_timeout;
+	};
+	this.set_go_to_room_img = function () {
+		this.img = Imgs.go_to_room;
+	};
 	this.go_to_room = function () {
 		if (room.length == 3) {
 			room[0].exit_from_room();
@@ -81,7 +110,8 @@ function AI_Prototype () {
 		room.push(this);
 	};
 	this.exit_from_room = function () {
-		open_door();
+		Room.exit.call(this)
+		/*open_door();
 
 		b_Controller.set_outroom.call(this, {x: 10, y: 7});
 		room.splice(0, 1);
@@ -100,7 +130,7 @@ function AI_Prototype () {
 				};
 				b_Controller.set_free.call(enemy, place);
 			});
-		};
+		};*/
 	};
 };
 

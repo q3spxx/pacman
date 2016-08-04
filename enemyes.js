@@ -16,15 +16,24 @@ var Blinky = {
 		y: 224
 	},
 	m_pos: {
-		x: 1,
+		x: 0,
 		y: 0
 	},
 	handle: null,
 	point_pos: ai.player_pos,
 	path: [],
 	img: null,
+	set_original_img: function () {
+		this.img = Imgs.blinky;
+	},
+	set_fear_img: function () {
+		this.img = Imgs.fear;
+	},
+	set_go_to_room_img: function () {
+		this.img = Imgs.go_to_room;
+	},
 	curAction: 0,
-	behavior: 2,
+	behavior: "passive",
 	speed: 9,
 	action: [
 		{
@@ -91,6 +100,15 @@ var Pinky = {
 	point_pos: ai.player_pos,
 	path: [],
 	img: null,
+	set_original_img: function () {
+		this.img = Imgs.pinky;
+	},
+	set_fear_img: function () {
+		this.img = Imgs.fear;
+	},
+	set_go_to_room_img: function () {
+		this.img = Imgs.go_to_room;
+	},
 	curAction: 0,
 	behavior: 3,
 	speed: 11,
@@ -159,6 +177,9 @@ var Bob = {
 	point_pos: ai.player_pos,
 	path: [],
 	img: null,
+	set_original_img: function () {
+		this.img = Imgs.bob;
+	},
 	curAction: 0,
 	behavior: 3,
 	speed: 10,
@@ -227,6 +248,9 @@ var Paul = {
 	point_pos: ai.player_pos,
 	path: [],
 	img: null,
+	set_original_img: function () {
+		this.img = Imgs.paul;
+	},
 	curAction: 0,
 	behavior: 3,
 	speed: 10,

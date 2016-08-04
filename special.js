@@ -38,7 +38,9 @@ var Special = {
 				if (enemy != false) {
 					Special.get_over_here.stop();
 					Sounds.scream.play()
-					enemy.grab();
+					enemy.behavior = 6;
+					enemy.stop();
+					enemy.path = [];
 					Special.get_over_here.return_cord.call(this, enemy);
 					return;
 				};
@@ -70,42 +72,16 @@ var Special = {
 				if (this.w == 4 && this.h == 4) {
 					Special.get_over_here.stop();
 
-					if (enemy) {
-						Sounds.eatghost.play()
-						if (_data.firstblood) {
-							_data.firstblood = false;
-							setTimeout(function () {
-								Sounds.firstblood.play()
-							}, 1000);
-						};
-
-						_data.kills += 1;
-
-						if (_data.kill) {
-							var say;
-
-							switch (_data.kills) {
-								case 2: say = Sounds.doublekill
-								break
-								case 3: say = Sounds.multikill
-								break
-								case 4: say = Sounds.megakill
-								break
-							}
-
-							if (say != false) {						
-								setTimeout(function () {
-									say.play()
-								}, 200);
-							};
-						};
-
-						_data.kill_timer();
-
-						Anim.show_mess("200", {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
-						Scope.main += 200;
-						enemy.go_to_room();
-					};
+					switch (Player.curAction) {
+						case 0: Player.set_left();
+						break
+						case 1: Player.set_up();
+						break
+						case 2: Player.set_right();
+						break
+						case 0: Player.set_down();
+						break
+					}
 
 					for (var i = 0; i < gl.special.length; i++) {
 						if (this.id == gl.special[i].id) {
@@ -150,16 +126,10 @@ var Special = {
 			}.bind(event_buf), 10);
 		},
 		waiting: function () {
-			var date = new Date();
-			Special.yo.date = date.getTime();
-			Special.yo.handle = setInterval(function () {
-				var new_date = new Date();
-				var time = new_date.getTime();
-				if (time - Special.yo.date > 600) {
-					Special.yo.stop()
-					Special.yo.clean_up.call(this);
-				};
-			}.bind(this), 10);
+			setTimeout(function () {
+				Special.yo.stop()
+				Special.yo.clean_up.call(this);
+			}.bind(this), 600)
 		},
 		clean_up: function () {
 			Special.yo.handle = setInterval(function () {
