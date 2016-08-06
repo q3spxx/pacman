@@ -110,7 +110,7 @@ var Pinky = {
 		this.img = Imgs.go_to_room;
 	},
 	curAction: 0,
-	behavior: 3,
+	behavior: "in_room",
 	speed: 11,
 	action: [
 		{
@@ -181,7 +181,7 @@ var Bob = {
 		this.img = Imgs.bob;
 	},
 	curAction: 0,
-	behavior: 3,
+	behavior: "in_room",
 	speed: 10,
 	action: [
 		{
@@ -252,7 +252,7 @@ var Paul = {
 		this.img = Imgs.paul;
 	},
 	curAction: 0,
-	behavior: 3,
+	behavior: "in_room",
 	speed: 10,
 	action: [
 		{

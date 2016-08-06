@@ -143,7 +143,7 @@ function initControls () {
 };
 
 function room_timer () {
-	if (Room.list.length != 0) {
+	if (Room.list[0]) {
 		Room.list[0].exit_from_room();
 	};
 };

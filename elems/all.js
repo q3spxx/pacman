@@ -88,21 +88,31 @@ var Room = {
 		}
 	],
 	go: function () {
-		this.pointPos = {
+		this.point_pos = {
 			x: 10,
 			y: 7
 		}
+		this.img = Imgs.go_to_room;
+		b_Controller.set_go_to_room.call(this)
+	},
+	reposition: function () {
+		Room.list.forEach(function (enemy, i) {
+			enemy.point_pos = Room.position[i];
+		});
 	},
 	enter: function () {
 		Room.list.push(this);
-		this.pointPos = Room.position[Room.list.length - 1];
+		Room.reposition()
+		this.set_original_img();
 		b_Controller.set_enter_to_room.call(this);
 	},
 	exit: function () {
-		this.pointPos = {
+		this.point_pos = {
 			x: 10,
 			y: 7
 		}
 		b_Controller.set_exit_from_room.call(this)
+		Room.list.splice(0, 1);
+		Room.reposition()
 	}
 };

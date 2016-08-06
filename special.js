@@ -35,10 +35,15 @@ var Special = {
 
 				var enemy = Col.special_check_enemy.call(this);
 
-				if (enemy != false) {
+				if (enemy != false &&
+					enemy.behavior != 'go_to_room' &&
+					enemy.behavior != 'exit_from_room' &&
+					enemy.behavior != 'enter_to_room' &&
+					enemy.behavior != 'in_room'
+					) {
 					Special.get_over_here.stop();
 					Sounds.scream.play()
-					enemy.behavior = 6;
+					enemy.behavior = "grab";
 					enemy.stop();
 					enemy.path = [];
 					Special.get_over_here.return_cord.call(this, enemy);
@@ -57,20 +62,32 @@ var Special = {
 			Special.get_over_here.handle = setInterval(function(){
 				switch (Player.curAction) {
 					case 0: this.w += 4
-							if (enemy) {enemy.pos.x += 4}
+							if (enemy && enemy.behavior == 'grab') {enemy.pos.x += 4}
 					break
 					case 1: this.h += 4
-							if (enemy) {enemy.pos.y += 4}
+							if (enemy && enemy.behavior == 'grab') {enemy.pos.y += 4}
 					break
 					case 2: this.w -= 4
-							if (enemy) {enemy.pos.x -= 4}
+							if (enemy && enemy.behavior == 'grab') {enemy.pos.x -= 4}
 					break
 					case 3: this.h -= 4
-							if (enemy) {enemy.pos.y -= 4}
+							if (enemy && enemy.behavior == 'grab') {enemy.pos.y -= 4}
 					break
 				}
+
+				if (Player.curAction == 4) {
+					if (enemy) {
+						enemy.path[0] = {
+							x: Math.floor(enemy.pos.x /32),
+							y: Math.floor(enemy.pos.y /32)
+						}
+						b_Controller.set_passive.call(enemy)
+					}
+					Special.get_over_here.stop.call(this);
+				}
+
 				if (this.w == 4 && this.h == 4) {
-					Special.get_over_here.stop();
+					Special.get_over_here.stop.call(this);
 
 					switch (Player.curAction) {
 						case 0: Player.set_left();
@@ -79,16 +96,10 @@ var Special = {
 						break
 						case 2: Player.set_right();
 						break
-						case 0: Player.set_down();
+						case 3: Player.set_down();
 						break
 					}
 
-					for (var i = 0; i < gl.special.length; i++) {
-						if (this.id == gl.special[i].id) {
-							gl.special.splice(i, 1);
-							break
-						};
-					};
 					_data.status = "play";
 				}
 
@@ -96,6 +107,12 @@ var Special = {
 		},
 		stop: function () {
 			clearInterval(Special.get_over_here.handle);
+			for (var i = 0; i < gl.special.length; i++) {
+				if (this.id == gl.special[i].id) {
+					gl.special.splice(i, 1);
+					break
+				};
+			};
 		}
 	},
 	yo: {

@@ -12,13 +12,15 @@ var Controller = {
 						break
 						case 'waiting': 
 						break
+						case 'grab':
+						break
 						case 'free': ai.free.call(this)
 						break
-						case 'go_to_room':
+						case 'go_to_room': ai.free.call(this)
 						break
 						case "enter_to_room": ai.free.call(this)
 						break
-						case "in_room": this.stop();
+						case "in_room": ai.free.call(this)
 						break
 						case 'exit_from_room': ai.free.call(this)
 						break
@@ -139,6 +141,7 @@ var Controller = {
 		status: false,
 		update: 0,
 		duration: 10000,
+		timeout: false,
 		set_random_event: function () {
 			setTimeout(function () {
 				Special.yo.start();
@@ -170,7 +173,8 @@ var Controller = {
 			setTimeout(function () {
 				if (Event.update == 0) {
 					enemy_arr.forEach(function (enemy) {
-						if (enemy.behavior == 1) {
+						if (enemy.behavior == "fear") {
+							Event.timeout = true;
 							enemy.set_fear_pre_timeout_img()
 						};
 					});
@@ -188,6 +192,14 @@ var Controller = {
 		stop: function () {
 			Event.status = false;
 			enemy_arr.forEach(function (enemy) {
+				if (
+					enemy.behavior == "in_room" || 
+					enemy.behavior == "enter_to_room" || 
+					enemy.behavior == "exit_from_room" || 
+					enemy.behavior == "go_to_room" 
+					) {
+					return
+				}
 				enemy.set_original_img()
 				b_Controller.set_passive.call(enemy);
 			});
