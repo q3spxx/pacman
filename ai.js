@@ -113,7 +113,7 @@ var ai = {
 	search_path: function () {
 		var self = this;
 		if (((self.pos.x / 32) - (Math.floor(self.pos.x / 32))) != 0 ||
-				((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
+			((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
 			return;
 		};
 		var current_pos = {

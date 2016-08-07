@@ -167,6 +167,9 @@ var Controller = {
 				Sounds.fear.pause();
 				Sounds.fear.currentTime = 0
 			};
+
+			Event.timeout = false
+
 			setTimeout(function () {
 				Sounds.fear.play()
 			}, 5)

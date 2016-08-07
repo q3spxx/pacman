@@ -4,21 +4,22 @@ var Col = {
 		new_pos.x = this.pos.x + this.m_pos.x;
 		new_pos.y = this.pos.y + this.m_pos.y;
 
-		if (new_pos.x < 0 ||
-				new_pos.x > 640) {
-			return false
-		};
 
 		if (offset != undefined) {
 			new_pos.x += offset.x;
 			new_pos.y += offset.y;
 		};
 
+		if (new_pos.x < 0 || new_pos.x + 32 > 672) {
+			console.log(111)
+			return false
+		};
+
 		var x = Math.floor(new_pos.x / 32);
 		var y = Math.floor(new_pos.y / 32);
 		var width = Math.floor((new_pos.x + 31) / 32);
 		var height = Math.floor((new_pos.y + 31) / 32);
-
+		
 		if (Map.grid[x][y].block ||
 				Map.grid[width][height].block ||
 				Map.grid[width][y].block ||
@@ -32,7 +33,10 @@ var Col = {
 		var offset = {};
 		if (this.m_pos.y != 0) {
 			offset.y = 0;
-			for (var x = -24; x <= 24; x++) {
+			for (var x = -16; x <= 16; x++) {
+				if (this.pos.x + x < 0 || this.pos.x + x > 640) {
+					return false
+				};
 				offset.x = x;
 				if (Col.check.call(this, offset) == false) {
 					return offset;
@@ -42,7 +46,7 @@ var Col = {
 		offset.x = 0;
 		if (this.m_pos.x != 0) {
 			offset.x = 0;
-			for (var y = -24; y <= 24; y++) {
+			for (var y = -16; y <= 16; y++) {
 				offset.y = y;
 				if (Col.check.call(this, offset) == false) {
 					return offset
