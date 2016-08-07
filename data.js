@@ -34,7 +34,7 @@ var _data = {
 			_data.kills = 0;
 		}, 3000);
 	},
-	volume: 0.0,
+	volume: 0.05,
 	firstblood: true,
 	change_volume: function (input) {
 		_data.volume = Number(input.value) / 100;
@@ -58,6 +58,8 @@ var _data = {
 
 			Player.pos.x = 320;
 			Player.pos.y = 480;
+
+			init_enemy_position()
 
 			Sounds.signal.play();
 

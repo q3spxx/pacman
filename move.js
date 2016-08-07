@@ -121,6 +121,7 @@ var Move = {
 					};
 				};
 			} else if (this.behavior == "enter_to_room") {
+				close_door();
 				b_Controller.set_in_room.call(this);
 			} else if (this.behavior == "exit_from_room") {
 				close_door();

@@ -97,7 +97,7 @@ var Pinky = {
 		y: 0
 	},
 	handle: null,
-	point_pos: ai.player_pos,
+	point_pos: {x: 10, y: 9},
 	path: [],
 	img: null,
 	set_original_img: function () {
@@ -174,7 +174,7 @@ var Bob = {
 		y: 0
 	},
 	handle: null,
-	point_pos: ai.player_pos,
+	point_pos: {x: 9, y: 9},
 	path: [],
 	img: null,
 	set_original_img: function () {
@@ -245,7 +245,7 @@ var Paul = {
 		y: 0
 	},
 	handle: null,
-	point_pos: ai.player_pos,
+	point_pos: {x: 11, y: 9},
 	path: [],
 	img: null,
 	set_original_img: function () {

@@ -38,6 +38,16 @@ function open_door () {
 	Map.grid[10][8].img.pos = imgElems.empty;
 };
 function close_door () {
+	for (var i = 0; i < enemy_arr.length; i++) {
+		if (enemy_arr[i].pos.x >= 320 && 
+			enemy_arr[i].pos.x < 352 && 
+			enemy_arr[i].pos.y >= 256 &&
+			enemy_arr[i].pos.y < 288) {
+			console.log(111)
+			return false
+		}
+	}
+
 	Map.grid[10][8].block = true;
 	Map.grid[10][8].img.pos = imgElems.door;
 };
@@ -101,6 +111,9 @@ var Room = {
 		});
 	},
 	enter: function () {
+		if (Room.list.length == 3) {
+			Room.exit.call(Room.list[0])
+		}
 		Room.list.push(this);
 		Room.reposition()
 		this.set_original_img();

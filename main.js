@@ -148,10 +148,52 @@ function room_timer () {
 	};
 };
 
-function active_enemyes () {
+function init_enemy_position () {
+	Room.list = []
+	Blinky.pos = {
+		x: 320,
+		y: 224
+	}
+	Blinky.point_pos = {
+		x: 10,
+		y: 7
+	}
+	Blinky.path = []
+	b_Controller.set_passive.call(Blinky)
+	Pinky.pos = {
+		x: 320,
+		y: 288
+	}
+	Pinky.point_pos = {
+		x: 10,
+		y: 9
+	}
+	Pinky.path = []
 	Room.enter.call(Pinky);
+	Bob.pos = {
+		x: 288,
+		y: 288
+	}
+	Bob.point_pos = {
+		x: 9,
+		y: 9
+	}
+	Bob.path = []
 	Room.enter.call(Bob);
+	Paul.pos = {
+		x: 352,
+		y: 288
+	}
+	Paul.point_pos = {
+		x: 11,
+		y: 9
+	}
+	Paul.path = []
 	Room.enter.call(Paul);
+}
+
+function active_enemyes () {
+	init_enemy_position();
 	Controller.start.call(Blinky);
 	Controller.start.call(Pinky);
 	Controller.start.call(Bob);
@@ -168,7 +210,9 @@ function start_game () {
 	Sounds.signal.play()
 	Event.set_random_event();
 	setInterval(function () {
-		room_timer();
+		if (_data.status == "play") {
+			room_timer();
+		};
 	}, 5000);
 	console.log("start game")
 	Controller.game_continue();

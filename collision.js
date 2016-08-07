@@ -11,7 +11,6 @@ var Col = {
 		};
 
 		if (new_pos.x < 0 || new_pos.x + 32 > 672) {
-			console.log(111)
 			return false
 		};
 
@@ -33,7 +32,7 @@ var Col = {
 		var offset = {};
 		if (this.m_pos.y != 0) {
 			offset.y = 0;
-			for (var x = -16; x <= 16; x++) {
+			for (var x = -20; x <= 20; x++) {
 				if (this.pos.x + x < 0 || this.pos.x + x > 640) {
 					return false
 				};
@@ -46,7 +45,7 @@ var Col = {
 		offset.x = 0;
 		if (this.m_pos.x != 0) {
 			offset.x = 0;
-			for (var y = -16; y <= 16; y++) {
+			for (var y = -20; y <= 20; y++) {
 				offset.y = y;
 				if (Col.check.call(this, offset) == false) {
 					return offset

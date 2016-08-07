@@ -23,6 +23,7 @@ var gl = {
 			gl.draw_event();
 			gl.mess();
 			gl.scope();
+			gl.draw_lifes()
 			gl.level();
 			gl.fps_timer();
 		}, 33);
@@ -114,5 +115,21 @@ var gl = {
 					e.img.h
 				);
 		});
+	},
+	draw_lifes: function () {
+		var i = 0;
+		while (i != _data.lives) {
+			map.drawImage(	Imgs.pacman,
+							64,
+							32,
+							32,
+							32,
+							300 + i * 20,
+							8,
+							16,
+							16
+							);
+			i++
+		}
 	}
 };
