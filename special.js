@@ -143,7 +143,10 @@ var Special = {
 			}.bind(event_buf), 10);
 		},
 		waiting: function () {
+			_data.set_center_mess('press space')
+			_data.center_mess_switch = true
 			setTimeout(function () {
+				_data.center_mess_switch = false
 				Special.yo.stop()
 				Special.yo.clean_up.call(this);
 			}.bind(this), 600)
@@ -167,6 +170,41 @@ var Special = {
 		},
 		stop: function () {
 			clearInterval(Special.yo.handle);
+		}
+	},
+	bomb: {
+		handle: null,
+		radius: 0,
+		max_radius: 64,
+		start: function () {
+			_data.status = "special";
+			Player.m_pos.x = 0;
+			Player.m_pos.y = 0;
+			Special.bomb.handle = setInterval(function () {
+				if (this.radius < this.max_radius) {
+					this.radius += 1;
+					Col.bomb_check();
+				} else {
+					clearInterval(this.handle)
+					setTimeout(function () {
+						this.stop()
+					}.bind(this), 300)
+				}
+			}.bind(this), 6)
+		},
+		stop: function () {
+			_data.status = "play";
+			switch (Player.curAction) {
+				case 0: Player.set_left();
+				break
+				case 1: Player.set_up();
+				break
+				case 2: Player.set_right();
+				break
+				case 3: Player.set_down();
+				break
+			}
+			this.radius = 0
 		}
 	}
 }

@@ -37,6 +37,10 @@ var Controls = {
 				break
 				case 32: if (Special.yo.status) {Event.start()}
 				break
+				case 13: start()
+				break
+				case 82: Special.bomb.start()
+				break
 			}
 			
 		};

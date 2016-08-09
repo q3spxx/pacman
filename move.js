@@ -22,7 +22,13 @@ var Move = {
 		if (this.id != 4) {
 			var res = Col.check_player.call(this);
 			if (res) {
-				if (Event.status == 0) {
+				if (Event.status == 0 &&
+					_data.status != 'special' &&
+					this.behavior != 'go_to_room' &&
+					this.behavior != 'enter_to_room' &&
+					this.behavior != 'exit_from_room' &&
+					this.behavior != 'in_room'
+					) {
 					Controller.game_pause();
 					Player.is_dead();
 					Sounds.dead.play()
@@ -30,6 +36,8 @@ var Move = {
 					Sounds.signal.pause();
 					Sounds.signal.currentTime = 0;
 					if (_data.lives == 0) {
+						_data.set_center_mess('Game over')
+						_data.center_mess_switch = true;
 						console.log("Game over");
 					} else {
 						_data.reinit_level();
@@ -42,54 +50,7 @@ var Move = {
 			if (Event.status == 1) {
 				var enemy = Col.check_enemy.call(this);
 				if (enemy != false) {
-					if (
-						enemy.behavior == 'go_to_room' ||
-						enemy.behavior == 'enter_to_room' ||
-						enemy.behavior == 'exit_from_room' ||
-						enemy.behavior == 'in_room'
-						) {
-						return
-					}
-
-					enemy.path = [];
-					enemy.path[0] = {
-						x: Math.floor(enemy.pos.x /32),
-						y: Math.floor(enemy.pos.y /32)
-					}
-
-					Sounds.eatghost.play()
-					if (_data.firstblood) {
-						_data.firstblood = false;
-						setTimeout(function () {
-							Sounds.firstblood.play()
-						}, 1000);
-					};
-
-					_data.kills += 1;
-
-					if (_data.kill) {
-						var say = false;
-
-						switch (_data.kills) {
-							case 2: say = Sounds.doublekill
-							break
-							case 3: say = Sounds.multikill
-							break
-							case 4: say = Sounds.megakill
-							break
-						}
-						if (say != false) {						
-							setTimeout(function () {
-								say.play()
-							}, 200);
-						};
-					};
-
-					_data.kill_timer();
-
-					Anim.show_mess(Math.pow(2, _data.kills) * 100, {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
-					Scope.main += Math.pow(2, _data.kills) * 100;
-					enemy.go_to_room();
+					Controller.kill_enemy(enemy);
 				};
 			};
 		};

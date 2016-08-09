@@ -50,6 +50,56 @@ var Controller = {
 				Controller.start.call(enemy)
 			});
 			Controller.start.call(Player)
+		},
+		kill_enemy: function (enemy) {
+			if (
+				enemy.behavior == 'go_to_room' ||
+				enemy.behavior == 'enter_to_room' ||
+				enemy.behavior == 'exit_from_room' ||
+				enemy.behavior == 'in_room'
+				) {
+				return
+			}
+
+			enemy.path = [];
+			enemy.path[0] = {
+				x: Math.floor(enemy.pos.x /32),
+				y: Math.floor(enemy.pos.y /32)
+			}
+
+			Sounds.eatghost.play()
+			if (_data.firstblood) {
+				_data.firstblood = false;
+				setTimeout(function () {
+					Sounds.firstblood.play()
+				}, 1000);
+			};
+
+			_data.kills += 1;
+
+			if (_data.kill) {
+				var say = false;
+
+				switch (_data.kills) {
+					case 2: say = Sounds.doublekill
+					break
+					case 3: say = Sounds.multikill
+					break
+					case 4: say = Sounds.megakill
+					break
+				}
+				if (say != false) {						
+					setTimeout(function () {
+						say.play()
+					}, 200);
+				};
+			};
+
+			_data.kill_timer();
+
+			Anim.show_mess(Math.pow(2, _data.kills) * 100, {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
+			Scope.main += Math.pow(2, _data.kills) * 100;
+			enemy.go_to_room();
 		}
 	};
 
@@ -144,7 +194,9 @@ var Controller = {
 		timeout: false,
 		set_random_event: function () {
 			setTimeout(function () {
-				Special.yo.start();
+				if (_data.status == "play") {
+					Special.yo.start();
+				}
 			}, Math.random() * 180000);
 		},
 		start: function () {

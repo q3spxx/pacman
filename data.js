@@ -1,4 +1,9 @@
 var _data = {
+	center_mess_switch: false,
+	center_mess: "",
+	set_center_mess: function (mess) {
+		this.center_mess = mess;
+	},
 	kill: false,
 	kills: 0,
 	kill_update: 0,
@@ -27,6 +32,7 @@ var _data = {
 					case 4: say = Sounds.rampage
 				}
 				if(say != false) {
+					_data.change_sound(audio_mess)
 					say.play()
 				}
 			};
@@ -106,5 +112,12 @@ var _data = {
 			random += Math.floor(Math.random() * 9);
 		}
 		return Number(random);
+	},
+	change_sound: function (arr) {
+		arr.forEach(function (sound) {
+			if (!sound.paused) {
+				sound.pause()
+			};
+		});
 	}
 };

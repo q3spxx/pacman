@@ -1,4 +1,4 @@
-var map, imgs = [], anim = [], text_buf = [], audio = [];
+var map, imgs = [], anim = [], text_buf = [], audio = [], audio_mess = [];
 var color = [];
 var room_t = null;
 var Sounds = {};
@@ -66,20 +66,28 @@ function load_audio () {
 	audio.push(Sounds.fear);
 	Sounds.firstblood = _data.audio.load("audio/firstblood.mp3");
 	audio.push(Sounds.firstblood);
+	audio_mess.push(Sounds.firstblood)
 	Sounds.doublekill = _data.audio.load("audio/doublekill.mp3");
 	audio.push(Sounds.doublekill);
+	audio_mess.push(Sounds.doublekill)
 	Sounds.scream = _data.audio.load("audio/scream.mp3");
 	audio.push(Sounds.scream);
+	audio_mess.push(Sounds.scream)
 	Sounds.multikill = _data.audio.load("audio/multikill.mp3");
 	audio.push(Sounds.multikill);
+	audio_mess.push(Sounds.multikill)
 	Sounds.megakill = _data.audio.load("audio/megakill.mp3");
 	audio.push(Sounds.megakill);
+	audio_mess.push(Sounds.megakill)
 	Sounds.rampage = _data.audio.load("audio/rampage.mp3");
 	audio.push(Sounds.rampage);
+	audio_mess.push(Sounds.rampage)
 	Sounds.unstoppable = _data.audio.load("audio/unstoppable.mp3");
 	audio.push(Sounds.unstoppable);
+	audio_mess.push(Sounds.unstoppable)
 	Sounds.dominating = _data.audio.load("audio/dominating.mp3");
 	audio.push(Sounds.dominating);
+	audio_mess.push(Sounds.dominating)
 	audio.forEach(function (sound) {
 		sound.volume = _data.volume;
 	});
@@ -142,6 +150,7 @@ function initControls () {
 	active_enemyes();
 };
 
+
 function room_timer () {
 	if (Room.list[0]) {
 		Room.list[0].exit_from_room();
@@ -200,12 +209,18 @@ function active_enemyes () {
 	Controller.start.call(Paul);
 	Controller.start.call(Player);
 	gl.start();
-	_data.status = "play";
 	Controller.game_pause();
+	_data.status = "ready";
+	_data.set_center_mess("press enter");
+	_data.center_mess_switch = true;
+};
+
+function start () {
+	_data.center_mess_switch = false;
+	_data.status = "play";
 	Sounds.begin.play();
 	setTimeout(start_game, 4000);
 };
-
 function start_game () {
 	Sounds.signal.play()
 	Event.set_random_event();

@@ -43,7 +43,6 @@ function close_door () {
 			enemy_arr[i].pos.x < 352 && 
 			enemy_arr[i].pos.y >= 256 &&
 			enemy_arr[i].pos.y < 288) {
-			console.log(111)
 			return false
 		}
 	}

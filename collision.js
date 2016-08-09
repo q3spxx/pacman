@@ -135,5 +135,36 @@ var Col = {
 			};
 		};
 		return false
+	},
+	bomb_check: function () {
+		var r_x = Player.pos.x - 16;
+		var r_y = Player.pos.y - 16;
+
+		enemy_arr.forEach(function (enemy) {
+			if (Col.hypotenuse(enemy.pos.x, enemy.pos.y, r_x, r_y)) {
+				Controller.kill_enemy(enemy);
+				return
+			}
+			if (Col.hypotenuse(enemy.pos.x + 32, enemy.pos.y, r_x, r_y)) {
+				Controller.kill_enemy(enemy);
+				return
+			}
+			if (Col.hypotenuse(enemy.pos.x, enemy.pos.y + 32, r_x, r_y)) {
+				Controller.kill_enemy(enemy);
+				return
+			}
+			if (Col.hypotenuse(enemy.pos.x + 32, enemy.pos.y + 32, r_x, r_y)) {
+				Controller.kill_enemy(enemy);
+				return
+			}
+		});
+	},
+	hypotenuse: function (x, y, r_x, r_y) {
+		var hypotenuse = Math.sqrt(Math.pow(r_x - x, 2) + Math.pow(r_y - y, 2))
+		if (hypotenuse < Special.bomb.radius) {
+			return true
+		} else {
+			return false
+		}
 	}
 };

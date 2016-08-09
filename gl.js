@@ -17,14 +17,17 @@ var gl = {
 		var date = new Date();
 		gl.ms = date.getTime();
 		setInterval(function () {
+			map.globalAlpha = 0.95
 			gl.render();
 			gl.draw_special();
+			gl.draw_bomb()
 			gl.anim();
 			gl.draw_event();
-			gl.mess();
 			gl.scope();
 			gl.draw_lifes()
 			gl.level();
+			gl.mess();
+			gl.draw_center_mess()
 			gl.fps_timer();
 		}, 33);
 	},
@@ -70,6 +73,7 @@ var gl = {
 	scope: function () {
 		map.fillStyle = 'rgb(255,255,255)';
 		map.font = "16px Arial";
+		map.textAlign = "left";
 		map.textBaseline = "top";
 		map.fillText("Scope: " + Scope.main, 40, 10);
 	},
@@ -131,5 +135,20 @@ var gl = {
 							);
 			i++
 		}
+	},
+	draw_center_mess: function () {
+		if (_data.center_mess_switch) {
+			map.fillStyle = 'rgb(255,255,255)';
+			map.font = "26px Arial";
+			map.textAlign = "center";
+			map.textBaseline = "top";
+			map.fillText(_data.center_mess, 336, 352);
+		}
+	},
+	draw_bomb: function () {
+		map.beginPath()
+		map.fillStyle = 'rgba(255, 100, 0, 255)'
+		map.arc(Player.pos.x + 16, Player.pos.y + 16, Special.bomb.radius, 0, 2 * Math.PI)
+		map.fill()
 	}
 };
