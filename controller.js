@@ -71,6 +71,8 @@ var Controller = {
 			if (_data.firstblood) {
 				_data.firstblood = false;
 				setTimeout(function () {
+					_data.change_sound(audio_mess)
+					Sounds.show_mess("First blood!") 
 					Sounds.firstblood.play()
 				}, 1000);
 			};
@@ -79,17 +81,23 @@ var Controller = {
 
 			if (_data.kill) {
 				var say = false;
+				var mess = Sounds.mess
 
 				switch (_data.kills) {
 					case 2: say = Sounds.doublekill
+							mess = "Double kill!"
 					break
 					case 3: say = Sounds.multikill
+							mess = "Multi kill!"
 					break
 					case 4: say = Sounds.megakill
+							mess = "Mega kill!"
 					break
 				}
 				if (say != false) {						
 					setTimeout(function () {
+						_data.change_sound(audio_mess)
+						Sounds.show_mess(mess)
 						say.play()
 					}, 200);
 				};

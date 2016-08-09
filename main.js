@@ -1,7 +1,29 @@
 var map, imgs = [], anim = [], text_buf = [], audio = [], audio_mess = [];
 var color = [];
 var room_t = null;
-var Sounds = {};
+var Sounds = {
+	on: false,
+	mess: '',
+	update: false,
+	show_mess: function (mess) {
+		if (Sounds.on) {
+			Sounds.update = true
+		}
+
+		this.mess = mess
+		this.on = true
+
+		setTimeout(function () {
+			if (Sounds.update) {
+				Sounds.update = false
+				return
+			}
+
+			Sounds.on = false
+			Sounds.mess = ''
+		}, 1000)
+	}
+};
 var Imgs = {};
 color['white'] = '255,255,255';
 

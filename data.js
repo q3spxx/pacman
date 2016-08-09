@@ -24,15 +24,21 @@ var _data = {
 
 			if (_data.kills > 1) {
 				var say = false
+				var mess = Sounds.mess
 				switch (_data.kills) {
 					case 2: say = Sounds.dominating
+							mess = "Dominating!"
 					break
 					case 3: say = Sounds.unstoppable
+							mess = "Unstoppabale!"
 					break
 					case 4: say = Sounds.rampage
+							mess = "Rampage!"
+					break
 				}
 				if(say != false) {
 					_data.change_sound(audio_mess)
+					Sounds.show_mess(mess)
 					say.play()
 				}
 			};
@@ -40,7 +46,7 @@ var _data = {
 			_data.kills = 0;
 		}, 3000);
 	},
-	volume: 0.05,
+	volume: 0.00,
 	firstblood: true,
 	change_volume: function (input) {
 		_data.volume = Number(input.value) / 100;

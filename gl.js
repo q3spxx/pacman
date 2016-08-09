@@ -28,6 +28,7 @@ var gl = {
 			gl.level();
 			gl.mess();
 			gl.draw_center_mess()
+			gl.draw_sound_mess()
 			gl.fps_timer();
 		}, 33);
 	},
@@ -150,5 +151,14 @@ var gl = {
 		map.fillStyle = 'rgba(255, 100, 0, 255)'
 		map.arc(Player.pos.x + 16, Player.pos.y + 16, Special.bomb.radius, 0, 2 * Math.PI)
 		map.fill()
+	},
+	draw_sound_mess: function () {
+		if (Sounds.on) {
+			map.fillStyle = 'rgb(255,255,255)';
+			map.font = "60px Arial";
+			map.textAlign = "center";
+			map.textBaseline = "top";
+			map.fillText(Sounds.mess, 336, 250)
+		};
 	}
 };
