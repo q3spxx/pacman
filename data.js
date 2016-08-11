@@ -46,7 +46,7 @@ var _data = {
 			_data.kills = 0;
 		}, 3000);
 	},
-	volume: 0.00,
+	volume: 0.05,
 	firstblood: true,
 	change_volume: function (input) {
 		_data.volume = Number(input.value) / 100;
@@ -123,6 +123,7 @@ var _data = {
 		arr.forEach(function (sound) {
 			if (!sound.paused) {
 				sound.pause()
+				sound.currentTime = 0
 			};
 		});
 	}

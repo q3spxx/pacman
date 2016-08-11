@@ -67,6 +67,10 @@ var Controller = {
 				y: Math.floor(enemy.pos.y /32)
 			}
 
+			if (enemy.behavior == 'grab') {
+				Sounds.bones.play()
+			}
+
 			Sounds.eatghost.play()
 			if (_data.firstblood) {
 				_data.firstblood = false;

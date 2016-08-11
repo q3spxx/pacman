@@ -24,7 +24,9 @@ var Sounds = {
 		}, 1000)
 	}
 };
-var Imgs = {};
+var Imgs = {
+	icons: {}
+};
 color['white'] = '255,255,255';
 
 function init () {
@@ -57,6 +59,12 @@ function init () {
 	imgs.push(Imgs.yo);
 	Imgs.go_to_room = _data.img.load("images/go_to_room.png");
 	imgs.push(Imgs.go_to_room);
+	Imgs.icons.cord = _data.img.load("images/cord_icon.png") 
+	imgs.push(Imgs.icons.cord);
+	Imgs.icons.bomb = _data.img.load("images/bomb_icon.png") 
+	imgs.push(Imgs.icons.bomb);
+	Imgs.brick = _data.img.load("images/brick.png") 
+	imgs.push(Imgs.brick);
 	_data.img.handle = setInterval(loading, 100);
 };
 
@@ -67,8 +75,12 @@ function loading () {
 	};
 };
 function load_audio () {
+	Sounds.bitch = _data.audio.load("audio/bitch.mp3");
+	audio.push(Sounds.bitch);
 	Sounds.get_over_here = _data.audio.load("audio/goh.mp3");
 	audio.push(Sounds.get_over_here);
+	Sounds.bones = _data.audio.load("audio/bones.mp3");
+	audio.push(Sounds.bones);
 	Sounds.yo = _data.audio.load("audio/yo.mp3");
 	audio.push(Sounds.yo);
 	Sounds.dead = _data.audio.load("audio/dead.mp3");

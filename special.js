@@ -1,5 +1,8 @@
 var Special = {
 	get_over_here: {
+		cooldown_handle: null,
+		cooldown: 5,
+		ready: true,
 		handle: null,
 		start: function () {
 			_data.status = "special";
@@ -56,6 +59,18 @@ var Special = {
 					return;
 				};
 			}.bind(special_buf), 1);
+
+
+			Special.get_over_here.ready = false
+			Special.get_over_here.cooldown_handle = setInterval(function () {
+				if (Special.get_over_here.cooldown == 0) {
+					Special.get_over_here.ready = true
+					Special.get_over_here.cooldown = 5
+					clearInterval(Special.get_over_here.cooldown_handle)
+				} else {
+					Special.get_over_here.cooldown -= 1
+				}
+			}, 1000)
 		},
 		return_cord: function (e) {
 			var enemy = e;
@@ -174,7 +189,10 @@ var Special = {
 	},
 	bomb: {
 		handle: null,
+		cooldown_handle: null,
+		cooldown: 30,
 		radius: 0,
+		ready: true,
 		max_radius: 64,
 		start: function () {
 			_data.status = "special";
@@ -191,6 +209,17 @@ var Special = {
 					}.bind(this), 300)
 				}
 			}.bind(this), 6)
+
+			Special.bomb.ready = false;
+			Special.bomb.cooldown_handle = setInterval(function () {
+				if (Special.bomb.cooldown == 0) {
+					Special.bomb.ready = true
+					Special.bomb.cooldown = 30
+					clearInterval(Special.bomb.cooldown_handle)
+				} else {
+					Special.bomb.cooldown -= 1
+				}
+			}, 1000)
 		},
 		stop: function () {
 			_data.status = "play";

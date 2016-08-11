@@ -34,7 +34,7 @@ var Blinky = {
 	},
 	curAction: 0,
 	behavior: "passive",
-	speed: 9,
+	speed: 8,
 	action: [
 		{
 			frames: [
@@ -111,7 +111,7 @@ var Pinky = {
 	},
 	curAction: 0,
 	behavior: "in_room",
-	speed: 11,
+	speed: 8,
 	action: [
 		{
 			frames: [
@@ -182,7 +182,7 @@ var Bob = {
 	},
 	curAction: 0,
 	behavior: "in_room",
-	speed: 10,
+	speed: 8,
 	action: [
 		{
 			frames: [
@@ -253,7 +253,7 @@ var Paul = {
 	},
 	curAction: 0,
 	behavior: "in_room",
-	speed: 10,
+	speed: 8,
 	action: [
 		{
 			frames: [

@@ -33,13 +33,13 @@ var Controls = {
 				break
 				case 40: Player.set_down()
 				break
-				case 81: Special.get_over_here.start();
+				case 81: if (Special.get_over_here.ready) {Special.get_over_here.start()};
 				break
 				case 32: if (Special.yo.status) {Event.start()}
 				break
 				case 13: start()
 				break
-				case 82: Special.bomb.start()
+				case 82: if (Special.bomb.ready) {Special.bomb.start()}
 				break
 			}
 			

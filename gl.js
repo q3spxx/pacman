@@ -30,6 +30,7 @@ var gl = {
 			gl.draw_center_mess()
 			gl.draw_sound_mess()
 			gl.fps_timer();
+			gl.skill_icons()
 		}, 33);
 	},
 	render: function () {
@@ -160,5 +161,70 @@ var gl = {
 			map.textBaseline = "top";
 			map.fillText(Sounds.mess, 336, 250)
 		};
+	},
+	skill_icons: function () {
+		if (Special.get_over_here.ready) {
+			map.globalAlpha = 0.95
+		} else {
+			map.globalAlpha = 0.5
+		}
+		map.drawImage(
+			Imgs.icons.cord,
+			0,
+			0,
+			32,
+			32,
+			272,
+			640,
+			32,
+			32
+			)
+			map.globalAlpha = 0.95
+			map.fillStyle = 'rgb(255,255,255)';
+			map.font = "8px Arial";
+			map.textAlign = "left";
+			map.textBaseline = "bottom";
+			map.fillText("q", 272, 672)
+
+
+		if (!Special.get_over_here.ready) {
+			map.font = "16px Arial";
+			map.textAlign = "center";
+			map.textBaseline = "middle";
+			map.fillText(Special.get_over_here.cooldown + " s", 288, 656)
+		}
+
+		if (Special.bomb.ready) {
+			map.globalAlpha = 0.95
+		} else {
+			map.globalAlpha = 0.5
+		}
+
+		map.drawImage(
+			Imgs.icons.bomb,
+			0,
+			0,
+			32,
+			32,
+			368,
+			640,
+			32,
+			32
+			)
+
+			if (!Special.bomb.ready) {
+				map.globalAlpha = 0.95
+				map.font = "16px Arial";
+				map.textAlign = "center";
+				map.textBaseline = "middle";
+				map.fillText(Special.bomb.cooldown + " s", 384, 656)
+			}
+
+			map.globalAlpha = 0.95
+			map.fillStyle = 'rgb(255,255,255)';
+			map.font = "8px Arial";
+			map.textAlign = "left";
+			map.textBaseline = "bottom";
+			map.fillText("r", 368, 672)
 	}
 };

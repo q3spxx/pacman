@@ -74,6 +74,7 @@ var Col = {
 			if (type == 4) {
 				Map.grid[x][y].makeEmpty();
 				Scope.main += 50;
+				Col.bitch_check()
 				Event.start();
 			};
 		};
@@ -137,31 +138,55 @@ var Col = {
 		return false
 	},
 	bomb_check: function () {
-		var r_x = Player.pos.x - 16;
-		var r_y = Player.pos.y - 16;
+		var r_x = Player.pos.x + 16;
+		var r_y = Player.pos.y + 16;
 
 		enemy_arr.forEach(function (enemy) {
-			if (Col.hypotenuse(enemy.pos.x, enemy.pos.y, r_x, r_y)) {
+			if (Col.hypotenuse(enemy.pos.x, enemy.pos.y, r_x, r_y, Special.bomb.radius)) {
 				Controller.kill_enemy(enemy);
 				return
 			}
-			if (Col.hypotenuse(enemy.pos.x + 32, enemy.pos.y, r_x, r_y)) {
+			if (Col.hypotenuse(enemy.pos.x + 32, enemy.pos.y, r_x, r_y, Special.bomb.radius)) {
 				Controller.kill_enemy(enemy);
 				return
 			}
-			if (Col.hypotenuse(enemy.pos.x, enemy.pos.y + 32, r_x, r_y)) {
+			if (Col.hypotenuse(enemy.pos.x, enemy.pos.y + 32, r_x, r_y, Special.bomb.radius)) {
 				Controller.kill_enemy(enemy);
 				return
 			}
-			if (Col.hypotenuse(enemy.pos.x + 32, enemy.pos.y + 32, r_x, r_y)) {
+			if (Col.hypotenuse(enemy.pos.x + 32, enemy.pos.y + 32, r_x, r_y, Special.bomb.radius)) {
 				Controller.kill_enemy(enemy);
 				return
 			}
 		});
 	},
-	hypotenuse: function (x, y, r_x, r_y) {
+	bitch_check: function () {
+		var r_x = Player.pos.x + 16;
+		var r_y = Player.pos.y + 16;
+		var radius = 35
+
+		enemy_arr.forEach(function (enemy) {
+			if (Col.hypotenuse(enemy.pos.x, enemy.pos.y, r_x, r_y, radius) && enemy.behavior == 'chase') {
+				Sounds.bitch.play()
+				return
+			}
+			if (Col.hypotenuse(enemy.pos.x + 32, enemy.pos.y, r_x, r_y, radius && enemy.behavior == 'chase')) {
+				Sounds.bitch.play()
+				return
+			}
+			if (Col.hypotenuse(enemy.pos.x, enemy.pos.y + 32, r_x, r_y, radius && enemy.behavior == 'chase')) {
+				Sounds.bitch.play()
+				return
+			}
+			if (Col.hypotenuse(enemy.pos.x + 32, enemy.pos.y + 32, r_x, r_y, radius && enemy.behavior == 'chase')) {
+				Sounds.bitch.play()
+				return
+			}
+		});
+	},
+	hypotenuse: function (x, y, r_x, r_y, radius) {
 		var hypotenuse = Math.sqrt(Math.pow(r_x - x, 2) + Math.pow(r_y - y, 2))
-		if (hypotenuse < Special.bomb.radius) {
+		if (hypotenuse < radius) {
 			return true
 		} else {
 			return false
