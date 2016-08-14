@@ -46,7 +46,7 @@ var _data = {
 			_data.kills = 0;
 		}, 3000);
 	},
-	volume: 0.05,
+	volume: 0.1,
 	firstblood: true,
 	change_volume: function (input) {
 		_data.volume = Number(input.value) / 100;
@@ -61,15 +61,8 @@ var _data = {
 	reinit_level: function () {
 		setTimeout(function () {
 			console.log("reinit")
-			var aBuf = new AnimBuf(0, Player, 2, true);
 
-			Player.img = imgs[1];
-			Player.curAction = 0;
-
-			anim[0] = aBuf;
-
-			Player.pos.x = 320;
-			Player.pos.y = 480;
+			init_player_position()
 
 			init_enemy_position()
 
@@ -78,6 +71,19 @@ var _data = {
 			Controller.game_continue();
 
 		}, 1600);
+	},
+	next_level: function () {
+
+		_Map.update()
+
+		init_player_position()
+
+		init_enemy_position()
+
+		_data.level += 1
+
+		start()
+
 	},
 	canvas: {
 		elem: document.getElementById("map"),

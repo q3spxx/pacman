@@ -1,4 +1,4 @@
-function newGrid () {
+function new_grid () {
 	var grid = [];
 	for (var x = 0; x < 21; x++) {
 		var xArr = [];
@@ -11,26 +11,38 @@ function newGrid () {
 	return grid;
 };
 
-var cellProto = {
+function Block (name, pic, pos, block, id, in_map, type) {
+	this.id = id
+	this.name = name
+	this.img = {}
+	this.img.pic = pic
+	this.img.pos = pos
+	this.block = block
+	this.type = type
+	this.in_map = in_map
+	this.type = type
+}
+
+var cell_proto = {
 	makeEmpty: function () {
 		this.img = {
-			pic: imgs[0],
+			pic: Imgs.empty,
 			pos: {
 				x: 0,
 				y: 0
 			}
 		}
-		this.type = 0;
+		this.id = 0;
 		this.block = false;
+		this.type = 'statics'
 	}
 };
 function Cell (x, y) {
-	this.__proto__ = cellProto;
-	this.img = null;
-	this.block = false;
 	this.x = x;
 	this.y = y;
-	this.type = 0;
+	this.make_empty = function () {
+		this.__proto__ = Static_blocks.empty
+	}
 };
 function AnimBuf (id, person, tf, repeat) {
 	this.__proto__ = person;
@@ -39,13 +51,59 @@ function AnimBuf (id, person, tf, repeat) {
 	this.tFrames = tf;
 	this.repeat = repeat;
 };
-function CellOfGP (x, y, status) {
-	this.status = status;
-	this.x = x;
-	this.y = y;
-};
 
-function AI_Prototype () {
+function Graph_cell (x, y, num) {
+	this.x = x
+	this.y = y
+	this.f = null
+	this.g = null
+	this.h = null
+	this.neighs = []
+	this.parent = null
+	this.arr = null
+	this.num = num
+}
+
+function _Player () {
+	this.id = 4
+	this.pos = {x: 320, y: 480}
+	this.m_pos = {
+		x: 0,
+		y: 0
+	}
+	this.handle = null
+	this.img = Imgs.pacman
+	this.curAction = 0
+	this.speed = 7
+	this.is_dead = function () {
+		this.img = Imgs.dead;
+		this.stop();
+		var aBuf = new AnimBuf(0, this, 5, false);
+		this.curAction = 4;
+		anim[0] = aBuf;
+	}
+}
+
+function _Enemy (id, pos, img, point_pos, behavior) {
+	this.id = id
+	this.pos = pos
+	this.m_pos = {
+		x: 0,
+		y: 0
+	}
+	this.handle = null
+	this.img = img
+	this.curAction = 0
+	this.speed = 8
+	this.path = []
+	this.point_pos = point_pos
+	this.behavior = behavior
+	this.set_original_img = function () {
+		this.img = img;
+	}
+}
+
+function Character (pos, img, speed) {
 	this.left = function () {
 		this.m_pos.x = -1;
 		this.m_pos.y = 0;
@@ -70,6 +128,59 @@ function AI_Prototype () {
 		this.m_pos.x = 0;
 		this.m_pos.y = 0;
 	}
+	this.action = [
+		{
+			frames: [
+				{
+					x: 0,
+					y: 0
+				},
+				{
+					x: 0,
+					y: 32
+				}
+			]
+		},
+		{
+			frames: [
+				{
+					x: 32,
+					y: 0
+				},
+				{
+					x: 32,
+					y: 32
+				}
+			]
+		},
+		{
+			frames: [
+				{
+					x: 64,
+					y: 0
+				},
+				{
+					x: 64,
+					y: 32
+				}
+			]
+		},
+		{
+			frames: [
+				{
+					x: 96,
+					y: 0
+				},
+				{
+					x: 96,
+					y: 32
+				}
+			]
+		}
+	]
+}
+
+function AI_Prototype (img, point_pos, behavior) {
 	this.set_fear_img = function () {
 		this.img = Imgs.fear;
 	};
@@ -113,3 +224,12 @@ function Event_buf (img, x, y) {
 	this.x = x;
 	this.y = y;
 };
+
+function Shock_buf (img, x, y, w, h) {
+	this.id = _data.gen_id()
+	this.img = img
+	this.x = x
+	this.y = y
+	this.w = w
+	this.h = h
+}

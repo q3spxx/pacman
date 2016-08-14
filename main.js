@@ -1,72 +1,40 @@
-var map, imgs = [], anim = [], text_buf = [], audio = [], audio_mess = [];
-var color = [];
-var room_t = null;
-var Sounds = {
-	on: false,
-	mess: '',
-	update: false,
-	show_mess: function (mess) {
-		if (Sounds.on) {
-			Sounds.update = true
-		}
-
-		this.mess = mess
-		this.on = true
-
-		setTimeout(function () {
-			if (Sounds.update) {
-				Sounds.update = false
-				return
-			}
-
-			Sounds.on = false
-			Sounds.mess = ''
-		}, 1000)
+var Timer = {
+	time: '',
+	start: function () {
+		var date = new Date()
+		this.time = date.getTime()
+	},
+	stop: function () {
+		var date = new Date()
+		console.log(date.getTime() - this.time)
 	}
-};
-var Imgs = {
-	icons: {}
-};
-color['white'] = '255,255,255';
+}
 
 function init () {
+	Timer.start()
 	_data.canvas.setSize(672, 672);
-	map = _data.canvas.getContext();
+	map = _data.canvas.getContext('2d');
 
 	document.getElementById('volume').value = _data.volume * 100;
 
-	Imgs.map = _data.img.load("images/map.png") 
-	imgs.push(Imgs.map);
-	Imgs.pacman = _data.img.load("images/pacman.png")
-	imgs.push(Imgs.pacman);
-	Imgs.blinky = _data.img.load("images/blinky.png")
-	imgs.push(Imgs.blinky);
-	Imgs.pinky = _data.img.load("images/pinky.png")
-	imgs.push(Imgs.pinky);
-	Imgs.bob = _data.img.load("images/bob.png")
-	imgs.push(Imgs.bob);
-	Imgs.paul = _data.img.load("images/paul.png")
-	imgs.push(Imgs.paul);
-	Imgs.fear = _data.img.load("images/fear.png")
-	imgs.push(Imgs.fear);
-	Imgs.fear_pre_timeout = _data.img.load("images/fear_pre_timeout.png")
-	imgs.push(Imgs.fear_pre_timeout);
-	Imgs.dead = _data.img.load("images/dead.png")
-	imgs.push(Imgs.dead);
-	Imgs.cord = _data.img.load("images/special.png");
-	imgs.push(Imgs.cord);
-	Imgs.yo = _data.img.load("images/yo.png");
-	imgs.push(Imgs.yo);
-	Imgs.go_to_room = _data.img.load("images/go_to_room.png");
-	imgs.push(Imgs.go_to_room);
-	Imgs.icons.cord = _data.img.load("images/cord_icon.png") 
-	imgs.push(Imgs.icons.cord);
-	Imgs.icons.bomb = _data.img.load("images/bomb_icon.png") 
-	imgs.push(Imgs.icons.bomb);
-	Imgs.brick = _data.img.load("images/brick.png") 
-	imgs.push(Imgs.brick);
-	_data.img.handle = setInterval(loading, 100);
+	load_images()
+
 };
+
+function load_images () {
+	for (key in src) {
+		Imgs[key] = _data.img.load("images/" + src[key])
+		imgs.push(Imgs[key])
+	}
+	for (key in icons_src) {
+		Imgs.icons[key] = _data.img.load("images/" + icons_src[key])
+		imgs.push(Imgs.icons[key])
+	}
+	Shop.data.skills.products[0].icon = Imgs.icons.cord
+	Shop.data.skills.products[1].icon = Imgs.icons.shot
+	Shop.data.skills.products[2].icon = Imgs.icons.bomb
+	_data.img.handle = setInterval(loading, 100);
+}
 
 function loading () {
 	if (_data.img.count == _data.img.loaded) {
@@ -75,94 +43,96 @@ function loading () {
 	};
 };
 function load_audio () {
-	Sounds.bitch = _data.audio.load("audio/bitch.mp3");
-	audio.push(Sounds.bitch);
-	Sounds.get_over_here = _data.audio.load("audio/goh.mp3");
-	audio.push(Sounds.get_over_here);
-	Sounds.bones = _data.audio.load("audio/bones.mp3");
-	audio.push(Sounds.bones);
-	Sounds.yo = _data.audio.load("audio/yo.mp3");
-	audio.push(Sounds.yo);
-	Sounds.dead = _data.audio.load("audio/dead.mp3");
-	audio.push(Sounds.dead);
-	Sounds.begin = _data.audio.load("audio/begin.mp3");
-	audio.push(Sounds.begin);
-	Sounds.step = _data.audio.load("audio/step.mp3");
-	audio.push(Sounds.step);
-	Sounds.eatghost = _data.audio.load("audio/eatghost.mp3");
-	audio.push(Sounds.eatghost);
-	Sounds.eatghost = _data.audio.load("audio/eatghost.mp3");
-	audio.push(Sounds.eatghost);
-	Sounds.signal = _data.audio.load("audio/signal.mp3");
+	for (key in audio_src) {
+		Sounds[key] = _data.audio.load('audio/' + audio_src[key])
+		audio.push(Sounds[key])
+	}
+	for (key in audio_mess_src) {
+		Sounds[key] = _data.audio.load('audio/' + audio_mess_src[key])
+		audio.push(Sounds[key])
+		audio_mess.push(Sounds[key])
+	}
+
 	Sounds.signal.loop = true;
-	audio.push(Sounds.signal);
-	Sounds.fear = _data.audio.load("audio/fear.mp3");
-	audio.push(Sounds.fear);
-	Sounds.firstblood = _data.audio.load("audio/firstblood.mp3");
-	audio.push(Sounds.firstblood);
-	audio_mess.push(Sounds.firstblood)
-	Sounds.doublekill = _data.audio.load("audio/doublekill.mp3");
-	audio.push(Sounds.doublekill);
-	audio_mess.push(Sounds.doublekill)
-	Sounds.scream = _data.audio.load("audio/scream.mp3");
-	audio.push(Sounds.scream);
-	audio_mess.push(Sounds.scream)
-	Sounds.multikill = _data.audio.load("audio/multikill.mp3");
-	audio.push(Sounds.multikill);
-	audio_mess.push(Sounds.multikill)
-	Sounds.megakill = _data.audio.load("audio/megakill.mp3");
-	audio.push(Sounds.megakill);
-	audio_mess.push(Sounds.megakill)
-	Sounds.rampage = _data.audio.load("audio/rampage.mp3");
-	audio.push(Sounds.rampage);
-	audio_mess.push(Sounds.rampage)
-	Sounds.unstoppable = _data.audio.load("audio/unstoppable.mp3");
-	audio.push(Sounds.unstoppable);
-	audio_mess.push(Sounds.unstoppable)
-	Sounds.dominating = _data.audio.load("audio/dominating.mp3");
-	audio.push(Sounds.dominating);
-	audio_mess.push(Sounds.dominating)
+	Sounds.shop.loop = true
+
 	audio.forEach(function (sound) {
-		sound.volume = _data.volume;
-	});
-	createMap();
+		sound.volume = _data.volume
+	})
+	
+	init_blocks ();
 };
 
-function createMap () {
-	empty = initEmpty();
-	walls = initWalls();
-	door = initDoor();
-	food = initFood();
-	energiser = initEnergiser();
-	Map.addElem(empty);
-	Map.addElem(walls);
-	Map.addElem(food);
-	Map.addElem(energiser);
-	Map.createGraph();
-	Map.addElem(door);
-	player_init();
-	enemies_init();
-	animInit();
+function init_blocks () {
+	Static_blocks.get_default()
+	Dynamic_blocks.get_default()
+	init_map()
 };
 
-function player_init () {
-	Scope.main = 0;
+function init_map () {
+	_Map.update()
+	_Map.create_graph()
+	character_init()
 };
 
-function enemies_init () {
-	Blinky.__proto__ = new AI_Prototype();
-	Pinky.__proto__ = new AI_Prototype();
-	Bob.__proto__ = new AI_Prototype();
-	Paul.__proto__ = new AI_Prototype();
+function character_init () {
+	var character = new Character()
+	player_init(character);
+	enemies_init(character);
+	init_enemy_position();
+	anim_init();
+}
+
+function player_init (character) {
+	Player = new _Player()
+	Player.__proto__ = character;
+	Player.action.push({
+			frames: [
+				{
+					x: 0,
+					y: 0
+				},
+				{
+					x: 32,
+					y: 0
+				},
+				{
+					x: 64,
+					y: 0
+				},
+				{
+					x: 96,
+					y: 0
+				},
+				{
+					x: 128,
+					y: 0
+				}
+			]
+		})
 };
 
-function animInit () {
+function enemies_init (character) {
+	var ai_prototype = new AI_Prototype();
+	ai_prototype.__proto__ = character
+
+	Blinky = new _Enemy(0, {x: 320, y: 224}, Imgs.blinky, {x: 10, y: 7}, 'passive')
+	Blinky.__proto__ = ai_prototype
+
+	Pinky = new _Enemy(1, {x: 320, y: 288}, Imgs.pinky, {x: 10, y: 9}, 'enter_to_room')
+	Pinky.__proto__ = ai_prototype
+
+	Bob = new _Enemy(2, {x: 288, y: 288}, Imgs.bob, {x: 9, y: 9}, 'enter_to_room')
+	Bob.__proto__ = ai_prototype
+
+	Paul = new _Enemy(3, {x: 352, y: 288}, Imgs.paul, {x: 11, y: 9}, 'enter_to_room')
+	Paul.__proto__ = ai_prototype
+
+	enemy_arr.push(Blinky, Pinky, Bob, Paul)
+};
+
+function anim_init () {
 	init_type();
-	Player.img = Imgs.pacman;
-	Blinky.set_original_img();
-	Pinky.set_original_img();
-	Bob.set_original_img();
-	Paul.set_original_img();
 	var aBuf = new AnimBuf(0, Player, 2, true);
 	anim.push(aBuf);
 	aBuf = new AnimBuf(1, Blinky, 2, true);
@@ -175,21 +145,28 @@ function animInit () {
 	anim.push(aBuf);
 	Anim.handle = setInterval(Anim.change_frame, 200);
 	Anim.handle = setInterval(Anim.change_text_frame, 33);
-	initControls();
+	init_controls();
 };
 
-function initControls () {
+function init_controls () {
 	Controls.keyDown.on();
 	Controls.keyUp.on();
-	active_enemyes();
+	ready();
 };
 
+function init_player_position () {
 
-function room_timer () {
-	if (Room.list[0]) {
-		Room.list[0].exit_from_room();
-	};
-};
+	Player.stop()
+	Player.img = Imgs.pacman;
+	Player.curAction = 0;
+
+	var aBuf = new AnimBuf(0, Player, 2, true);
+
+	anim[0] = aBuf;
+
+	Player.pos.x = 320;
+	Player.pos.y = 480;
+}
 
 function init_enemy_position () {
 	Room.list = []
@@ -202,6 +179,8 @@ function init_enemy_position () {
 		y: 7
 	}
 	Blinky.path = []
+	Blinky.img = Imgs.blinky
+	Blinky.curAction = 0
 	b_Controller.set_passive.call(Blinky)
 	Pinky.pos = {
 		x: 320,
@@ -212,6 +191,8 @@ function init_enemy_position () {
 		y: 9
 	}
 	Pinky.path = []
+	Pinky.img = Imgs.pinky
+	Pinky.curAction = 0
 	Room.enter.call(Pinky);
 	Bob.pos = {
 		x: 288,
@@ -222,6 +203,8 @@ function init_enemy_position () {
 		y: 9
 	}
 	Bob.path = []
+	Bob.img = Imgs.bob
+	Bob.curAction = 0
 	Room.enter.call(Bob);
 	Paul.pos = {
 		x: 352,
@@ -232,35 +215,36 @@ function init_enemy_position () {
 		y: 9
 	}
 	Paul.path = []
+	Paul.img = Imgs.paul
+	Paul.curAction = 0
 	Room.enter.call(Paul);
 }
 
-function active_enemyes () {
-	init_enemy_position();
-	Controller.start.call(Blinky);
-	Controller.start.call(Pinky);
-	Controller.start.call(Bob);
-	Controller.start.call(Paul);
-	Controller.start.call(Player);
+function ready () {
 	gl.start();
-	Controller.game_pause();
 	_data.status = "ready";
-	_data.set_center_mess("press enter");
 	_data.center_mess_switch = true;
+	_data.set_center_mess("press enter");
 };
 
 function start () {
-	_data.center_mess_switch = false;
+	_data.center_mess_switch = true;
+	_data.set_center_mess("Level: " + _data.level);
 	_data.status = "play";
 	Sounds.begin.play();
 	setTimeout(start_game, 4000);
 };
 function start_game () {
+	_data.center_mess_switch = false;
 	Sounds.signal.play()
-	Event.set_random_event();
-	setInterval(function () {
+	if (!Event.random_event) {
+		Event.set_random_event();
+	};
+	Room.handle = setInterval(function () {
 		if (_data.status == "play") {
-			room_timer();
+			if (Room.list[0]) {
+				Room.list[0].exit_from_room();
+			};
 		};
 	}, 5000);
 	console.log("start game")

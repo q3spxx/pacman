@@ -1,38 +1,31 @@
-var Map = {
-	grid: newGrid(),
-	addElem: function (elem) {
-		elem.forEach(function (cell) {
-			Map.grid[cell.x][cell.y].img = cell.img;
-			Map.grid[cell.x][cell.y].block = cell.block;
-			Map.grid[cell.x][cell.y].type = cell.type;
+var _Map = {
+	grid: new_grid(),
+	update: function () {
+		Static_blocks.array.forEach(function (block) {
+			block.in_map.forEach(function (pos) {
+				_Map.grid[pos.x][pos.y].__proto__ = block
+			})
+		});
+		Dynamic_blocks.array.forEach(function (block) {
+			_Map.grid[block.in_map.x][block.in_map.y].__proto__ = block
 		});
 	},
 	graph: null,
-	createGraph: function () {
+	create_graph: function () {
 		var graph = [];
 		var num = 0;
 		for (var x = 0; x < 21; x++) {
 			for (var y = 0; y < 21; y++) {
-				if (Map.grid[x][y].block) {
+				if (_Map.grid[x][y].block && _Map.grid[x][y].type == 'static') {
 					continue;
 				};
-				var gObj = {
-								x: x,
-								y: y,
-								f: null,
-								g: null,
-								h: null,
-								neighs: null,
-								parent: null,
-								arr: null,
-								num: num
-					};
-				graph.push(gObj);
+				var g_obj = new Graph_cell(x, y, num)
+				graph.push(g_obj);
 				num++;
 			};
 		};
-		graph.forEach(function (gObj) {
-			var cords = Map.searchNeighbors(Map.grid[gObj.x][gObj.y], Map.grid);
+		graph.forEach(function (g_obj) {
+			var cords = _Map.search_neighbors(_Map.grid[g_obj.x][g_obj.y], _Map.grid);
 			var neighs = cords.map(function (cord) {
 				for (var i = 0; i < graph.length; i++) {
 					if (cord.x == graph[i].x && cord.y == graph[i].y) {
@@ -40,18 +33,18 @@ var Map = {
 					};
 				};
 			});
-			gObj.neighs = neighs;
+			g_obj.neighs = neighs;
 		});
 		this.graph = graph;
 	},
-	searchNeighbors: function (cell, grid) {
+	search_neighbors: function (cell, grid) {
 		var arr = [];
 		var tempArr = [{x: 1, y: 0}, 
 						{x: -1, y : 0},
 						{x: 0, y: 1},
 						{x: 0, y: -1}];
 		tempArr.forEach(function (cord) {
-			var res = Map.search(cell, grid, cord.x, cord.y);
+			var res = _Map.search(cell, grid, cord.x, cord.y);
 			if (res != false) {
 				arr.push(res);
 			};
@@ -81,11 +74,9 @@ var Map = {
 					return false;
 				};
 			};
-		if (!Map.grid[nX][nY].block) {
-				return {x: nX, y: nY};
-			if (grid[nX][nY].status) {
-				grid[nX][nY].status = false;
-			};
+		if (!_Map.grid[nX][nY].block || _Map.grid[nX][nY].type == 'dynamic') {
+
+			return {x: nX, y: nY}
 		};
 		return false;
 	},
@@ -98,4 +89,4 @@ var Map = {
 			cell.arr = null;
 		});
 	}
-};
+}

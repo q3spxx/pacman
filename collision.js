@@ -19,10 +19,10 @@ var Col = {
 		var width = Math.floor((new_pos.x + 31) / 32);
 		var height = Math.floor((new_pos.y + 31) / 32);
 		
-		if (Map.grid[x][y].block ||
-				Map.grid[width][height].block ||
-				Map.grid[width][y].block ||
-				Map.grid[x][height].block) {
+		if (_Map.grid[x][y].block ||
+				_Map.grid[width][height].block ||
+				_Map.grid[width][y].block ||
+				_Map.grid[x][height].block) {
 			return true;
 		} else {
 			return false;
@@ -62,17 +62,17 @@ var Col = {
 		};
 		var x = Math.floor((this.pos.x + 16) / 32);
 		var y = Math.floor((this.pos.y + 16) / 32);
-		var type = Map.grid[x][y].type;
-		if (type != 0) {
-			if (type == 2) {
+		var id = _Map.grid[x][y].id;
+		if (id != 0) {
+			if (id == 2) {
 				Sounds.step.play()
-				Map.grid[x][y].makeEmpty();
+				_Map.grid[x][y].make_empty();
 				Scope.points += 1;
 				Scope.main += 20;
 				Scope.check_end_game();
 			};
-			if (type == 4) {
-				Map.grid[x][y].makeEmpty();
+			if (id == 4) {
+				_Map.grid[x][y].make_empty();
 				Scope.main += 50;
 				Col.bitch_check()
 				Event.start();
@@ -112,10 +112,10 @@ var Col = {
 		};
 
 		if (
-			Map.grid[x][y].block ||
-			Map.grid[x][h].block ||
-			Map.grid[w][y].block ||
-			Map.grid[w][h].block
+			_Map.grid[x][y].block ||
+			_Map.grid[x][h].block ||
+			_Map.grid[w][y].block ||
+			_Map.grid[w][h].block
 			) {
 			return true;
 		};
@@ -163,7 +163,7 @@ var Col = {
 	bitch_check: function () {
 		var r_x = Player.pos.x + 16;
 		var r_y = Player.pos.y + 16;
-		var radius = 35
+		var radius = 48
 
 		enemy_arr.forEach(function (enemy) {
 			if (Col.hypotenuse(enemy.pos.x, enemy.pos.y, r_x, r_y, radius) && enemy.behavior == 'chase') {
@@ -191,5 +191,70 @@ var Col = {
 		} else {
 			return false
 		}
+	},
+	enemy_in_line_check: function () {
+		var x = Math.floor(Player.pos.x / 32)
+		var y = Math.floor(Player.pos.y / 32)
+
+		var direction;
+
+		switch (Player.curAction) {
+			case 0: direction = {x: -1, y: 0}
+			break 
+			case 1: direction = {x: 0, y: -1}
+			break 
+			case 2: direction = {x: 1, y: 0}
+			break 
+			case 3: direction = {x: 0, y: 1}
+			break 
+		}
+
+		var enemy_pos = enemy_arr.map(function (enemy) {
+			var pos = {
+				id: enemy.id,
+				x: Math.floor(enemy.pos.x / 32),
+				y: Math.floor(enemy.pos.y / 32)
+			}
+			return pos
+		})
+
+
+		do {
+
+			for (var i = 0; i < enemy_pos.length; i++) {
+				if (enemy_pos[i].x == x && enemy_pos[i].y == y) {
+					return enemy_arr[enemy_pos[i].id]
+				};
+			}
+			x += direction.x
+			y += direction.y
+		}
+		while (!_Map.grid[x][y].block)
+		return false
+	},
+	miss_check: function () {
+		var random = Math.floor(Math.random() * 100)
+		if (Special.shot.chanse() > random) {
+			return true
+		} else {
+			return false
+		}
+	},
+	shock_enemy_check: function () {
+
+	},
+	shock_check: function () {
+		var x = Math.floor(this.x / 32)
+		var y = Math.floor(this.y / 32)
+		var w = Math.floor((this.x + 31) / 32)
+		var h = Math.floor((this.y + 31) / 32)
+		if (_Map.grid[x][y].block ||
+			_Map.grid[w][y].block ||
+			_Map.grid[x][h].block ||
+			_Map.grid[w][h].block
+			) {
+			return true
+		}
+		return false
 	}
 };

@@ -78,7 +78,7 @@ var Controller = {
 					_data.change_sound(audio_mess)
 					Sounds.show_mess("First blood!") 
 					Sounds.firstblood.play()
-				}, 1000);
+				}, 1200);
 			};
 
 			_data.kills += 1;
@@ -159,7 +159,7 @@ var Controller = {
 			};
 
 			while (pos.x != ai.player_pos.x && pos.y != ai.player_pos.y) {
-				if (Map.grid[pos.x][pos.y].block) {
+				if (_Map.grid[pos.x][pos.y].block) {
 					return false;
 				};
 				pos.x += this.m_pos.x;
@@ -204,12 +204,13 @@ var Controller = {
 		update: 0,
 		duration: 10000,
 		timeout: false,
+		random_event: false,
 		set_random_event: function () {
 			setTimeout(function () {
 				if (_data.status == "play") {
 					Special.yo.start();
 				}
-			}, Math.random() * 180000);
+			}, Math.floor(Math.random() * 180000));
 		},
 		start: function () {
 			if (Event.status) {
@@ -270,9 +271,13 @@ var Controller = {
 				enemy.set_original_img()
 				b_Controller.set_passive.call(enemy);
 			});
-			Sounds.fear.pause()
-			Sounds.fear.currentTime = 0;
-			Sounds.signal.play();
+			if (!Sounds.fear.pause) {
+				Sounds.fear.pause()
+				Sounds.fear.currentTime = 0;
+			}
+			if (_data.status == 'play') {
+				Sounds.signal.play();
+			}
 			console.log("stop");
 		}
 	}

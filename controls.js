@@ -19,27 +19,49 @@ var Controls = {
 	handler: function (e) {
 		if (_data.status == "special" ||
 			_data.status == "pause") {
-			Player.set_stop();
+			Player.stop();
 			return;
 		};
 		if (e.type == "keydown") {
 			e.preventDefault();
 			switch (e.keyCode) {
-				case 37: Player.set_left()
+				case 37: Player.left()
 				break
-				case 38: Player.set_up()
+				case 38: if (_data.status == 'shop') {
+							Shop.cursor.up()
+						} else {
+							Player.up()
+						};
 				break
-				case 39: Player.set_right()
+				case 39: Player.right()
 				break
-				case 40: Player.set_down()
+				case 40: if (_data.status == 'shop') {
+							Shop.cursor.down()
+						} else {
+							Player.down()
+						};
 				break
-				case 81: if (Special.get_over_here.ready) {Special.get_over_here.start()};
+				case 81: if (Special.get_over_here.ready && Special.get_over_here.level > 0) {Special.get_over_here.start()};
 				break
-				case 32: if (Special.yo.status) {Event.start()}
+				case 32: if (_data.status == 'shop') {
+							Shop.try_buy()
+						} else {
+							if (Special.yo.status) {
+								Event.start()
+							}
+						};
 				break
-				case 13: start()
+				case 13: if (_data.status == 'ready') {
+						start()
+					} else if (_data.status == 'shop') {
+						Shop.close()
+					}
 				break
-				case 82: if (Special.bomb.ready) {Special.bomb.start()}
+				case 82: if (Special.bomb.ready && Special.bomb.level > 0) {Special.bomb.start()}
+				break
+				case 87: if (Special.shot.ready && Special.shot.level > 0) {Special.shot.start()};
+				break
+				case 69: if (Special.shock.ready && Special.shock.level > 0) {Special.shock.start()}
 				break
 			}
 			

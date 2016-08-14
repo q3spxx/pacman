@@ -1,41 +1,48 @@
-var empty;
-function initEmpty () {
-	var arr = [];
-	for (var x = 0; x < 21; x++) {
-		for (var y = 0; y < 21; y++) {
-			arr.push({	
-						img: {
-							pic: imgs[0],
-							pos: imgElems.empty
-						},
-						block: false,
-						x: x, 
-						y: y,
-						type: 0
-					});
-		};
-	};
-	return arr;
-};
-var door;
-function initDoor () {
-	var arr = [];
-	var o = {
-		img: {
-			pic: imgs[0],
-			pos: imgElems.door
-		},
-		block: true,
-		x: 10,
-		y: 8,
-		type: 3
-	};
-	arr.push(o)
-	return arr;
-};
+var Static_blocks = {
+	array: [],
+	add_block: function (name, pic, pos, block, id, in_map) {
+		this[name] = new Block(name, pic, pos, block, id, in_map, 'static')
+		this.array.push(this[name])
+	},
+	get_default: function () {
+		this.array.forEach(function (block) {
+			delete Static_blocks[block.name]
+		})
+
+		this.array = [];
+
+		this.add_block('empty', Imgs.map, {x: 0, y: 0}, false, 0, blocks_pos.get_empty_pos())
+		this.add_block('wall', Imgs.map, {x: 32, y: 0}, true, 1, blocks_pos.get_wall_pos())
+		this.add_block('food', Imgs.map, {x: 64, y: 0}, false, 2, blocks_pos.get_food_pos())
+		this.add_block('energiser', Imgs.map, {x: 128, y: 0}, false, 4, blocks_pos.get_energiser_pos())
+	}
+}
+
+var Dynamic_blocks = {
+	array: [],
+	add_block: function (name, pic, pos, block, id, in_map) {
+		if (!(name in this)) {
+			this[name] = []
+		}
+		in_map.forEach(function (cord) {
+			var new_block = new Block(name, pic, pos, block, id, cord, 'dynamic')
+			Dynamic_blocks[name].push(new_block)
+			Dynamic_blocks.array.push(new_block)
+		})
+	},
+	get_default: function () {
+		this.array.forEach(function (block) {
+			delete Dynamic_blocks[block.name]
+		})
+
+		this.array = [];
+		this.add_block('door', Imgs.map, {x: 96, y: 0}, true, 3, blocks_pos.get_door_pos())
+	}
+}
+
 function open_door () {
-	Map.grid[10][8].block = false;
-	Map.grid[10][8].img.pos = imgElems.empty;
+	Dynamic_blocks.door[0].block = false;
+	Dynamic_blocks.door[0].img.pos = {x: 0, y: 0};
 };
 function close_door () {
 	for (var i = 0; i < enemy_arr.length; i++) {
@@ -47,40 +54,12 @@ function close_door () {
 		}
 	}
 
-	Map.grid[10][8].block = true;
-	Map.grid[10][8].img.pos = imgElems.door;
-};
-var energiser;
-function initEnergiser () {
-	var arr = [];
-	for (var i = 0; i < 4; i++) {
-		var o = {
-			img: {
-				pic: imgs[0],
-				pos: imgElems.energiser
-			},
-			block: false,
-			x: 0,
-			y: 0,
-			type: 4
-		};
-		arr.push(o)
-	};
-	arr[0].x = 2;
-	arr[0].y = 3;
-
-	arr[1].x = 2;
-	arr[1].y = 17;
-
-	arr[2].x = 18;
-	arr[2].y = 3;
-
-	arr[3].x = 18;
-	arr[3].y = 17;
-	return arr;
+	Dynamic_blocks.door[0].block = true;
+	Dynamic_blocks.door[0].img.pos = {x: 96, y: 0};
 };
 
 var Room = {
+	handle: null,
 	list: [],
 	position: [
 		{

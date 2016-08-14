@@ -1,6 +1,7 @@
 var gl = {
 	special: [],
 	event: [],
+	shock: [],
 	fps: 0,
 	ms: 0,
 	fps_timer: function () {
@@ -17,10 +18,10 @@ var gl = {
 		var date = new Date();
 		gl.ms = date.getTime();
 		setInterval(function () {
-			map.globalAlpha = 0.95
 			gl.render();
 			gl.draw_special();
 			gl.draw_bomb()
+			gl.draw_shock()
 			gl.anim();
 			gl.draw_event();
 			gl.scope();
@@ -31,10 +32,11 @@ var gl = {
 			gl.draw_sound_mess()
 			gl.fps_timer();
 			gl.skill_icons()
+			gl.draw_shop()
 		}, 33);
 	},
 	render: function () {
-		Map.grid.forEach(function (xArr) {
+		_Map.grid.forEach(function (xArr) {
 			xArr.forEach(function (cell) {
 				map.drawImage(cell.img.pic,
 							cell.img.pos.x,
@@ -163,14 +165,20 @@ var gl = {
 		};
 	},
 	skill_icons: function () {
+		var access
 		if (Special.get_over_here.ready) {
-			map.globalAlpha = 0.95
+			map.globalAlpha = 1
 		} else {
 			map.globalAlpha = 0.5
 		}
+		if (Special.get_over_here.level == 0) {
+			access = 32
+		} else {
+			access = 0
+		}
 		map.drawImage(
 			Imgs.icons.cord,
-			0,
+			access,
 			0,
 			32,
 			32,
@@ -179,12 +187,12 @@ var gl = {
 			32,
 			32
 			)
-			map.globalAlpha = 0.95
-			map.fillStyle = 'rgb(255,255,255)';
+			map.globalAlpha = 1
+			map.fillStyle = color.white;
 			map.font = "8px Arial";
-			map.textAlign = "left";
+			map.textAlign = "center";
 			map.textBaseline = "bottom";
-			map.fillText("q", 272, 672)
+			map.fillText("q", 288, 640)
 
 
 		if (!Special.get_over_here.ready) {
@@ -194,15 +202,75 @@ var gl = {
 			map.fillText(Special.get_over_here.cooldown + " s", 288, 656)
 		}
 
-		if (Special.bomb.ready) {
-			map.globalAlpha = 0.95
+		if (Special.shot.ready) {
+			map.globalAlpha = 1
 		} else {
 			map.globalAlpha = 0.5
+		}
+		if (Special.shot.level == 0) {
+			access = 32
+		} else {
+			access = 0
+		}
+
+		map.drawImage(
+			Imgs.icons.shot,
+			access,
+			0,
+			32,
+			32,
+			304,
+			640,
+			32,
+			32
+			)
+			map.globalAlpha = 1
+			map.fillStyle = color.white;
+			map.font = "8px Arial";
+			map.textAlign = "center";
+			map.textBaseline = "bottom";
+			map.fillText("w", 320, 640)
+
+		if (!Special.shot.ready) {
+			map.font = "16px Arial";
+			map.textAlign = "center";
+			map.textBaseline = "middle";
+			map.fillText(Special.shot.cooldown + " s", 320, 656)
+		}
+
+
+		map.drawImage(
+			Imgs.icons.shock,
+			0,
+			0,
+			32,
+			32,
+			336,
+			640,
+			32,
+			32
+			)
+			map.globalAlpha = 1
+			map.fillStyle = color.white;
+			map.font = "8px Arial";
+			map.textAlign = "center";
+			map.textBaseline = "bottom";
+			map.fillText("e", 352, 640)
+
+		if (Special.bomb.ready) {
+			map.globalAlpha = 1
+		} else {
+			map.globalAlpha = 0.5
+		}
+		if (Special.bomb.level == 0) {
+			access = 32
+		} else {
+			access = 0
 		}
 
 		map.drawImage(
 			Imgs.icons.bomb,
-			0,
+			access,
 			0,
 			32,
 			32,
@@ -213,18 +281,92 @@ var gl = {
 			)
 
 			if (!Special.bomb.ready) {
-				map.globalAlpha = 0.95
+				map.globalAlpha = 1
 				map.font = "16px Arial";
 				map.textAlign = "center";
 				map.textBaseline = "middle";
 				map.fillText(Special.bomb.cooldown + " s", 384, 656)
 			}
 
-			map.globalAlpha = 0.95
-			map.fillStyle = 'rgb(255,255,255)';
+			map.globalAlpha = 1
+			map.fillStyle = color.white;
 			map.font = "8px Arial";
-			map.textAlign = "left";
+			map.textAlign = "center";
 			map.textBaseline = "bottom";
-			map.fillText("r", 368, 672)
+			map.fillText("r", 384, 640)
+	},
+	draw_shop: function () {
+		if (Shop.on) {
+			map.fillStyle = "#444"
+			map.fillRect(Shop.x, Shop.y, Shop.w, Shop.h)
+
+			map.fillStyle = color.white
+			map.font = "20px Arial";
+			map.textAlign = "center";
+			map.textBaseline = "top";
+			map.fillText("Shop", 336, 200)
+
+			map.fillStyle = color.white
+			map.font = "16px Arial";
+			map.textAlign = "center";
+			map.textBaseline = "top";
+			map.fillText(Shop.mess, 336, 224)
+
+			Shop.data.skills.products.forEach(function (skill, i) {
+				map.drawImage(skill.icon, 0, 0, 32, 32, Shop.x + Shop.data.skills.x,
+														Shop.y + Shop.data.skills.y + i * 34,
+														32, 32)
+
+				map.fillStyle = color.white
+				map.font = "20px Arial";
+				map.textAlign = "left";
+				map.textBaseline = "top";
+				map.fillText(skill.name, Shop.x + Shop.data.skills.x + 60,
+										 Shop.y + Shop.data.skills.y + i * 34 + 4)
+
+				map.fillStyle = color.white
+				map.font = "16px Arial";
+				map.textAlign = "center";
+				map.textBaseline = "top";
+				map.fillText(skill.price, Shop.x + Shop.data.skills.x + 160,
+										  Shop.y + Shop.data.skills.y + i * 34 + 8)
+
+				for (var j = 0; j < 10; j++) {
+					var style;
+					if (j + 1 > skill.level()) {
+						style = 'red'
+					} else {
+						style = 'green'
+					}
+					map.fillStyle = style
+					map.fillRect(Shop.x + Shop.x + Shop.data.skills.x + 216 + j * 30,
+										  Shop.y + Shop.data.skills.y + i * 34 + 12,
+										  20, 10)
+				}
+			})
+
+			map.strokeStyle = '#ff0'
+			map.strokeRect(Shop.x + Shop.cursor.x, Shop.y + Shop.cursor.y, 548, 34)
+
+			map.fillStyle = color.white
+			map.font = "20px Arial";
+			map.textAlign = "center";
+			map.textBaseline = "bottom";
+			map.fillText("Press enter to continue, Press space to buy", 336, Shop.y + Shop.h - 10)
+		}
+	},
+	draw_shock: function () {
+		this.shock.forEach(function (buf) {
+			map.drawImage(	buf.img,
+							0,
+							0,
+							buf.w,
+							buf.h,
+							buf.x,
+							buf.y,
+							buf.w,
+							buf.h
+							);
+		})
 	}
 };

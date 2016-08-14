@@ -1,9 +1,13 @@
 var Special = {
 	get_over_here: {
+		level: 0,
 		cooldown_handle: null,
 		cooldown: 5,
 		ready: true,
 		handle: null,
+		max_height: function () {
+			return 64 + this.level * 52
+		},
 		start: function () {
 			_data.status = "special";
 			Player.m_pos.x = 0;
@@ -53,7 +57,9 @@ var Special = {
 					return;
 				};
 
-				if (Col.special_check.call(this)) {
+				if (Col.special_check.call(this) || 
+					Math.abs(this.w) > Special.get_over_here.max_height() ||
+					Math.abs(this.h) > Special.get_over_here.max_height()) {
 					Special.get_over_here.stop();
 					Special.get_over_here.return_cord.call(this);
 					return;
@@ -105,13 +111,13 @@ var Special = {
 					Special.get_over_here.stop.call(this);
 
 					switch (Player.curAction) {
-						case 0: Player.set_left();
+						case 0: Player.left();
 						break
-						case 1: Player.set_up();
+						case 1: Player.up();
 						break
-						case 2: Player.set_right();
+						case 2: Player.right();
 						break
-						case 3: Player.set_down();
+						case 3: Player.down();
 						break
 					}
 
@@ -135,6 +141,9 @@ var Special = {
 		date: null,
 		status: false,
 		start: function () {
+			if (_data.status == 'ready' || _data.status == 'end game') {
+				return
+			}
 			Special.yo.status = true;
 			var img = {
 				pic: Imgs.yo,
@@ -188,18 +197,21 @@ var Special = {
 		}
 	},
 	bomb: {
+		level: 0,
 		handle: null,
 		cooldown_handle: null,
 		cooldown: 30,
 		radius: 0,
 		ready: true,
-		max_radius: 64,
+		max_radius: function () {
+			return 32 + 8 * this.level
+		},
 		start: function () {
 			_data.status = "special";
 			Player.m_pos.x = 0;
 			Player.m_pos.y = 0;
 			Special.bomb.handle = setInterval(function () {
-				if (this.radius < this.max_radius) {
+				if (this.radius < this.max_radius()) {
 					this.radius += 1;
 					Col.bomb_check();
 				} else {
@@ -224,16 +236,122 @@ var Special = {
 		stop: function () {
 			_data.status = "play";
 			switch (Player.curAction) {
-				case 0: Player.set_left();
+				case 0: Player.left();
 				break
-				case 1: Player.set_up();
+				case 1: Player.up();
 				break
-				case 2: Player.set_right();
+				case 2: Player.right();
 				break
-				case 3: Player.set_down();
+				case 3: Player.down();
 				break
 			}
 			this.radius = 0
+		}
+	},
+	shot: {
+		level: 0,
+		ready: true,
+		laser: false,
+		cooldown_handle: null,
+		cooldown: 10,
+		chanse: function () {
+			return 10 * this.level
+		},
+		start: function () {
+			_data.status = "special";
+			Player.m_pos.x = 0;
+			Player.m_pos.y = 0;
+
+			Sounds.shot.play()
+
+			var enemy = Col.enemy_in_line_check();
+
+			if (enemy != false) {
+				if (Col.miss_check()) {
+					_data.change_sound(audio_mess)
+					Sounds.headshot.play()
+					Controller.kill_enemy(enemy)
+				} else {
+					Anim.show_mess('miss', {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
+				}
+			}
+
+			Special.shot.ready = false;
+			Special.shot.cooldown_handle = setInterval(function () {
+				if (Special.shot.cooldown == 0) {
+					Special.shot.ready = true
+					Special.shot.cooldown = 10
+					clearInterval(Special.shot.cooldown_handle)
+				} else {
+					Special.shot.cooldown -= 1
+				}
+			}, 1000)
+
+			_data.status = "play";
+			switch (Player.curAction) {
+				case 0: Player.left();
+				break
+				case 1: Player.up();
+				break
+				case 2: Player.right();
+				break
+				case 3: Player.down();
+				break
+			}
+		}
+	},
+	shock: {
+		ready: true,
+		level: 10,
+		handle: null,
+		start: function () {
+			_data.status = 'special'
+			Player.stop()
+
+			var shock = new Shock_buf(Imgs.shock, Player.pos.x, Player.pos.y, 32, 32)
+			gl.shock.push(shock)
+
+			this.handle = setInterval(function () {
+				switch (Player.curAction) {
+					case 0: this.x += -4
+							this.y += 0
+					break
+					case 1: this.x += 0
+							this.y += -4
+					break
+					case 2: this.x += 4
+							this.y += 0
+					break
+					case 3: this.x += 0
+							this.y += 4
+					break
+				}
+				var enemy = Col.shock_enemy_check.call(this)
+				if (Col.shock_check.call(this)) {
+					Special.shock.stop.call(this)
+				}
+
+			}.bind(shock), 2)
+		},
+		stop: function () {
+			clearInterval(Special.shock.handle)
+			for (var i = 0; i < gl.shock.length; i++) {
+				if (gl.shock[i].id == this.id) {
+					gl.shock.splice(i, 1)
+					break
+				};
+			}
+			_data.status = 'play'
+			switch (Player.curAction) {
+				case 0: Player.left();
+				break
+				case 1: Player.up();
+				break
+				case 2: Player.right();
+				break
+				case 3: Player.down();
+				break
+			}
 		}
 	}
 }

@@ -9,7 +9,7 @@ var Astar = {
 		return Math.pow(xd, 2) + Math.pow(yd, 2);
 	},
 	func: function () {
-		var e = Map.graph[this.e];
+		var e = _Map.graph[this.e];
 		e.g = 0;
 		e.h = this.h(e);
 		e.f = Math.pow(e.h, 2);
@@ -73,8 +73,8 @@ var Astar = {
 	},
 	defineNum: function (pos) {
 		var num = 0;
-		while (num < Map.graph.length) {
-			if (pos.x == Map.graph[num].x && pos.y == Map.graph[num].y) {
+		while (num < _Map.graph.length) {
+			if (pos.x == _Map.graph[num].x && pos.y == _Map.graph[num].y) {
 				return num;
 			};
 			num++;
@@ -127,7 +127,7 @@ var ai = {
 		Astar.s = Astar.defineNum(current_pos);
 		Astar.e = Astar.defineNum(self.point_pos);
 		self.path = Astar.func();
-		Map.graphClear();
+		_Map.graphClear();
 		Astar.clear();
 	},
 	fear: function () {
@@ -142,7 +142,7 @@ var ai = {
 		};
 		self.path = [];
 		var num = Astar.defineNum(current_pos);
-		var neighs = Map.graph[num].neighs.map(function (n) {
+		var neighs = _Map.graph[num].neighs.map(function (n) {
 			var f = ai.hPlayer(n);
 			return {f: f, x: n.x, y: n.y}
 		});
@@ -166,10 +166,10 @@ var ai = {
 		var random;
 
 		do {
-			random = Math.round((Map.graph[num].neighs.length - 1) * Math.random());
-		} while (Map.grid[Map.graph[num].neighs[random].x][Map.graph[num].neighs[random].y].block);
+			random = Math.round((_Map.graph[num].neighs.length - 1) * Math.random());
+		} while (_Map.grid[_Map.graph[num].neighs[random].x][_Map.graph[num].neighs[random].y].block);
 
-		self.point_pos = Map.graph[num].neighs[random];
+		self.point_pos = _Map.graph[num].neighs[random];
 
 		ai.search_path.call(self);
 	},
