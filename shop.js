@@ -4,7 +4,7 @@ var Shop = {
 	x: 32,
 	y: 192,
 	w: 608,
-	h: 192,
+	h: 226,
 	try_buy: function () {
 		if (Scope.main < Shop.data.skills.products[Shop.cursor.target].price) {
 			this.mess = 'No money - no honey!'
@@ -66,6 +66,23 @@ var Shop = {
 						}
 						Scope.main -= this.price
 						Special.shot.level += 1
+						Shop.mess = this.name + ': level ' + this.level()
+						this.price = Math.floor(this.price * 1.1)
+					}
+				},
+				{
+					name: 'Shock',
+					icon: null,
+					price: 2000,
+					level: function () {
+						return Special.shock.level
+					},
+					level_up: function () {
+						if (this.level() == 10) {
+							return
+						}
+						Scope.main -= this.price
+						Special.shock.level += 1
 						Shop.mess = this.name + ': level ' + this.level()
 						this.price = Math.floor(this.price * 1.1)
 					}

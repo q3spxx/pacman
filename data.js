@@ -46,7 +46,7 @@ var _data = {
 			_data.kills = 0;
 		}, 3000);
 	},
-	volume: 0.1,
+	volume: 0.0,
 	firstblood: true,
 	change_volume: function (input) {
 		_data.volume = Number(input.value) / 100;

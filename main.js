@@ -32,7 +32,8 @@ function load_images () {
 	}
 	Shop.data.skills.products[0].icon = Imgs.icons.cord
 	Shop.data.skills.products[1].icon = Imgs.icons.shot
-	Shop.data.skills.products[2].icon = Imgs.icons.bomb
+	Shop.data.skills.products[2].icon = Imgs.icons.shock
+	Shop.data.skills.products[3].icon = Imgs.icons.bomb
 	_data.img.handle = setInterval(loading, 100);
 }
 

@@ -302,8 +302,11 @@ var Special = {
 	},
 	shock: {
 		ready: true,
-		level: 10,
+		level: 1,
 		handle: null,
+		cooldown: 10,
+		cooldown_handle: null,
+		duration: 500,
 		start: function () {
 			_data.status = 'special'
 			Player.stop()
@@ -327,11 +330,31 @@ var Special = {
 					break
 				}
 				var enemy = Col.shock_enemy_check.call(this)
+				if (enemy != false) {
+					enemy.stop()
+					enemy.shocked = true
+					setTimeout(function () {
+						this.shocked = false
+					}.bind(enemy), Special.shock.duration  + 300 * Special.shock.get_level)
+					Special.shock.stop.call(this)
+					return
+				}
 				if (Col.shock_check.call(this)) {
 					Special.shock.stop.call(this)
 				}
 
 			}.bind(shock), 2)
+
+			Special.shock.ready = false;
+			Special.shock.cooldown_handle = setInterval(function () {
+				if (Special.shock.cooldown == 0) {
+					Special.shock.ready = true
+					Special.shock.cooldown = 10
+					clearInterval(Special.shock.cooldown_handle)
+				} else {
+					Special.shock.cooldown -= 1
+				}
+			}, 1000)
 		},
 		stop: function () {
 			clearInterval(Special.shock.handle)

@@ -87,6 +87,7 @@ function _Player () {
 function _Enemy (id, pos, img, point_pos, behavior) {
 	this.id = id
 	this.pos = pos
+	this.shocked = false
 	this.m_pos = {
 		x: 0,
 		y: 0

@@ -1,5 +1,9 @@
 var Col = {
 	check: function (offset) {
+		if (this.id != 4 && this.shocked) {
+			return true
+		}
+
 		var new_pos = {};
 		new_pos.x = this.pos.x + this.m_pos.x;
 		new_pos.y = this.pos.y + this.m_pos.y;
@@ -29,6 +33,9 @@ var Col = {
 		};
 	},
 	offset_check: function () {
+		if (this.id != 4 && this.shocked) {
+			return false
+		}
 		var offset = {};
 		if (this.m_pos.y != 0) {
 			offset.y = 0;
@@ -241,7 +248,15 @@ var Col = {
 		}
 	},
 	shock_enemy_check: function () {
-
+		for (var i = 0; i < enemy_arr.length; i++) {
+			if (this.x < enemy_arr[i].pos.x + 16 &&
+				this.x + 31 > enemy_arr[i].pos.x + 16 &&
+				this.y < enemy_arr[i].pos.y + 16 &&
+				this.y + 31 > enemy_arr[i].pos.y + 16) {
+				return enemy_arr[i]
+			}
+		}
+		return false
 	},
 	shock_check: function () {
 		var x = Math.floor(this.x / 32)

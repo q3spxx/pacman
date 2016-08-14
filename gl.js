@@ -238,24 +238,41 @@ var gl = {
 			map.fillText(Special.shot.cooldown + " s", 320, 656)
 		}
 
+		if (Special.shock.ready) {
+			map.globalAlpha = 1
+		} else {
+			map.globalAlpha = 0.5
+		}
+		if (Special.shock.level == 0) {
+			access = 32
+		} else {
+			access = 0
+		}
 
 		map.drawImage(
 			Imgs.icons.shock,
 			0,
 			0,
-			32,
+			access,
 			32,
 			336,
 			640,
 			32,
 			32
 			)
-			map.globalAlpha = 1
-			map.fillStyle = color.white;
-			map.font = "8px Arial";
+		map.globalAlpha = 1
+		map.fillStyle = color.white;
+		map.font = "8px Arial";
+		map.textAlign = "center";
+		map.textBaseline = "bottom";
+		map.fillText("e", 352, 640)
+
+		if (!Special.shock.ready) {
+			map.font = "16px Arial";
 			map.textAlign = "center";
-			map.textBaseline = "bottom";
-			map.fillText("e", 352, 640)
+			map.textBaseline = "middle";
+			map.fillText(Special.shot.cooldown + " s", 352, 656)
+		}
 
 		if (Special.bomb.ready) {
 			map.globalAlpha = 1
