@@ -32,10 +32,11 @@ var Move = {
 					Controller.game_pause();
 					Player.is_dead();
 					Sounds.dead.play()
-					_data.lives -= 1;
+					_data.lifes -= 1;
+					_data.total_kills = 0
 					Sounds.signal.pause();
 					Sounds.signal.currentTime = 0;
-					if (_data.lives == 0) {
+					if (_data.lifes == 0) {
 						_data.set_center_mess('Game over')
 						_data.center_mess_switch = true;
 						console.log("Game over");

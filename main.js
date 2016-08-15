@@ -30,10 +30,11 @@ function load_images () {
 		Imgs.icons[key] = _data.img.load("images/" + icons_src[key])
 		imgs.push(Imgs.icons[key])
 	}
-	Shop.data.skills.products[0].icon = Imgs.icons.cord
-	Shop.data.skills.products[1].icon = Imgs.icons.shot
-	Shop.data.skills.products[2].icon = Imgs.icons.shock
-	Shop.data.skills.products[3].icon = Imgs.icons.bomb
+	Shop.data.catalog.products[0].icon = Imgs.icons.cord
+	Shop.data.catalog.products[1].icon = Imgs.icons.shot
+	Shop.data.catalog.products[2].icon = Imgs.icons.shock
+	Shop.data.catalog.products[3].icon = Imgs.icons.bomb
+	Shop.data.catalog.products[4].icon = Imgs.pacman
 	_data.img.handle = setInterval(loading, 100);
 }
 

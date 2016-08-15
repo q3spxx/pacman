@@ -46,10 +46,17 @@ function open_door () {
 };
 function close_door () {
 	for (var i = 0; i < enemy_arr.length; i++) {
-		if (enemy_arr[i].pos.x >= 320 && 
+		if (
+			enemy_arr[i].pos.x >= 320 &&
 			enemy_arr[i].pos.x < 352 && 
-			enemy_arr[i].pos.y >= 256 &&
-			enemy_arr[i].pos.y < 288) {
+			enemy_arr[i].pos.y < 288 && 
+			enemy_arr[i].pos.y >= 256 ||
+			enemy_arr[i].pos.x >= 320 &&
+			enemy_arr[i].pos.x < 352 && 
+			enemy_arr[i].pos.y + 31 < 288 && 
+			enemy_arr[i].pos.y + 31 >= 256
+			) {
+			console.log(111)
 			return false
 		}
 	}

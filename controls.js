@@ -45,10 +45,8 @@ var Controls = {
 				break
 				case 32: if (_data.status == 'shop') {
 							Shop.try_buy()
-						} else {
-							if (Special.yo.status) {
-								Event.start()
-							}
+						} else if (Special.yo.status) {
+							Event.start()
 						};
 				break
 				case 13: if (_data.status == 'ready') {

@@ -126,7 +126,7 @@ var gl = {
 	},
 	draw_lifes: function () {
 		var i = 0;
-		while (i != _data.lives) {
+		while (i != _data.lifes) {
 			map.drawImage(	Imgs.pacman,
 							64,
 							32,
@@ -251,9 +251,9 @@ var gl = {
 
 		map.drawImage(
 			Imgs.icons.shock,
-			0,
-			0,
 			access,
+			0,
+			32,
 			32,
 			336,
 			640,
@@ -271,7 +271,7 @@ var gl = {
 			map.font = "16px Arial";
 			map.textAlign = "center";
 			map.textBaseline = "middle";
-			map.fillText(Special.shot.cooldown + " s", 352, 656)
+			map.fillText(Special.shock.cooldown + " s", 352, 656)
 		}
 
 		if (Special.bomb.ready) {
@@ -329,37 +329,38 @@ var gl = {
 			map.textBaseline = "top";
 			map.fillText(Shop.mess, 336, 224)
 
-			Shop.data.skills.products.forEach(function (skill, i) {
-				map.drawImage(skill.icon, 0, 0, 32, 32, Shop.x + Shop.data.skills.x,
-														Shop.y + Shop.data.skills.y + i * 34,
+			Shop.data.catalog.products.forEach(function (skill, i) {
+				map.drawImage(skill.icon, 0, 0, 32, 32, Shop.x + Shop.data.catalog.x,
+														Shop.y + Shop.data.catalog.y + i * 34,
 														32, 32)
 
 				map.fillStyle = color.white
 				map.font = "20px Arial";
 				map.textAlign = "left";
 				map.textBaseline = "top";
-				map.fillText(skill.name, Shop.x + Shop.data.skills.x + 60,
-										 Shop.y + Shop.data.skills.y + i * 34 + 4)
+				map.fillText(skill.name, Shop.x + Shop.data.catalog.x + 60,
+										 Shop.y + Shop.data.catalog.y + i * 34 + 4)
 
 				map.fillStyle = color.white
 				map.font = "16px Arial";
 				map.textAlign = "center";
 				map.textBaseline = "top";
-				map.fillText(skill.price, Shop.x + Shop.data.skills.x + 160,
-										  Shop.y + Shop.data.skills.y + i * 34 + 8)
-
-				for (var j = 0; j < 10; j++) {
-					var style;
-					if (j + 1 > skill.level()) {
-						style = 'red'
-					} else {
-						style = 'green'
+				map.fillText(skill.price, Shop.x + Shop.data.catalog.x + 160,
+										  Shop.y + Shop.data.catalog.y + i * 34 + 8)
+				if (skill.type == 'skill') {
+					for (var j = 0; j < 10; j++) {
+						var style;
+						if (j + 1 > skill.level()) {
+							style = 'red'
+						} else {
+							style = 'green'
+						}
+						map.fillStyle = style
+						map.fillRect(Shop.x + Shop.x + Shop.data.catalog.x + 216 + j * 30,
+											  Shop.y + Shop.data.catalog.y + i * 34 + 12,
+											  20, 10)
 					}
-					map.fillStyle = style
-					map.fillRect(Shop.x + Shop.x + Shop.data.skills.x + 216 + j * 30,
-										  Shop.y + Shop.data.skills.y + i * 34 + 12,
-										  20, 10)
-				}
+				};
 			})
 
 			map.strokeStyle = '#ff0'

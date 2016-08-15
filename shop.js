@@ -4,13 +4,13 @@ var Shop = {
 	x: 32,
 	y: 192,
 	w: 608,
-	h: 226,
+	h: 260,
 	try_buy: function () {
-		if (Scope.main < Shop.data.skills.products[Shop.cursor.target].price) {
+		if (Scope.main < Shop.data.catalog.products[Shop.cursor.target].price) {
 			this.mess = 'No money - no honey!'
 			return
 		}
-		Shop.data.skills.products[Shop.cursor.target].level_up()
+		Shop.data.catalog.products[Shop.cursor.target].level_up()
 	},
 	cursor: {
 		x: 30,
@@ -21,23 +21,24 @@ var Shop = {
 				return
 			}
 			this.target -= 1
-			this.y -= 32
+			this.y -= 34
 		},
 		down: function () {
-			if (Shop.data.skills.products.length - 1 == this.target) {
+			if (Shop.data.catalog.products.length - 1 == this.target) {
 				return
 			}
 			this.target += 1
-			this.y += 32
+			this.y += 34
 		}
 	},
 	data: {
-		skills: {
+		catalog: {
 			x: 30,
 			y: 50,
 			products: [
 				{
 					name: 'Cord',
+					type: 'skill',
 					icon: null,
 					price: 1000,
 					level: function () {
@@ -56,7 +57,8 @@ var Shop = {
 				{
 					name: 'Shot',
 					icon: null,
-					price: 2000,
+					type: 'skill',
+					price: 3000,
 					level: function () {
 						return Special.shot.level
 					},
@@ -73,6 +75,7 @@ var Shop = {
 				{
 					name: 'Shock',
 					icon: null,
+					type: 'skill',
 					price: 2000,
 					level: function () {
 						return Special.shock.level
@@ -90,7 +93,8 @@ var Shop = {
 				{
 					name: 'Bomb',
 					icon: null,
-					price: 3000,
+					type: 'skill',
+					price: 2000,
 					level: function () {
 						return Special.bomb.level
 					},
@@ -102,6 +106,21 @@ var Shop = {
 						Special.bomb.level += 1
 						Shop.mess = this.name + ': level ' + this.level()
 						this.price = Math.floor(this.price * 1.1)
+					}
+				},
+				{
+					name: 'Life',
+					type: 'item',
+					icon: null,
+					price: 10000,
+					level_up: function () {
+						if (_data.lifes == 10) {
+							Shop.mess = 'No more 10, dirty cheat!'
+							return
+						};
+						Scope.main -= this.price
+						Shop.mess = 'Additional life'
+						_data.lifes += 1
 					}
 				}
 			]

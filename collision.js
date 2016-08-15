@@ -229,12 +229,15 @@ var Col = {
 		do {
 
 			for (var i = 0; i < enemy_pos.length; i++) {
-				if (enemy_pos[i].x == x && enemy_pos[i].y == y) {
+				if (enemy_pos[i].x == x && enemy_pos[i].y == y && enemy_arr[enemy_pos[i].id].behavior != 'grab' && enemy_arr[enemy_pos[i].id].behavior != 'go_to_room') {
 					return enemy_arr[enemy_pos[i].id]
 				};
 			}
 			x += direction.x
 			y += direction.y
+			if (x < 0 || x > 20) {
+				return false
+			}
 		}
 		while (!_Map.grid[x][y].block)
 		return false
@@ -252,7 +255,9 @@ var Col = {
 			if (this.x < enemy_arr[i].pos.x + 16 &&
 				this.x + 31 > enemy_arr[i].pos.x + 16 &&
 				this.y < enemy_arr[i].pos.y + 16 &&
-				this.y + 31 > enemy_arr[i].pos.y + 16) {
+				this.y + 31 > enemy_arr[i].pos.y + 16 &&
+				enemy_arr[i].behavior != 'go_to_room' &&
+				enemy_arr[i].behavior != 'grab') {
 				return enemy_arr[i]
 			}
 		}
@@ -263,6 +268,9 @@ var Col = {
 		var y = Math.floor(this.y / 32)
 		var w = Math.floor((this.x + 31) / 32)
 		var h = Math.floor((this.y + 31) / 32)
+		if (x < 0 || w > 20) {
+			return true
+		}
 		if (_Map.grid[x][y].block ||
 			_Map.grid[w][y].block ||
 			_Map.grid[x][h].block ||

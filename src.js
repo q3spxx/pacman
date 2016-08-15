@@ -46,5 +46,7 @@ var audio_mess_src = {
 	rampage: 'rampage.mp3',
 	unstoppable: 'unstoppable.mp3',
 	dominating: 'dominating.mp3',
-	headshot: 'headshot.mp3'
+	headshot: 'headshot.mp3',
+	killingspree: 'killingspree.mp3',
+	godlike: 'godlike.mp3'
 }

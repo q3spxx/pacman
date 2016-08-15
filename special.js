@@ -141,7 +141,7 @@ var Special = {
 		date: null,
 		status: false,
 		start: function () {
-			if (_data.status == 'ready' || _data.status == 'end game') {
+			if (_data.status == 'ready' || _data.status == 'end game' || _data.status == 'shop') {
 				return
 			}
 			Special.yo.status = true;
@@ -253,7 +253,7 @@ var Special = {
 		ready: true,
 		laser: false,
 		cooldown_handle: null,
-		cooldown: 10,
+		cooldown: 7,
 		chanse: function () {
 			return 10 * this.level
 		},
@@ -280,7 +280,7 @@ var Special = {
 			Special.shot.cooldown_handle = setInterval(function () {
 				if (Special.shot.cooldown == 0) {
 					Special.shot.ready = true
-					Special.shot.cooldown = 10
+					Special.shot.cooldown = 7
 					clearInterval(Special.shot.cooldown_handle)
 				} else {
 					Special.shot.cooldown -= 1
@@ -302,9 +302,9 @@ var Special = {
 	},
 	shock: {
 		ready: true,
-		level: 1,
+		level: 0,
 		handle: null,
-		cooldown: 10,
+		cooldown: 5,
 		cooldown_handle: null,
 		duration: 500,
 		start: function () {
@@ -333,9 +333,10 @@ var Special = {
 				if (enemy != false) {
 					enemy.stop()
 					enemy.shocked = true
+					Anim.show_mess('Stun', {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
 					setTimeout(function () {
 						this.shocked = false
-					}.bind(enemy), Special.shock.duration  + 300 * Special.shock.get_level)
+					}.bind(enemy), Special.shock.duration  + 300 * Special.shock.level)
 					Special.shock.stop.call(this)
 					return
 				}
@@ -349,7 +350,7 @@ var Special = {
 			Special.shock.cooldown_handle = setInterval(function () {
 				if (Special.shock.cooldown == 0) {
 					Special.shock.ready = true
-					Special.shock.cooldown = 10
+					Special.shock.cooldown = 5
 					clearInterval(Special.shock.cooldown_handle)
 				} else {
 					Special.shock.cooldown -= 1

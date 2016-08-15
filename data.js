@@ -7,6 +7,7 @@ var _data = {
 	kill: false,
 	kills: 0,
 	kill_update: 0,
+	total_kills: 0,
 	kill_timer: function () {
 
 		if (_data.kill) {
@@ -21,32 +22,11 @@ var _data = {
 				_data.kill_update -= 1;
 				return;
 			};
-
-			if (_data.kills > 1) {
-				var say = false
-				var mess = Sounds.mess
-				switch (_data.kills) {
-					case 2: say = Sounds.dominating
-							mess = "Dominating!"
-					break
-					case 3: say = Sounds.unstoppable
-							mess = "Unstoppabale!"
-					break
-					case 4: say = Sounds.rampage
-							mess = "Rampage!"
-					break
-				}
-				if(say != false) {
-					_data.change_sound(audio_mess)
-					Sounds.show_mess(mess)
-					say.play()
-				}
-			};
 			_data.kill = false;
 			_data.kills = 0;
 		}, 3000);
 	},
-	volume: 0.0,
+	volume: 0.01,
 	firstblood: true,
 	change_volume: function (input) {
 		_data.volume = Number(input.value) / 100;
@@ -57,7 +37,7 @@ var _data = {
 	status: null,
 	game_speed: 6,
 	level: 1,
-	lives: 3,
+	lifes: 3,
 	reinit_level: function () {
 		setTimeout(function () {
 			console.log("reinit")

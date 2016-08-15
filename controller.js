@@ -68,9 +68,13 @@ var Controller = {
 			}
 
 			if (enemy.behavior == 'grab') {
+				enemy.pos.x = Math.floor(enemy.pos.x / 32) * 32
+				enemy.pos.y = Math.floor(enemy.pos.y / 32) * 32
 				Sounds.bones.play()
 			}
-
+			if (enemy.shocked) {
+				enemy.shocked = false
+			}
 			Sounds.eatghost.play()
 			if (_data.firstblood) {
 				_data.firstblood = false;
@@ -107,6 +111,36 @@ var Controller = {
 				};
 			};
 
+			_data.total_kills += 1
+
+			var total_say = false
+			var total_mess = Sounds.mess
+			switch(_data.total_kills) {
+				case 3: total_say = Sounds.killingspree
+						total_mess = 'Killing spree!'
+				break
+				case 6: total_say = Sounds.rampage
+						total_mess = 'Rampage!'
+				break
+				case 9: total_say = Sounds.dominating
+						total_mess = 'Dominating!'
+				break
+				case 12: total_say = Sounds.unstoppable
+						total_mess = 'Unstoppable!'
+				break
+				case 15: total_say = Sounds.godlike
+						total_mess = 'Godlike!'
+				break
+			}
+
+			if (total_say != false) {
+				setTimeout(function () {
+					_data.change_sound(audio_mess)
+					Sounds.show_mess(total_mess)
+					total_say.play()
+				}, 1000)
+			};
+
 			_data.kill_timer();
 
 			Anim.show_mess(Math.pow(2, _data.kills) * 100, {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
@@ -122,48 +156,17 @@ var Controller = {
 				y: Math.floor(this.pos.y / 32)
 			};
 
-			var axis = null;
-			var in_line = null;
-			if (pos.x != ai.player_pos.x) {
-				if (pos.y != ai.player_pos.y) {
-					return false;
-				} else {
-					axis = 1;
-				};
-			} else {
-				axis = 0;
-			};
-
-			if (axis == 0) {
-				if (this.m_pos.y == 1) {
-					in_line = ai.player_pos.y - pos.y;
-				} else if (this.m_pos.y == -1) {
-					in_line = pos.y - ai.player_pos.y;
-				} else {
-					return false;
-				};
-			} else if (axis == 1) {
-				if (this.m_pos.x == 1) {
-					in_line = ai.player_pos.x - pos.x;
-				} else if (this.m_pos.x == -1) {
-					in_line = pos.x - ai.player_pos.x;
-				} else {
-					return false;
-				};
-			} else {
-				return false
-			};
-
-			if (in_line < 0) {
-				return false;
-			};
-
-			while (pos.x != ai.player_pos.x && pos.y != ai.player_pos.y) {
+			while (pos.x != Math.floor((ai.player_pos.x + 16) / 32) && pos.y != Math.floor((ai.player_pos.y + 16) / 32)) {
 				if (_Map.grid[pos.x][pos.y].block) {
 					return false;
 				};
 				pos.x += this.m_pos.x;
 				pos.y += this.m_pos.y;
+				if (pos.x < 0) {
+					pos.x = 20
+				} else if (pos.x > 20) {
+					pos.x = 0
+				};
 			};
 
 			return true;
@@ -202,11 +205,12 @@ var Controller = {
 	var Event = {
 		status: false,
 		update: 0,
-		duration: 10000,
+		duration: 5000,
 		timeout: false,
 		random_event: false,
+		random_event_handle: null,
 		set_random_event: function () {
-			setTimeout(function () {
+			Event.random_event_handle = setTimeout(function () {
 				if (_data.status == "play") {
 					Special.yo.start();
 				}
@@ -249,7 +253,7 @@ var Controller = {
 				}
 			}, Event.duration * 0.7);
 			setTimeout(function () {
-				if (Event.update == 0) {
+				if (Event.update <= 0 && Event.status) {
 					Event.stop();
 				} else {
 					Event.update -= 1;
@@ -259,6 +263,7 @@ var Controller = {
 		},
 		stop: function () {
 			Event.status = false;
+			Event.update = 0;
 			enemy_arr.forEach(function (enemy) {
 				if (
 					enemy.behavior == "in_room" || 
@@ -271,7 +276,7 @@ var Controller = {
 				enemy.set_original_img()
 				b_Controller.set_passive.call(enemy);
 			});
-			if (!Sounds.fear.pause) {
+			if (!Sounds.fear.paused) {
 				Sounds.fear.pause()
 				Sounds.fear.currentTime = 0;
 			}

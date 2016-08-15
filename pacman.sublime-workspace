@@ -4,6 +4,30 @@
 		"selected_items":
 		[
 			[
+				"bi",
+				"bitch_check"
+			],
+			[
+				"cool",
+				"cooldown"
+			],
+			[
+				"cooldown",
+				"cooldown_handle"
+			],
+			[
+				"coo",
+				"cooldown_handle"
+			],
+			[
+				"co",
+				"cooldown_handle"
+			],
+			[
+				"get",
+				"get_over_here"
+			],
+			[
 				"ene",
 				"enemy"
 			],
@@ -66,10 +90,6 @@
 			[
 				"sta",
 				"status"
-			],
-			[
-				"get",
-				"getTime"
 			],
 			[
 				"new",
@@ -395,7 +415,7 @@
 			"file": "main.js",
 			"settings":
 			{
-				"buffer_size": 4907,
+				"buffer_size": 6609,
 				"line_ending": "Windows"
 			}
 		},
@@ -403,7 +423,7 @@
 			"file": "data.js",
 			"settings":
 			{
-				"buffer_size": 1899,
+				"buffer_size": 2372,
 				"line_ending": "Windows"
 			}
 		},
@@ -411,7 +431,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 1460,
+				"buffer_size": 1500,
 				"line_ending": "Windows"
 			}
 		},
@@ -419,7 +439,7 @@
 			"file": "controller.js",
 			"settings":
 			{
-				"buffer_size": 4650,
+				"buffer_size": 6088,
 				"line_ending": "Windows"
 			}
 		},
@@ -427,7 +447,7 @@
 			"file": "controls.js",
 			"settings":
 			{
-				"buffer_size": 948,
+				"buffer_size": 1084,
 				"line_ending": "Windows"
 			}
 		},
@@ -435,7 +455,7 @@
 			"file": "elems/all.js",
 			"settings":
 			{
-				"buffer_size": 1736,
+				"buffer_size": 2004,
 				"line_ending": "Windows"
 			}
 		},
@@ -443,7 +463,7 @@
 			"file": "enemyes.js",
 			"settings":
 			{
-				"buffer_size": 3085,
+				"buffer_size": 3081,
 				"line_ending": "Windows"
 			}
 		},
@@ -451,7 +471,7 @@
 			"file": "gl.js",
 			"settings":
 			{
-				"buffer_size": 2586,
+				"buffer_size": 4824,
 				"line_ending": "Windows"
 			}
 		},
@@ -475,7 +495,7 @@
 			"file": "collision.js",
 			"settings":
 			{
-				"buffer_size": 3062,
+				"buffer_size": 4786,
 				"line_ending": "Windows"
 			}
 		},
@@ -483,7 +503,7 @@
 			"file": "move.js",
 			"settings":
 			{
-				"buffer_size": 4611,
+				"buffer_size": 3766,
 				"line_ending": "Windows"
 			}
 		},
@@ -499,7 +519,7 @@
 			"file": "special.js",
 			"settings":
 			{
-				"buffer_size": 3772,
+				"buffer_size": 5381,
 				"line_ending": "Windows"
 			}
 		},
@@ -507,7 +527,7 @@
 			"file": "ai.js",
 			"settings":
 			{
-				"buffer_size": 3938,
+				"buffer_size": 3937,
 				"line_ending": "Windows"
 			}
 		}
@@ -705,6 +725,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"hanging",
 			"footer",
 			"content",
 			"// ",
@@ -759,15 +780,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4907,
+						"buffer_size": 6609,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4575,
-								4575
+								2073,
+								2073
 							]
 						],
 						"settings":
@@ -776,10 +797,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2016.0,
+						"translation.y": 819.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -788,15 +809,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1899,
+						"buffer_size": 2372,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								791,
-								791
+								897,
+								897
 							]
 						],
 						"settings":
@@ -805,10 +826,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 390.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -817,15 +838,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1460,
+						"buffer_size": 1500,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								189,
-								189
+								0,
+								0
 							]
 						],
 						"settings":
@@ -837,7 +858,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 14,
 					"type": "text"
 				},
 				{
@@ -846,44 +867,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4650,
+						"buffer_size": 6088,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								463,
-								463
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": -0.0,
-						"translation.y": 42.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "controls.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 948,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								500,
-								500
+								1688,
+								1688
 							]
 						],
 						"settings":
@@ -892,10 +884,39 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 84.0,
+						"translation.y": 624.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "controls.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1084,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								998,
+								998
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 156.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
 					"type": "text"
 				}
 			]
@@ -910,15 +931,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1736,
+						"buffer_size": 2004,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1433,
-								1433
+								0,
+								0
 							]
 						],
 						"settings":
@@ -927,10 +948,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1008.0,
+						"translation.y": 936.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
@@ -939,15 +960,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3085,
+						"buffer_size": 3081,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2580,
-								2580
+								492,
+								492
 							]
 						],
 						"settings":
@@ -956,10 +977,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 3318.0,
+						"translation.y": 156.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -968,15 +989,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2586,
+						"buffer_size": 4824,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1176,
-								1176
+								4427,
+								4427
 							]
 						],
 						"settings":
@@ -986,10 +1007,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 210.0,
+						"translation.y": 2477.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
@@ -1018,13 +1039,13 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 13,
 					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -1050,10 +1071,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1218.0,
+						"translation.y": 1041.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
@@ -1062,15 +1083,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3062,
+						"buffer_size": 4786,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1220,
-								1220
+								4500,
+								4500
 							]
 						],
 						"settings":
@@ -1079,10 +1100,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1512.0,
+						"translation.y": 2067.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -1091,15 +1112,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4611,
+						"buffer_size": 3766,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1299,
-								1194
+								966,
+								966
 							]
 						],
 						"settings":
@@ -1108,16 +1129,16 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 546.0,
+						"translation.y": 390.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 7,
 					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -1142,11 +1163,11 @@
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": -0.0,
+						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -1155,15 +1176,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3772,
+						"buffer_size": 5381,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1578,
-								1578
+								944,
+								944
 							]
 						],
 						"settings":
@@ -1171,10 +1192,10 @@
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 882.0,
+						"translation.y": 390.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -1183,15 +1204,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3938,
+						"buffer_size": 3937,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2242,
-								2242
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1200,10 +1221,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1470.0,
+						"translation.y": 546.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 11,
 					"type": "text"
 				}
 			]
@@ -1302,14 +1323,14 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 3,
+	"selected_group": 1,
 	"settings":
 	{
 	},
 	"show_minimap": false,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 150.0,
 	"status_bar_visible": true,
 	"template_settings":
