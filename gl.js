@@ -2,6 +2,7 @@ var gl = {
 	special: [],
 	event: [],
 	shock: [],
+	buf_event: [],
 	fps: 0,
 	ms: 0,
 	fps_timer: function () {
@@ -22,6 +23,8 @@ var gl = {
 			gl.draw_special();
 			gl.draw_bomb()
 			gl.draw_shock()
+			gl.draw_buf_event()
+			gl.buf_event_text()
 			gl.anim();
 			gl.draw_event();
 			gl.scope();
@@ -386,5 +389,28 @@ var gl = {
 							buf.h
 							);
 		})
+	},
+	draw_buf_event: function () {
+		this.buf_event.forEach(function (buf) {
+			map.drawImage(buf.img.pic,
+							buf.img.pos.x + buf.w * buf.cur_frame,
+							buf.img.pos.y,
+							buf.w,
+							buf.h,
+							buf.pos.x,
+							buf.pos.y,
+							buf.w,
+							buf.h
+							)
+		})
+	},
+	buf_event_text: function () {
+		if (Event.buf_event_active) {
+			map.fillStyle = 'rgb(255,255,255)';
+			map.font = "16px Arial";
+			map.textAlign = "center";
+			map.textBaseline = "middle";
+			map.fillText(Event.buf_event_text, 500, 656);
+		};
 	}
 };

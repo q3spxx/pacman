@@ -38,6 +38,7 @@ var Move = {
 					Sounds.signal.currentTime = 0;
 					if (_data.lifes == 0) {
 						_data.set_center_mess('Game over')
+						clearTimeout(Event.random_event_handle)
 						_data.center_mess_switch = true;
 						console.log("Game over");
 					} else {
@@ -48,6 +49,9 @@ var Move = {
 		};
 		if (this.id == 4) {
 			Col.check_item.call(this);
+			if (Event.buf_event) {
+				Col.check_event.call(this)
+			};
 			if (Event.status == 1) {
 				var enemy = Col.check_enemy.call(this);
 				if (enemy != false) {

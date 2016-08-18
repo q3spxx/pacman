@@ -68,12 +68,14 @@ function load_audio () {
 function init_blocks () {
 	Static_blocks.get_default()
 	Dynamic_blocks.get_default()
+	Event_blocks.get_default()
 	init_map()
 };
 
 function init_map () {
 	_Map.update()
 	_Map.create_graph()
+	_Map.create_event_graph()
 	character_init()
 };
 
@@ -147,6 +149,7 @@ function anim_init () {
 	anim.push(aBuf);
 	Anim.handle = setInterval(Anim.change_frame, 200);
 	Anim.handle = setInterval(Anim.change_text_frame, 33);
+	change_buf_event_frame();
 	init_controls();
 };
 
@@ -241,6 +244,9 @@ function start_game () {
 	Sounds.signal.play()
 	if (!Event.random_event) {
 		Event.set_random_event();
+	};
+	if (!Event.buf_event) {
+		Event.set_buf_event()
 	};
 	Room.handle = setInterval(function () {
 		if (_data.status == "play") {

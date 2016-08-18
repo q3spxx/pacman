@@ -40,6 +40,23 @@ var Dynamic_blocks = {
 	}
 }
 
+var Event_blocks = {
+	array: [],
+	add_block: function (name, pic, pos, y) {
+		var new_block = new Buf_event(name, pic, pos, y)
+		this[name] = new_block
+		this.array.push(new_block)
+	},
+	get_default: function () {
+		this.array.forEach(function (block) {
+			delete Dynamic_blocks[block.name]
+		})
+		this.add_block('x2', Imgs.event, {x: 0, y: 0})
+		this.add_block('x3', Imgs.event, {x: 0, y: 32})
+	}
+
+}
+
 function open_door () {
 	Dynamic_blocks.door[0].block = false;
 	Dynamic_blocks.door[0].img.pos = {x: 0, y: 0};
@@ -56,7 +73,6 @@ function close_door () {
 			enemy_arr[i].pos.y + 31 < 288 && 
 			enemy_arr[i].pos.y + 31 >= 256
 			) {
-			console.log(111)
 			return false
 		}
 	}

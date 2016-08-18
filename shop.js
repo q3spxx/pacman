@@ -94,7 +94,7 @@ var Shop = {
 					name: 'Bomb',
 					icon: null,
 					type: 'skill',
-					price: 2000,
+					price: 4000,
 					level: function () {
 						return Special.bomb.level
 					},

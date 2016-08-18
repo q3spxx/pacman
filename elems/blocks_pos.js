@@ -423,5 +423,29 @@ var blocks_pos = {
 			{x: 18, y: 17}
 		]
 		return arr
+	},
+	get_map: function () {
+		var res =   'nbbbbbbbbbbbbbbbbbbbn' +
+					'nbeeeeeeeebeeeeeeeebn' +
+					'nbebbebbbebebbbebbebn' +
+					'nbbeeeeeeeeeeeeeeebbn' +
+					'nbebbebebbbbbebebbebn' +
+					'nbeeeebeeebeeebeeeebn' +
+					'nbbbbebbbebebbbebbbbn' +
+					'nnnnbebeeeeeeebebnnnn' +
+					'bbbbbebebbbbbebebbbbb' +
+					'eeeeeeeebbbbbeeeeeeee' +
+					'bbbbbebebbbbbebebbbbb' +
+					'nnnnbebeeeeeeebebnnnn' +
+					'nbbbbebebbbbbebebbbbn' +
+					'nbeeeeeeeebeeeeeeeebn' +
+					'nbebbebbbebebbbebbebn' +
+					'nbeebeeeeeeeeeeebeebn' +
+					'nbbebebebbbbbebebebbn' +
+					'nbbeeebeeebeeebeeebbn' +
+					'nbebbbbbbebebbbbbbebn' +
+					'nbeeeeeeeeeeeeeeeeebn' +
+					'nbbbbbbbbbbbbbbbbbbbn' 
+		return res
 	}
 }

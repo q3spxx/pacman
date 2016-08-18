@@ -1,5 +1,6 @@
 var _Map = {
 	grid: new_grid(),
+	event_graph: null,
 	update: function () {
 		Static_blocks.array.forEach(function (block) {
 			block.in_map.forEach(function (pos) {
@@ -88,5 +89,19 @@ var _Map = {
 			cell.parent = null;
 			cell.arr = null;
 		});
+	},
+	create_event_graph: function () {
+		var map_arr = blocks_pos.get_map().split('')
+		var x = 0
+		var y = 0
+		this.event_graph = map_arr.map(function (cell) {
+			if (x > 20) {
+				x = 0
+				y++
+			}
+			var event_cell = new Event_cell(x, y, cell)
+			x++
+			return event_cell
+		})
 	}
 }

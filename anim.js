@@ -40,6 +40,13 @@ function init_type () {
 	};
 	Anim.type.push(type);
 };
-function test () {
-	Anim.show_mess("200", {x: 0, y: 0}, 18, color['white'], 0);
+function change_buf_event_frame () {
+	setInterval(function () {
+		gl.buf_event.forEach(function (buf) {
+			buf.cur_frame += 1
+			if (buf.cur_frame >= buf.t_frames) {
+				buf.cur_frame = 0
+			}
+		})
+	}, 240)
 }

@@ -7,6 +7,10 @@ var Scope = {
 			Scope.points = 0
 			clearInterval(Room.handle)
 			clearTimeout(Event.random_event_handle)
+			clearTimeout(Event.buf_event_handle)
+			clearTimeout(Event.buf_event_active_handle)
+			clearInterval(Event.buf_event_timer_handle)
+			Event.buf_event_default()
 			audio.forEach( function (sound) {
 				if (!sound.paused) {
 					sound.pause()

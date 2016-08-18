@@ -11,6 +11,27 @@ function new_grid () {
 	return grid;
 };
 
+function Event_cell (x, y, type) {
+	this.x = x
+	this.y = y
+	this.type = type
+}
+function Buf_event (name, pic, pos, y) {
+	this.id = _data.gen_id()
+	this.name = name
+	this.img = {}
+	this.img.pic = pic
+	this.img.pos = pos
+	this.pos = {
+		x: 0,
+		y: 0
+	}
+	this.w = 32
+	this.h = 32
+	this.cur_frame = 0
+	this.t_frames = 2
+}
+
 function Block (name, pic, pos, block, id, in_map, type) {
 	this.id = id
 	this.name = name

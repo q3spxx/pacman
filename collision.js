@@ -75,12 +75,20 @@ var Col = {
 				Sounds.step.play()
 				_Map.grid[x][y].make_empty();
 				Scope.points += 1;
-				Scope.main += 20;
+				if (Event.buf_event_active) {
+					Scope.main += 20 * Event.buf_event_action;
+				} else {
+					Scope.main += 20
+				};
 				Scope.check_end_game();
 			};
 			if (id == 4) {
 				_Map.grid[x][y].make_empty();
-				Scope.main += 50;
+				if (Event.buf_event_active) {
+					Scope.main += 50 * Event.buf_event_action;
+				} else {
+					Scope.main += 50
+				};
 				Col.bitch_check()
 				Event.start();
 			};
@@ -279,5 +287,19 @@ var Col = {
 			return true
 		}
 		return false
+	},
+	check_event: function () {
+		var x = this.pos.x
+		var y = this.pos.y
+		var w = this.pos.x + 31
+		var h = this.pos.y + 31
+		if (
+			Event.buf_event_pos.x > x &&
+			Event.buf_event_pos.x < w &&
+			Event.buf_event_pos.y > y &&
+			Event.buf_event_pos.y < h 
+			) {
+			Event.buf_event_taked()
+		};
 	}
 };

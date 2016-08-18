@@ -12,7 +12,8 @@ var src = {
 	yo: 'yo.png',
 	go_to_room: 'go_to_room.png',
 	brick: 'brick.png',
-	shock: 'shock.png'
+	shock: 'shock.png',
+	event: 'event.png'
 }
 
 var icons_src = {
