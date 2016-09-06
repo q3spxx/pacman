@@ -1,4 +1,4 @@
-function new_grid () {
+function Grid () {
 	var grid = [];
 	for (var x = 0; x < 21; x++) {
 		var xArr = [];
@@ -16,8 +16,8 @@ function Event_cell (x, y, type) {
 	this.y = y
 	this.type = type
 }
-function Buf_event (name, pic, pos, y) {
-	this.id = _data.gen_id()
+function Buf_event (name, pic, pos) {
+	this.id = _Tools.gen_id()
 	this.name = name
 	this.img = {}
 	this.img.pic = pic
@@ -32,38 +32,52 @@ function Buf_event (name, pic, pos, y) {
 	this.t_frames = 2
 }
 
-function Block (name, pic, pos, block, id, in_map, type) {
-	this.id = id
+function Block (name, pic, pos) {
+	this.id = _Tools.gen_id()
 	this.name = name
 	this.img = {}
 	this.img.pic = pic
 	this.img.pos = pos
-	this.block = block
-	this.type = type
-	this.in_map = in_map
-	this.type = type
+	this.setProp = function (prop, value) {
+		this[prop] = value
+	}
+	this.getProp = function (prop) {
+		return this[prop]
+	}
 }
 
-var cell_proto = {
-	makeEmpty: function () {
-		this.img = {
-			pic: Imgs.empty,
-			pos: {
-				x: 0,
-				y: 0
-			}
-		}
-		this.id = 0;
-		this.block = false;
-		this.type = 'statics'
+function StaticObject (name, image, block, symbol) {
+	this.id = _Tools.gen_id()
+	this.name = name
+	this.block = block
+	this.image = image
+	this.symbol = symbol
+}
+
+function DynamicObject (name, image, block, symbol) {
+	this.id = _Tools.gen_id()
+	this.name = name
+	this.block = block
+	this.image = image
+	this.symbol = symbol
+	this.changeState = function (image, block) {
+		this.object.image = image
+		this.object.block = block
 	}
-};
+
+}
+
+var Cell__proto__ = {
+	setObject: function (name, block) {
+		this.object = Objects[name]
+		this.object.block = block
+	}
+}
 function Cell (x, y) {
+	this.__proto__ = Cell__proto__
 	this.x = x;
 	this.y = y;
-	this.make_empty = function () {
-		this.__proto__ = Static_blocks.empty
-	}
+	this.object = null
 };
 function AnimBuf (id, person, tf, repeat) {
 	this.__proto__ = person;
@@ -73,7 +87,7 @@ function AnimBuf (id, person, tf, repeat) {
 	this.repeat = repeat;
 };
 
-function Graph_cell (x, y, num) {
+function GraphCell (x, y, num) {
 	this.x = x
 	this.y = y
 	this.f = null

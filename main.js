@@ -10,74 +10,113 @@ var Timer = {
 	}
 }
 
-function init () {
-	Timer.start()
-	_data.canvas.setSize(672, 672);
-	map = _data.canvas.getContext('2d');
+var Game = {
+	status: 0,
+	init: function () {
+		Timer.start()
+		this.changeInit()
 
-	document.getElementById('volume').value = _data.volume * 100;
+	},
+	changeInit: function () {
+		switch (this.status) {
+			case 0:
+				console.log("Инициализация html элементов...") 
+				this.initHtml()
+				break
+			case 1: 
+				console.log("Загрузка изображений...")
+				this.loadImages()
+				break
+			case 2: 
+				console.log("Загрузка аудио...")
+				this.loadAudio()
+				break
+			case 3: 
+				console.log("Инициализация блоков...")
+				this.initBlocks()
+				break
+			case 4:
+				console.log("Создание карты...")
+				this.initMap()
+				break
+		}
+	},
+	initHtml: function () {
+		_Tools.canvas.setElem(document.getElementById("map"))
+		_Tools.canvas.setSize(672, 672);
+		map = _Tools.canvas.getContext('2d');
 
-	load_images()
+		_Tools.inputs.volume.setValue(_Data.volume)
+		this.status = 1
+		this.changeInit()
+	},
+	loadImages: function () {
+		for (key in image_src) {
+			Imgs[key] = _Tools.img.load("images/" + image_src[key])
+			imgs.push(Imgs[key])
+		}
+		for (key in image_icons_src) {
+			Imgs.icons[key] = _Tools.img.load("images/" + image_icons_src[key])
+			imgs.push(Imgs.icons[key])
+		}
+		//Инициализация картинок для магазина
+		/*Shop.data.catalog.products[0].icon = Imgs.icons.cord
+		Shop.data.catalog.products[1].icon = Imgs.icons.shot
+		Shop.data.catalog.products[2].icon = Imgs.icons.shock
+		Shop.data.catalog.products[3].icon = Imgs.icons.bomb
+		Shop.data.catalog.products[4].icon = Imgs.pacman*/
+		_Tools.img.handle = setInterval(
+			function () {
+				if (_Tools.img.count == _Tools.img.loaded) {
+					clearInterval(_Tools.img.handle);
+					console.log("Загрузка изображений 100%")
+					this.status = 2
+					this.changeInit()
+				} else {
+					console.log(Math.floor(_Tools.img.loaded / _Tools.img.count * 100) + " %")
+				};
+			}.bind(this), 10);
+	},
+	loadAudio: function () {
+		for (key in audio_src) {
+			Sounds[key] = _Tools.audio.load('audio/' + audio_src[key])
+			audio.push(Sounds[key])
+		}
+		for (key in audio_mess_src) {
+			Sounds[key] = _Tools.audio.load('audio/' + audio_mess_src[key])
+			audio.push(Sounds[key])
+			audio_mess.push(Sounds[key])
+		}
 
-};
+		Sounds.signal.loop = true;
+		Sounds.shop.loop = true
 
-function load_images () {
-	for (key in src) {
-		Imgs[key] = _data.img.load("images/" + src[key])
-		imgs.push(Imgs[key])
+		audio.forEach(function (sound) {
+				sound.volume = _Data.volume;
+		})
+		console.log("Загрузка аудио 100%")
+		this.status = 3
+		this.changeInit()
+	},
+	initBlocks: function () {
+		Blocks.setDefault()
+		StaticObjects.init()
+		DynamicObjects.init()
+		EventBlocks.set_default()
+		this.status = 4
+		this.changeInit()
+	},
+	initMap: function () {
+		_Map.createGrid()
+		console.log("Инициализация карты...")
+		_Map.init()
+		return
+		_Map.createGraph()
+		_Map.update()
+		_Map.create_event_graph()
+		character_init()
 	}
-	for (key in icons_src) {
-		Imgs.icons[key] = _data.img.load("images/" + icons_src[key])
-		imgs.push(Imgs.icons[key])
-	}
-	Shop.data.catalog.products[0].icon = Imgs.icons.cord
-	Shop.data.catalog.products[1].icon = Imgs.icons.shot
-	Shop.data.catalog.products[2].icon = Imgs.icons.shock
-	Shop.data.catalog.products[3].icon = Imgs.icons.bomb
-	Shop.data.catalog.products[4].icon = Imgs.pacman
-	_data.img.handle = setInterval(loading, 100);
 }
-
-function loading () {
-	if (_data.img.count == _data.img.loaded) {
-		clearInterval(_data.img.handle);
-		load_audio();
-	};
-};
-function load_audio () {
-	for (key in audio_src) {
-		Sounds[key] = _data.audio.load('audio/' + audio_src[key])
-		audio.push(Sounds[key])
-	}
-	for (key in audio_mess_src) {
-		Sounds[key] = _data.audio.load('audio/' + audio_mess_src[key])
-		audio.push(Sounds[key])
-		audio_mess.push(Sounds[key])
-	}
-
-	Sounds.signal.loop = true;
-	Sounds.shop.loop = true
-
-	audio.forEach(function (sound) {
-		sound.volume = _data.volume
-	})
-	
-	init_blocks ();
-};
-
-function init_blocks () {
-	Static_blocks.get_default()
-	Dynamic_blocks.get_default()
-	Event_blocks.get_default()
-	init_map()
-};
-
-function init_map () {
-	_Map.update()
-	_Map.create_graph()
-	_Map.create_event_graph()
-	character_init()
-};
 
 function character_init () {
 	var character = new Character()
@@ -259,4 +298,4 @@ function start_game () {
 	Controller.game_continue();
 };
 
-window.onload = init();
+window.onload = Game.init();

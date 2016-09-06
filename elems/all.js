@@ -1,24 +1,59 @@
-var Static_blocks = {
+
+var ComparitionSymbols = {}
+var Objects = {}
+var Blocks = {
 	array: [],
-	add_block: function (name, pic, pos, block, id, in_map) {
-		this[name] = new Block(name, pic, pos, block, id, in_map, 'static')
+	addBlock: function (name, pic, pos) {
+		this[name] = new Block(name, pic, pos)
 		this.array.push(this[name])
 	},
-	get_default: function () {
+	getBlock: function (name) {
+		return this[name]
+	},
+	setDefault: function () {
 		this.array.forEach(function (block) {
-			delete Static_blocks[block.name]
+			delete Blocks[block.name]
 		})
 
 		this.array = [];
-
-		this.add_block('empty', Imgs.map, {x: 0, y: 0}, false, 0, blocks_pos.get_empty_pos())
-		this.add_block('wall', Imgs.map, {x: 32, y: 0}, true, 1, blocks_pos.get_wall_pos())
-		this.add_block('food', Imgs.map, {x: 64, y: 0}, false, 2, blocks_pos.get_food_pos())
-		this.add_block('energiser', Imgs.map, {x: 128, y: 0}, false, 4, blocks_pos.get_energiser_pos())
+		//            name         img       img pos
+		this.addBlock('empty',     Imgs.map, {x: 0, y: 0})
+		this.addBlock('wall',      Imgs.map, {x: 32, y: 0})
+		this.addBlock('food',      Imgs.map, {x: 64, y: 0})
+		this.addBlock('door',      Imgs.map, {x: 96, y: 0})
+		this.addBlock('energiser', Imgs.map, {x: 128, y: 0})
 	}
 }
 
-var Dynamic_blocks = {
+var StaticObjects = {
+	array: [],
+	addObject: function (name, object, block, symbol) {
+		this[name] = new StaticObject(name, object, block, symbol)
+		this.array.push(this[name])
+		ComparitionSymbols[symbol] = this[name]
+		Objects[name] = this[name]
+	},
+	init: function () {
+		this.addObject('empty', Blocks.getBlock('empty'), false, "e")
+		this.addObject('wall',  Blocks.getBlock('wall'),  true,  "w")
+	}
+}
+var DynamicObjects = {
+	array: [],
+	addObject: function (name, object, block, symbol) {
+		this[name] = new DynamicObject(name, object, block, symbol)
+		this.array.push(this[name])
+		ComparitionSymbols[symbol] = this[name]
+		Objects[name] = this[name]
+	},
+	init: function () {
+		this.addObject('food',      Blocks.getBlock('food'),      false,  "f")
+		this.addObject('energiser', Blocks.getBlock('energiser'), false,  "g")
+		this.addObject('door',      Blocks.getBlock('door'),      true,   "d")
+	}
+}
+
+/*var Dynamic_blocks = {
 	array: [],
 	add_block: function (name, pic, pos, block, id, in_map) {
 		if (!(name in this)) {
@@ -36,18 +71,20 @@ var Dynamic_blocks = {
 		})
 
 		this.array = [];
-		this.add_block('door', Imgs.map, {x: 96, y: 0}, true, 3, blocks_pos.get_door_pos())
 	}
-}
+}*/
 
-var Event_blocks = {
+var EventBlocks = {
 	array: [],
-	add_block: function (name, pic, pos, y) {
-		var new_block = new Buf_event(name, pic, pos, y)
+	add_block: function (name, pic, pos) {
+		var new_block = new Buf_event(name, pic, pos)
 		this[name] = new_block
 		this.array.push(new_block)
 	},
-	get_default: function () {
+	getBlock: function (name) {
+		return this[name]
+	},
+	set_default: function () {
 		this.array.forEach(function (block) {
 			delete Dynamic_blocks[block.name]
 		})

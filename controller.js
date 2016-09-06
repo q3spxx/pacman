@@ -228,6 +228,7 @@ var Controller = {
 			this.buf_event_active = false
 			this.buf_event_action = 1
 			this.buf_event_text = ''
+			this.buf_event = false
 			gl.buf_event = []
 		},
 		buf_event_taked: function () {
@@ -244,12 +245,14 @@ var Controller = {
 		},
 		set_buf_event: function () {
 			this.buf_event_handle = setTimeout(function () {
+				console.log("buf_event")
 				Event.buf_event_start()
 			}, 6000)
+			this.buf_event = true
 		},
 		buf_event_start: function () {
+			console.log("event start")
 			var random = Math.round(Math.random() * (this.buf_events.length - 1))
-			this.buf_event = true
 			Event.buf_event_duration = 10
 			var empty = _Map.event_graph.filter(function (cell) {
 				if (cell.type == 'e') {
@@ -273,6 +276,7 @@ var Controller = {
 			}, 1000)
 		},
 		buf_event_stop: function () {
+			console.log("event stop")
 			clearInterval(Event.buf_event_timer_handle)
 			gl.buf_event = []
 			this.buf_event = false

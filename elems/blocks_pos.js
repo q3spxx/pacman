@@ -1,4 +1,4 @@
-var blocks_pos = {
+var BlocksPos = {
 	get_wall_pos: function () {
 		var arr = [
 			{x: 1, y: 0},
@@ -424,7 +424,7 @@ var blocks_pos = {
 		]
 		return arr
 	},
-	get_map: function () {
+	getEventMap: function () {
 		var res =   'nbbbbbbbbbbbbbbbbbbbn' +
 					'nbeeeeeeeebeeeeeeeebn' +
 					'nbebbebbbebebbbebbebn' +
@@ -446,6 +446,30 @@ var blocks_pos = {
 					'nbebbbbbbebebbbbbbebn' +
 					'nbeeeeeeeeeeeeeeeeebn' +
 					'nbbbbbbbbbbbbbbbbbbbn' 
+		return res
+	},
+	getMap: function () {
+		var res =   'ewwwwwwwwwwwwwwwwwwwe' +
+					'ewffffffffwffffffffwe' +
+					'ewfwwfwwwfwfwwwfwwfwe' +
+					'ewgfffffffffffffffgwe' +
+					'ewfwwfwfwwwwwfwfwwfwe' +
+					'ewffffwfffwfffwffffwe' +
+					'ewwwwfwwwfwfwwwfwwwwe' +
+					'eeeewfweeeeeeewfweeee' +
+					'wwwwwfwewwdwwewfwwwww' +
+					'eeeeefeeweeeweefeeeee' +
+					'wwwwwfwewwwwwewfwwwww' +
+					'eeeewfweeeeeeewfweeee' +
+					'ewwwwfwewwwwwewfwwwwe' +
+					'ewffffffffwffffffffwe' +
+					'ewfwwfwwwfwfwwwfwwfwe' +
+					'ewffwfffffffffffwffwe' +
+					'ewwfwfwfwwwwwfwfwfwwe' +
+					'ewgfffwfffwfffwfffgwe' +
+					'ewfwwwwwwfwfwwwwwwfwe' +
+					'ewfffffffffffffffffwe' +
+					'ewwwwwwwwwwwwwwwwwwwe' 
 		return res
 	}
 }

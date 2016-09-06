@@ -1,5 +1,6 @@
 var _Map = {
-	grid: new_grid(),
+	grid: null,
+	graph: null,
 	event_graph: null,
 	update: function () {
 		Static_blocks.array.forEach(function (block) {
@@ -11,17 +12,32 @@ var _Map = {
 			_Map.grid[block.in_map.x][block.in_map.y].__proto__ = block
 		});
 	},
-	graph: null,
-	create_graph: function () {
+	createGrid: function () {
+		this.grid = new Grid();
+	},
+	init: function () {
+		var stringMap = BlocksPos.getMap().split("");
+		var x = 0;
+		var y = 0;
+		stringMap.forEach(function (symbol) {
+			_Map.grid[x][y].object = ComparitionSymbols[symbol]
+			x++
+			if (x > 20) {
+				x = 0
+				y++
+			}
+		})
+	},
+	createGraph: function () {
 		var graph = [];
 		var num = 0;
 		for (var x = 0; x < 21; x++) {
 			for (var y = 0; y < 21; y++) {
-				if (_Map.grid[x][y].block && _Map.grid[x][y].type == 'static') {
+				if (_Map.grid[x][y].block.block) {
 					continue;
 				};
-				var g_obj = new Graph_cell(x, y, num)
-				graph.push(g_obj);
+				var graphCell = new GraphCell(x, y, num)
+				graph.push(graphCell);
 				num++;
 			};
 		};

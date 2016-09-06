@@ -1,4 +1,4 @@
-var src = {
+var image_src = {
 	map:"map.png",
 	pacman: 'pacman.png',
 	blinky: 'blinky.png',
@@ -16,7 +16,7 @@ var src = {
 	event: 'event.png'
 }
 
-var icons_src = {
+var image_icons_src = {
 	cord: 'cord_icon.png',
 	bomb: 'bomb_icon.png',
 	shot: 'shot_icon.png',

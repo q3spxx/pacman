@@ -1,4 +1,8 @@
-var _data = {
+var _Data = {
+	canvas: {
+		elem: null
+	},
+	imgsIsLoaded: false,
 	center_mess_switch: false,
 	center_mess: "",
 	set_center_mess: function (mess) {
@@ -26,7 +30,7 @@ var _data = {
 			_data.kills = 0;
 		}, 3000);
 	},
-	volume: 0.01,
+	volume: 0.00,
 	firstblood: true,
 	change_volume: function (input) {
 		_data.volume = Number(input.value) / 100;
@@ -64,46 +68,6 @@ var _data = {
 
 		start()
 
-	},
-	canvas: {
-		elem: document.getElementById("map"),
-		setSize: function (width, height) {
-			this.elem.width = width;
-			this.elem.height = height;
-			return true;
-		},
-		getContext: function () {
-			var ctx = this.elem.getContext("2d");
-			return ctx;
-		}
-	},
-	img: {
-		handle: null,
-		count: 0,
-		loaded: 0,
-		load: function (path) {
-			var img = new Image();
-			img.src = path;
-			this.count += 1;
-			img.onload = function () {
-				_data.img.loaded += 1;
-			};
-			return img;
-		}
-	},
-	audio: {
-		load: function (path) {
-			var sound = new Audio();
-			sound.src = path;
-			return sound;
-		}
-	},
-	gen_id: function () {
-		var random = "";
-		for (var i = 0; i < 8; i++) {
-			random += Math.floor(Math.random() * 9);
-		}
-		return Number(random);
 	},
 	change_sound: function (arr) {
 		arr.forEach(function (sound) {

@@ -40,6 +40,11 @@ var Move = {
 						_data.set_center_mess('Game over')
 						clearTimeout(Event.random_event_handle)
 						_data.center_mess_switch = true;
+						clearTimeout(Event.buf_event_handle)
+						clearTimeout(Event.buf_event_active_handle)
+						clearInterval(Event.buf_event_timer_handle)
+						Event.buf_event_default()
+						
 						console.log("Game over");
 					} else {
 						_data.reinit_level();

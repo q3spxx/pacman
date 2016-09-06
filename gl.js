@@ -20,7 +20,7 @@ var gl = {
 		gl.ms = date.getTime();
 		setInterval(function () {
 			gl.render();
-			gl.draw_special();
+			/*gl.draw_special();
 			gl.draw_bomb()
 			gl.draw_shock()
 			gl.draw_buf_event()
@@ -35,15 +35,15 @@ var gl = {
 			gl.draw_sound_mess()
 			gl.fps_timer();
 			gl.skill_icons()
-			gl.draw_shop()
+			gl.draw_shop()*/
 		}, 33);
 	},
 	render: function () {
 		_Map.grid.forEach(function (xArr) {
 			xArr.forEach(function (cell) {
-				map.drawImage(cell.img.pic,
-							cell.img.pos.x,
-							cell.img.pos.y,
+				map.drawImage(cell.object.image.img.pic,
+							cell.object.image.img.pos.x,
+							cell.object.image.img.pos.y,
 							32,
 							32,
 							cell.x,
