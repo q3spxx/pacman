@@ -4,6 +4,34 @@
 		"selected_items":
 		[
 			[
+				"c",
+				"character"
+			],
+			[
+				"cha",
+				"characterInit"
+			],
+			[
+				"cur",
+				"curState"
+			],
+			[
+				"grid",
+				"gridLink"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"cu",
+				"curState"
+			],
+			[
+				"ene",
+				"energiser"
+			],
+			[
 				"pad",
 				"padding-right"
 			],
@@ -64,10 +92,6 @@
 				"buf"
 			],
 			[
-				"cur",
-				"cur_frame"
-			],
-			[
 				"get",
 				"get_default"
 			],
@@ -100,16 +124,8 @@
 				"map_arr"
 			],
 			[
-				"ene",
-				"enemy"
-			],
-			[
 				"lif",
 				"lifes"
-			],
-			[
-				"le",
-				"level_up"
 			],
 			[
 				"set",
@@ -296,10 +312,6 @@
 				"border-radius"
 			],
 			[
-				"c",
-				"center"
-			],
-			[
 				"border-r",
 				"border-radius"
 			],
@@ -404,10 +416,6 @@
 				"function"
 			],
 			[
-				"cu",
-				"current"
-			],
-			[
 				"data",
 				"dataset"
 			],
@@ -491,7 +499,7 @@
 			"file": "main.js",
 			"settings":
 			{
-				"buffer_size": 5079,
+				"buffer_size": 6256,
 				"line_ending": "Windows"
 			}
 		},
@@ -507,7 +515,7 @@
 			"file": "data.js",
 			"settings":
 			{
-				"buffer_size": 1935,
+				"buffer_size": 1238,
 				"line_ending": "Windows"
 			}
 		},
@@ -515,7 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 1493,
+				"buffer_size": 1622,
 				"line_ending": "Windows"
 			}
 		},
@@ -523,7 +531,7 @@
 			"file": "controller.js",
 			"settings":
 			{
-				"buffer_size": 8725,
+				"buffer_size": 8823,
 				"line_ending": "Windows"
 			}
 		},
@@ -544,10 +552,26 @@
 			}
 		},
 		{
+			"file": "var.js",
+			"settings":
+			{
+				"buffer_size": 256,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "tools.js",
+			"settings":
+			{
+				"buffer_size": 936,
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "elems/all.js",
 			"settings":
 			{
-				"buffer_size": 2990,
+				"buffer_size": 3743,
 				"line_ending": "Windows"
 			}
 		},
@@ -555,7 +579,7 @@
 			"file": "gl.js",
 			"settings":
 			{
-				"buffer_size": 8888,
+				"buffer_size": 8931,
 				"line_ending": "Windows"
 			}
 		},
@@ -571,7 +595,7 @@
 			"file": "constructor.js",
 			"settings":
 			{
-				"buffer_size": 4001,
+				"buffer_size": 4818,
 				"line_ending": "Windows"
 			}
 		},
@@ -595,7 +619,7 @@
 			"file": "move.js",
 			"settings":
 			{
-				"buffer_size": 3902,
+				"buffer_size": 4084,
 				"line_ending": "Windows"
 			}
 		},
@@ -603,7 +627,7 @@
 			"file": "elems/blocks_pos.js",
 			"settings":
 			{
-				"buffer_size": 7641,
+				"buffer_size": 2125,
 				"line_ending": "Windows"
 			}
 		},
@@ -611,7 +635,7 @@
 			"file": "src.js",
 			"settings":
 			{
-				"buffer_size": 1073,
+				"buffer_size": 1085,
 				"line_ending": "Windows"
 			}
 		},
@@ -619,7 +643,7 @@
 			"file": "map.js",
 			"settings":
 			{
-				"buffer_size": 2291,
+				"buffer_size": 2855,
 				"line_ending": "Windows"
 			}
 		},
@@ -635,7 +659,7 @@
 			"file": "ai.js",
 			"settings":
 			{
-				"buffer_size": 3948,
+				"buffer_size": 3988,
 				"line_ending": "Windows"
 			}
 		}
@@ -688,6 +712,8 @@
 	],
 	"file_history":
 	[
+		"/C/tmp/fz3temp-1/product.tpl",
+		"/C/tmp/FTP8B92.tmp/category.php",
 		"/Z/home/localhost/www/leden/catalog/view/theme/default/template/common/home.tpl",
 		"/Z/home/localhost/www/leden/catalog/view/javascript/common.js",
 		"/Z/home/localhost/www/leden/catalog/view/theme/default/template/module/featured.tpl",
@@ -736,7 +762,6 @@
 		"/C/tmp/fz3temp-1/footer.php",
 		"/C/tmp/fz3temp-1/featured.php",
 		"/C/tmp/fz3temp-1/featured.tpl",
-		"/C/tmp/fz3temp-1/product.tpl",
 		"/C/tmp/fz3temp-1/common.js",
 		"/C/tmp/fz3temp-1/special.tpl",
 		"/C/tmp/fz3temp-1/callback.css",
@@ -814,8 +839,7 @@
 		"/C/server/usr/local/apache/conf/httpd.conf",
 		"/C/tmp/FTPA4F6.tmp/config.php",
 		"/C/tmp/FTP6260.tmp/index.php",
-		"/C/tmp/FTP3EA8.tmp/wp-settings.php",
-		"/C/tmp/FTPF690.tmp/wp-config.php"
+		"/C/tmp/FTP3EA8.tmp/wp-settings.php"
 	],
 	"find":
 	{
@@ -833,6 +857,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"ai_p",
+			"m_p",
+			"f",
+			"w",
 			"product-layout",
 			"clearFix",
 			"menu",
@@ -873,7 +901,7 @@
 			"content"
 		],
 		"highlight": true,
-		"in_selection": false,
+		"in_selection": true,
 		"preserve_case": false,
 		"regex": false,
 		"replace_history":
@@ -888,7 +916,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -897,15 +925,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5079,
+						"buffer_size": 6256,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3276,
-								3276
+								3085,
+								3085
 							]
 						],
 						"settings":
@@ -914,10 +942,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1677.0,
+						"translation.y": 1365.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -946,7 +974,7 @@
 						"translation.y": 1365.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 16,
 					"type": "text"
 				},
 				{
@@ -955,36 +983,7 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1935,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								288,
-								288
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1053.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 15,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "index.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1493,
+						"buffer_size": 1238,
 						"regions":
 						{
 						},
@@ -997,6 +996,35 @@
 						],
 						"settings":
 						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1027.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1622,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								417,
+								417
+							]
+						],
+						"settings":
+						{
 							"syntax": "Packages/HTML/HTML.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
@@ -1004,7 +1032,7 @@
 						"translation.y": 156.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 17,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
@@ -1013,15 +1041,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8725,
+						"buffer_size": 8823,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5690,
-								5690
+								4118,
+								4118
 							]
 						],
 						"settings":
@@ -1030,10 +1058,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 3081.0,
+						"translation.y": 2379.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -1062,7 +1090,7 @@
 						"translation.y": 8795.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
@@ -1091,30 +1119,58 @@
 						"translation.y": 429.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 16,
+					"stack_index": 20,
 					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 7,
-					"file": "elems/all.js",
+					"file": "var.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2990,
+						"buffer_size": 256,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1285,
-								1285
+								105,
+								105
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "tools.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 936,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								214,
+								214
 							]
 						],
 						"settings":
@@ -1123,27 +1179,56 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 312.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"file": "gl.js",
+					"buffer": 9,
+					"file": "elems/all.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8888,
+						"buffer_size": 3743,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8878,
-								8878
+								3578,
+								3578
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1365.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "gl.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8931,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								439,
+								439
 							]
 						],
 						"settings":
@@ -1153,14 +1238,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 5064.0,
+						"translation.y": 78.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 11,
 					"file": "anim.js",
 					"semi_transient": false,
 					"settings":
@@ -1185,7 +1270,7 @@
 						"translation.y": 234.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 14,
 					"type": "text"
 				}
 			]
@@ -1195,20 +1280,20 @@
 			"sheets":
 			[
 				{
-					"buffer": 10,
+					"buffer": 12,
 					"file": "constructor.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4001,
+						"buffer_size": 4818,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								474,
-								474
+								4152,
+								4152
 							]
 						],
 						"settings":
@@ -1217,14 +1302,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 78.0,
+						"translation.y": 2925.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 13,
 					"file": "collision.js",
 					"semi_transient": false,
 					"settings":
@@ -1236,8 +1321,8 @@
 						"selection":
 						[
 							[
-								1995,
-								1871
+								1756,
+								1756
 							]
 						],
 						"settings":
@@ -1246,14 +1331,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 936.0,
+						"translation.y": 312.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 14,
 					"file": "scope.js",
 					"semi_transient": false,
 					"settings":
@@ -1278,24 +1363,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 15,
 					"file": "move.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3902,
+						"buffer_size": 4084,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1291,
-								1291
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1307,24 +1392,24 @@
 						"translation.y": 468.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 17,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
+					"buffer": 16,
 					"file": "elems/blocks_pos.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7641,
+						"buffer_size": 2125,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7092,
-								7092
+								2010,
+								2010
 							]
 						],
 						"settings":
@@ -1333,10 +1418,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 5377.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 8,
 					"type": "text"
 				}
 			]
@@ -1346,20 +1431,20 @@
 			"sheets":
 			[
 				{
-					"buffer": 15,
+					"buffer": 17,
 					"file": "src.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1073,
+						"buffer_size": 1085,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								340,
-								340
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1371,24 +1456,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 16,
+					"buffer": 18,
 					"file": "map.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2291,
+						"buffer_size": 2855,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1956,
-								1956
+								2842,
+								2842
 							]
 						],
 						"settings":
@@ -1397,14 +1482,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1521.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 17,
+					"buffer": 19,
 					"file": "special.js",
 					"semi_transient": false,
 					"settings":
@@ -1429,24 +1514,24 @@
 						"translation.y": 1794.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 18,
 					"type": "text"
 				},
 				{
-					"buffer": 18,
+					"buffer": 20,
 					"file": "ai.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3948,
+						"buffer_size": 3988,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								644,
+								644
 							]
 						],
 						"settings":
@@ -1455,10 +1540,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 546.0,
+						"translation.y": 273.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 18,
+					"stack_index": 9,
 					"type": "text"
 				}
 			]
@@ -1557,14 +1642,14 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 1,
+	"selected_group": 0,
 	"settings":
 	{
 	},
 	"show_minimap": false,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 150.0,
 	"status_bar_visible": true,
 	"template_settings":

@@ -39,6 +39,18 @@ var Game = {
 				console.log("Создание карты...")
 				this.initMap()
 				break
+			case 5:
+				console.log("Инициализация анимаций...")
+				this.initAnim()
+				break
+			case 6:
+				console.log("Инициализация персонажей...")
+				this.initCharacter()
+				break
+			case 7:
+				console.log("Инициализация ввода...")
+				this.initControls()
+				break
 		}
 	},
 	initHtml: function () {
@@ -100,9 +112,8 @@ var Game = {
 	},
 	initBlocks: function () {
 		Blocks.setDefault()
-		StaticObjects.init()
-		DynamicObjects.init()
-		EventBlocks.set_default()
+		EventBlocks.setDefault()
+		MapObjects.init()
 		this.status = 4
 		this.changeInit()
 	},
@@ -110,109 +121,33 @@ var Game = {
 		_Map.createGrid()
 		console.log("Инициализация карты...")
 		_Map.init()
-		return
 		_Map.createGraph()
-		_Map.update()
-		_Map.create_event_graph()
-		character_init()
+		_Map.createEventGraph()
+		this.status = 5
+		this.changeInit()
+	},
+	initAnim: function () {
+		Anim.init();
+		this.status = 6
+		this.changeInit()
+	},
+	initCharacter: function () {
+		var character = new Character()
+		Char.playerInit(character);
+		Char.enemiesInit(character);
+		this.status = 7
+		this.changeInit()
+	},
+	initControls: function () {
+		Controls.keyDown.on();
+		Controls.keyUp.on();
+		return
+		ready();
 	}
 }
 
-function character_init () {
-	var character = new Character()
-	player_init(character);
-	enemies_init(character);
-	init_enemy_position();
-	anim_init();
-}
 
-function player_init (character) {
-	Player = new _Player()
-	Player.__proto__ = character;
-	Player.action.push({
-			frames: [
-				{
-					x: 0,
-					y: 0
-				},
-				{
-					x: 32,
-					y: 0
-				},
-				{
-					x: 64,
-					y: 0
-				},
-				{
-					x: 96,
-					y: 0
-				},
-				{
-					x: 128,
-					y: 0
-				}
-			]
-		})
-};
-
-function enemies_init (character) {
-	var ai_prototype = new AI_Prototype();
-	ai_prototype.__proto__ = character
-
-	Blinky = new _Enemy(0, {x: 320, y: 224}, Imgs.blinky, {x: 10, y: 7}, 'passive')
-	Blinky.__proto__ = ai_prototype
-
-	Pinky = new _Enemy(1, {x: 320, y: 288}, Imgs.pinky, {x: 10, y: 9}, 'enter_to_room')
-	Pinky.__proto__ = ai_prototype
-
-	Bob = new _Enemy(2, {x: 288, y: 288}, Imgs.bob, {x: 9, y: 9}, 'enter_to_room')
-	Bob.__proto__ = ai_prototype
-
-	Paul = new _Enemy(3, {x: 352, y: 288}, Imgs.paul, {x: 11, y: 9}, 'enter_to_room')
-	Paul.__proto__ = ai_prototype
-
-	enemy_arr.push(Blinky, Pinky, Bob, Paul)
-};
-
-function anim_init () {
-	init_type();
-	var aBuf = new AnimBuf(0, Player, 2, true);
-	anim.push(aBuf);
-	aBuf = new AnimBuf(1, Blinky, 2, true);
-	anim.push(aBuf);
-	aBuf = new AnimBuf(2, Pinky, 2, true);
-	anim.push(aBuf);
-	aBuf = new AnimBuf(3, Bob, 2, true);
-	anim.push(aBuf);
-	aBuf = new AnimBuf(4, Paul, 2, true);
-	anim.push(aBuf);
-	Anim.handle = setInterval(Anim.change_frame, 200);
-	Anim.handle = setInterval(Anim.change_text_frame, 33);
-	change_buf_event_frame();
-	init_controls();
-};
-
-function init_controls () {
-	Controls.keyDown.on();
-	Controls.keyUp.on();
-	ready();
-};
-
-function init_player_position () {
-
-	Player.stop()
-	Player.img = Imgs.pacman;
-	Player.curAction = 0;
-
-	var aBuf = new AnimBuf(0, Player, 2, true);
-
-	anim[0] = aBuf;
-
-	Player.pos.x = 320;
-	Player.pos.y = 480;
-}
-
-function init_enemy_position () {
+function initEnemyPosition () {
 	Room.list = []
 	Blinky.pos = {
 		x: 320,
@@ -225,7 +160,7 @@ function init_enemy_position () {
 	Blinky.path = []
 	Blinky.img = Imgs.blinky
 	Blinky.curAction = 0
-	b_Controller.set_passive.call(Blinky)
+	b_Controller.setPassive.call(Blinky)
 	Pinky.pos = {
 		x: 320,
 		y: 288

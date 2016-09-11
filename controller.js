@@ -176,33 +176,33 @@ var Controller = {
 
 			return true;
 		},
-		set_chase: function () {
+		setChase: function () {
 			this.behavior = "chase";
 			this.point_pos = ai.player_pos;
 		},
-		set_fear: function () {
+		setFear: function () {
 			this.behavior = "fear";
 		},
-		set_passive: function () {
+		setPassive: function () {
 			this.behavior = "passive";
 		},
-		set_waiting: function () {
+		setWaiting: function () {
 			this.behavior = "waiting";
 		},
-		set_free: function (point) {
+		setFree: function (point) {
 			this.point_pos = point;
 			this.behavior = "free";
 		},
-		set_go_to_room: function () {
+		setGoToRoom: function () {
 			this.behavior = "go_to_room"
 		},
-		set_enter_to_room: function () {
+		setEnterToRoom: function () {
 			this.behavior = "enter_to_room"
 		},
-		set_in_room: function () {
+		setInRoom: function () {
 			this.behavior = "in_room"
 		},
-		set_exit_from_room: function () {
+		setExitFromRoom: function () {
 			this.behavior = 'exit_from_room';
 		}
 	};

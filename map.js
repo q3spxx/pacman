@@ -1,17 +1,7 @@
 var _Map = {
 	grid: null,
 	graph: null,
-	event_graph: null,
-	update: function () {
-		Static_blocks.array.forEach(function (block) {
-			block.in_map.forEach(function (pos) {
-				_Map.grid[pos.x][pos.y].__proto__ = block
-			})
-		});
-		Dynamic_blocks.array.forEach(function (block) {
-			_Map.grid[block.in_map.x][block.in_map.y].__proto__ = block
-		});
-	},
+	eventGraph: null,
 	createGrid: function () {
 		this.grid = new Grid();
 	},
@@ -20,7 +10,23 @@ var _Map = {
 		var x = 0;
 		var y = 0;
 		stringMap.forEach(function (symbol) {
-			_Map.grid[x][y].object = ComparitionSymbols[symbol]
+			switch (symbol) {
+				case "e":
+				_Map.grid[x][y].setObject(ComparitionSymbols[symbol], symbol, false)
+				break
+				case "w":
+				_Map.grid[x][y].setObject(ComparitionSymbols[symbol], symbol, false)
+				break
+				case "d":
+				_Map.grid[x][y].setObject(ComparitionSymbols[symbol], symbol, "doors")
+				break
+				case "f":
+				_Map.grid[x][y].setObject(ComparitionSymbols[symbol], symbol, "foods")
+				break
+				case "g":
+				_Map.grid[x][y].setObject(ComparitionSymbols[symbol], symbol, "energisers")
+				break
+			}
 			x++
 			if (x > 20) {
 				x = 0
@@ -31,18 +37,28 @@ var _Map = {
 	createGraph: function () {
 		var graph = [];
 		var num = 0;
-		for (var x = 0; x < 21; x++) {
-			for (var y = 0; y < 21; y++) {
-				if (_Map.grid[x][y].block.block) {
-					continue;
-				};
-				var graphCell = new GraphCell(x, y, num)
-				graph.push(graphCell);
-				num++;
-			};
-		};
-		graph.forEach(function (g_obj) {
-			var cords = _Map.search_neighbors(_Map.grid[g_obj.x][g_obj.y], _Map.grid);
+		var x = 0;
+		var y = 0;
+		var maskPath = BlocksPos.getMaskPath().split("");
+		maskPath.forEach(function (cell) {
+			switch (cell) {
+				case "w":
+					break
+				case "e": 
+					var graphCell = new GraphCell(x, y, num)
+					graph.push(graphCell)
+					_Map.grid[x][y].object.graphObject = graphCell
+					num++
+					break
+			}
+			x++
+			if (x > 20) {
+				x = 0
+				y++
+			}
+		})
+		graph.forEach(function (gO) {
+			var cords = _Map.searchNeighbors(_Map.grid[gO.x][gO.y], _Map.grid);
 			var neighs = cords.map(function (cord) {
 				for (var i = 0; i < graph.length; i++) {
 					if (cord.x == graph[i].x && cord.y == graph[i].y) {
@@ -50,16 +66,16 @@ var _Map = {
 					};
 				};
 			});
-			g_obj.neighs = neighs;
+			gO.neighs = neighs;
 		});
 		this.graph = graph;
 	},
-	search_neighbors: function (cell, grid) {
+	searchNeighbors: function (cell, grid) {
 		var arr = [];
-		var tempArr = [{x: 1, y: 0}, 
-						{x: -1, y : 0},
-						{x: 0, y: 1},
-						{x: 0, y: -1}];
+		var tempArr = [ {x:  1,  y:  0}, 
+						{x: -1,  y:  0},
+						{x:  0,  y:  1},
+						{x:  0,  y: -1}];
 		tempArr.forEach(function (cord) {
 			var res = _Map.search(cell, grid, cord.x, cord.y);
 			if (res != false) {
@@ -91,7 +107,7 @@ var _Map = {
 					return false;
 				};
 			};
-		if (!_Map.grid[nX][nY].block || _Map.grid[nX][nY].type == 'dynamic') {
+		if (!_Map.grid[nX][nY].object.block) {
 
 			return {x: nX, y: nY}
 		};
@@ -106,18 +122,18 @@ var _Map = {
 			cell.arr = null;
 		});
 	},
-	create_event_graph: function () {
-		var map_arr = blocks_pos.get_map().split('')
+	createEventGraph: function () {
+		var eventMap = BlocksPos.getEventMap().split('')
 		var x = 0
 		var y = 0
-		this.event_graph = map_arr.map(function (cell) {
+		this.eventGraph = eventMap.map(function (cell) {
 			if (x > 20) {
 				x = 0
 				y++
 			}
-			var event_cell = new Event_cell(x, y, cell)
+			var eventCell = new EventCell(x, y, cell)
 			x++
-			return event_cell
+			return eventCell
 		})
 	}
 }

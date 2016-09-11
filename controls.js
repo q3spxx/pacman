@@ -17,17 +17,17 @@ var Controls = {
 		}
 	},
 	handler: function (e) {
-		if (_data.status == "special" ||
+		/*if (_data.status == "special" ||
 			_data.status == "pause") {
 			Player.stop();
 			return;
-		};
+		};*/
 		if (e.type == "keydown") {
 			e.preventDefault();
 			switch (e.keyCode) {
 				case 37: Player.left()
 				break
-				case 38: if (_data.status == 'shop') {
+				case 38: if (_Data.status == 'shop') {
 							Shop.cursor.up()
 						} else {
 							Player.up()
@@ -35,7 +35,7 @@ var Controls = {
 				break
 				case 39: Player.right()
 				break
-				case 40: if (_data.status == 'shop') {
+				case 40: if (_Data.status == 'shop') {
 							Shop.cursor.down()
 						} else {
 							Player.down()
@@ -43,15 +43,15 @@ var Controls = {
 				break
 				case 81: if (Special.get_over_here.ready && Special.get_over_here.level > 0) {Special.get_over_here.start()};
 				break
-				case 32: if (_data.status == 'shop') {
+				case 32: if (_Data.status == 'shop') {
 							Shop.try_buy()
 						} else if (Special.yo.status) {
 							Event.start()
 						};
 				break
-				case 13: if (_data.status == 'ready') {
+				case 13: if (_Data.status == 'ready') {
 						start()
-					} else if (_data.status == 'shop') {
+					} else if (_Data.status == 'shop') {
 						Shop.close()
 					}
 				break

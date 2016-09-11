@@ -27,6 +27,9 @@ var Astar = {
 				return res;
 			};
 			n.neighs.forEach(function (son) {
+				if (son.block) {
+					return
+				};
 				var newg = Math.sqrt(n.g) + 1;
 				if (son.arr != null) {
 					return;

@@ -11,7 +11,7 @@ function Grid () {
 	return grid;
 };
 
-function Event_cell (x, y, type) {
+function EventCell (x, y, type) {
 	this.x = x
 	this.y = y
 	this.type = type
@@ -35,9 +35,8 @@ function Buf_event (name, pic, pos) {
 function Block (name, pic, pos) {
 	this.id = _Tools.gen_id()
 	this.name = name
-	this.img = {}
-	this.img.pic = pic
-	this.img.pos = pos
+	this.pic = pic
+	this.pos = pos
 	this.setProp = function (prop, value) {
 		this[prop] = value
 	}
@@ -46,31 +45,51 @@ function Block (name, pic, pos) {
 	}
 }
 
-function StaticObject (name, image, block, symbol) {
-	this.id = _Tools.gen_id()
-	this.name = name
-	this.block = block
-	this.image = image
-	this.symbol = symbol
-}
 
-function DynamicObject (name, image, block, symbol) {
+function MapObject (name, image, block, symbol, type) {
 	this.id = _Tools.gen_id()
 	this.name = name
 	this.block = block
 	this.image = image
 	this.symbol = symbol
+	this.type = type
+	this.num = null
+	this.graphObject = null
 	this.changeState = function (image, block) {
-		this.object.image = image
-		this.object.block = block
+		this.image = image
+		this.block = block
 	}
 
 }
 
+function Category (states) {
+	this.id = 0
+	this.array = []
+	this.states = states
+}
+
+function Item (name, o, category) {
+	this.curState = 0
+	this.gridLink = o
+	this.states = MapObjects[category].states
+	this.changeState = function () {
+		this.curState++
+		if (this.curState > this.states.length - 1) {
+			this.curState = 0
+		};
+
+		this.gridLink.image = Blocks[this.states[this.curState].image]
+		this.gridLink.block = this.states[this.curState].block
+		this.gridLink.graphObject = this.states[this.curState].block
+	}
+}
+
 var Cell__proto__ = {
-	setObject: function (name, block) {
-		this.object = Objects[name]
-		this.object.block = block
+	setObject: function (name, symbol, category) {
+		this.object = $.extend(true, {}, MapObjects[name])
+		if (category) {
+			MapObjects.addItem(category, symbol, name, this.object)
+		};
 	}
 }
 function Cell (x, y) {
@@ -79,12 +98,28 @@ function Cell (x, y) {
 	this.y = y;
 	this.object = null
 };
-function AnimBuf (id, person, tf, repeat) {
-	this.__proto__ = person;
-	this.id = id;
+function Animation (img, x, y, w, h, totalFrames, repeat) {
+	this.img = img
+	this.frames = []
+	this.repeat = repeat
+
+	for (var i = 0; i < totalFrames; i++) {
+		this.frames.push({
+			x: i * w,
+			y: y,
+			w: w,
+			h: h
+		})
+	}
+}
+function AnimationBuffer (context, name) {
+	this.id = _Tools.gen_id()
+	this.pos = context.pos;
 	this.curFrame = 0;
-	this.tFrames = tf;
-	this.repeat = repeat;
+	this.img = context.anim[name].img
+	this.totalFrames = context.anim[name].frames.length;
+	this.frames = context.anim[name].frames
+	this.repeat = context.anim[name].repeat;
 };
 
 function GraphCell (x, y, num) {
@@ -101,136 +136,113 @@ function GraphCell (x, y, num) {
 
 function _Player () {
 	this.id = 4
-	this.pos = {x: 320, y: 480}
-	this.m_pos = {
+	this.pos = {x: 0, y: 0}
+	this.mPos = {
 		x: 0,
 		y: 0
 	}
 	this.handle = null
-	this.img = Imgs.pacman
 	this.curAction = 0
 	this.speed = 7
-	this.is_dead = function () {
-		this.img = Imgs.dead;
+	this.anim = Anim.lib.pacman
+	this.animationBufferId = null
+	this.isDead = function () {
 		this.stop();
-		var aBuf = new AnimBuf(0, this, 5, false);
-		this.curAction = 4;
-		anim[0] = aBuf;
+		this.changeAnimation("dead")
+	}
+	this.setDefault = function () {
+		this.pos.x = 320
+		this.pos.y = 480
+		this.mPos.x = 0
+		this.mPos.y = 0
+		this.left()
 	}
 }
 
-function _Enemy (id, pos, img, point_pos, behavior) {
+function _Enemy (id, pos, anim, behavior) {
 	this.id = id
-	this.pos = pos
+	this.pos = {x: 0, y: 0}
 	this.shocked = false
-	this.m_pos = {
+	this.mPos = {
 		x: 0,
 		y: 0
 	}
 	this.handle = null
-	this.img = img
+	this.anim = anim
+	this.animationBufferId = null
 	this.curAction = 0
 	this.speed = 8
 	this.path = []
-	this.point_pos = point_pos
+	this.pointPos = {x: 0, y: 0}
 	this.behavior = behavior
-	this.set_original_img = function () {
-		this.img = img;
+	this.default = {
+		pos: pos,
+		behavior: behavior
+	}
+	this.setDefault = function () {
+		this.pos.x = this.default.pos.x
+		this.pos.y = this.default.pos.y
+		this.behavior = this.default.behavior
+		this.mPos.x = 0
+		this.mPos.y = 0
+		this.shocked = false
+		this.curAction = 0
+		this.path = []
+		this.pointPos = {x: 0, y: 0}
+		this.left()
 	}
 }
 
-function Character (pos, img, speed) {
+function Character () {
 	this.left = function () {
-		this.m_pos.x = -1;
-		this.m_pos.y = 0;
+		this.mPos.x = -1;
+		this.mPos.y = 0;
 		this.curAction = 0;
+		this.changeAnimation("left")
 	}
 	this.right = function () {
-		this.m_pos.x = 1;
-		this.m_pos.y = 0;
+		this.mPos.x = 1;
+		this.mPos.y = 0;
 		this.curAction = 2;
+		this.changeAnimation("right")
 	}
 	this.up = function () {
-		this.m_pos.x = 0;
-		this.m_pos.y = -1;
+		this.mPos.x = 0;
+		this.mPos.y = -1;
 		this.curAction = 1;
+		this.changeAnimation("up")
 	}
 	this.down = function () {
-		this.m_pos.x = 0;
-		this.m_pos.y = 1;
+		this.mPos.x = 0;
+		this.mPos.y = 1;
 		this.curAction = 3;
+		this.changeAnimation("down")
 	}
 	this.stop = function () {
-		this.m_pos.x = 0;
-		this.m_pos.y = 0;
+		this.mPos.x = 0;
+		this.mPos.y = 0;
 	}
-	this.action = [
-		{
-			frames: [
-				{
-					x: 0,
-					y: 0
-				},
-				{
-					x: 0,
-					y: 32
-				}
-			]
-		},
-		{
-			frames: [
-				{
-					x: 32,
-					y: 0
-				},
-				{
-					x: 32,
-					y: 32
-				}
-			]
-		},
-		{
-			frames: [
-				{
-					x: 64,
-					y: 0
-				},
-				{
-					x: 64,
-					y: 32
-				}
-			]
-		},
-		{
-			frames: [
-				{
-					x: 96,
-					y: 0
-				},
-				{
-					x: 96,
-					y: 32
-				}
-			]
-		}
-	]
+	this.changeAnimation = function (name) {
+		Anim.removeAnimationBuffer(this.animationBufferId)
+		Anim.addAnimationBuffer(this, name)
+	}
 }
 
-function AI_Prototype (img, point_pos, behavior) {
-	this.set_fear_img = function () {
+function AIPrototype () {
+	this.setFearImg = function () {
 		this.img = Imgs.fear;
 	};
-	this.set_fear_pre_timeout_img = function () {
+	this.setFearPreTimeoutImg = function () {
 		this.img = Imgs.fear_pre_timeout;
 	};
-	this.set_go_to_room_img = function () {
+	this.set_goToRoomImg = function () {
 		this.img = Imgs.go_to_room;
 	};
-	this.go_to_room = function () {
+	this.goToRoom = function () {
 
 		Room.go.call(this)
 	};
-	this.exit_from_room = function () {
+	this.exitFromRoom = function () {
 		Room.exit.call(this)
 	};
 };

@@ -1,4 +1,5 @@
 var gl = {
+	anim: [],
 	special: [],
 	event: [],
 	shock: [],
@@ -18,14 +19,15 @@ var gl = {
 	start: function () {
 		var date = new Date();
 		gl.ms = date.getTime();
+		Anim.handle = setInterval(Anim.changeFrame, 200);
 		setInterval(function () {
 			gl.render();
+			gl.animationRender();
 			/*gl.draw_special();
 			gl.draw_bomb()
 			gl.draw_shock()
 			gl.draw_buf_event()
 			gl.buf_event_text()
-			gl.anim();
 			gl.draw_event();
 			gl.scope();
 			gl.draw_lifes()
@@ -41,9 +43,9 @@ var gl = {
 	render: function () {
 		_Map.grid.forEach(function (xArr) {
 			xArr.forEach(function (cell) {
-				map.drawImage(cell.object.image.img.pic,
-							cell.object.image.img.pos.x,
-							cell.object.image.img.pos.y,
+				map.drawImage(cell.object.image.pic,
+							cell.object.image.pos.x,
+							cell.object.image.pos.y,
 							32,
 							32,
 							cell.x,
@@ -54,17 +56,17 @@ var gl = {
 			});
 		});
 	},
-	anim: function () {
-		anim.forEach(function (buf) {
-			map.drawImage(buf.img,
-						buf.action[buf.curAction].frames[buf.curFrame].x,
-						buf.action[buf.curAction].frames[buf.curFrame].y,
-						32,
-						32,
-						buf.pos.x,
-						buf.pos.y,
-						32,
-						32
+	animationRender: function () {
+		gl.anim.forEach(function (buffer) {
+			map.drawImage(buffer.img,
+						buffer.frames[buffer.curFrame].x,
+						buffer.frames[buffer.curFrame].y,
+						buffer.frames[buffer.curFrame].w,
+						buffer.frames[buffer.curFrame].h,
+						buffer.pos.x,
+						buffer.pos.y,
+						buffer.frames[buffer.curFrame].w,
+						buffer.frames[buffer.curFrame].h
 						);
 		});
 	},

@@ -25,58 +25,37 @@ var Blocks = {
 	}
 }
 
-var StaticObjects = {
+var MapObjects = {
 	array: [],
-	addObject: function (name, object, block, symbol) {
-		this[name] = new StaticObject(name, object, block, symbol)
+	addObject: function (name, object, block, symbol, type) {
+		this[name] = new MapObject(name, object, block, symbol, type)
 		this.array.push(this[name])
-		ComparitionSymbols[symbol] = this[name]
+		ComparitionSymbols[symbol] = name
 		Objects[name] = this[name]
 	},
-	init: function () {
-		this.addObject('empty', Blocks.getBlock('empty'), false, "e")
-		this.addObject('wall',  Blocks.getBlock('wall'),  true,  "w")
-	}
-}
-var DynamicObjects = {
-	array: [],
-	addObject: function (name, object, block, symbol) {
-		this[name] = new DynamicObject(name, object, block, symbol)
-		this.array.push(this[name])
-		ComparitionSymbols[symbol] = this[name]
-		Objects[name] = this[name]
+	addCategory: function (name, states) {
+		this[name] = new Category(states)
 	},
 	init: function () {
-		this.addObject('food',      Blocks.getBlock('food'),      false,  "f")
-		this.addObject('energiser', Blocks.getBlock('energiser'), false,  "g")
-		this.addObject('door',      Blocks.getBlock('door'),      true,   "d")
+		this.addCategory('doors', [{image: 'door', block: true}, {image: 'empty', block: false}])
+		this.addCategory('foods', [{image: 'food', block: false}, {image: 'empty', block: false}])
+		this.addCategory('energisers', [{image: 'energiser', block: false}, {image: 'empty', block: false}])
+		this.addObject('empty',     Blocks.getBlock('empty'),     false,  "e", 'static')
+		this.addObject('wall',      Blocks.getBlock('wall'),      true,   "w", 'static')
+		this.addObject('food',      Blocks.getBlock('food'),      false,  "f", 'dynamic')
+		this.addObject('energiser', Blocks.getBlock('energiser'), false,  "g", 'dynamic')
+		this.addObject('door',      Blocks.getBlock('door'),      true,   "d", 'dynamic')
+	},
+	addItem: function (category, symbol, name, o) {
+		this[category][symbol + this[category].id] = new Item(name, o, category)
+		this[category].array.push(this[category][symbol + this[category].id])
+		this[category].id++
 	}
 }
-
-/*var Dynamic_blocks = {
-	array: [],
-	add_block: function (name, pic, pos, block, id, in_map) {
-		if (!(name in this)) {
-			this[name] = []
-		}
-		in_map.forEach(function (cord) {
-			var new_block = new Block(name, pic, pos, block, id, cord, 'dynamic')
-			Dynamic_blocks[name].push(new_block)
-			Dynamic_blocks.array.push(new_block)
-		})
-	},
-	get_default: function () {
-		this.array.forEach(function (block) {
-			delete Dynamic_blocks[block.name]
-		})
-
-		this.array = [];
-	}
-}*/
 
 var EventBlocks = {
 	array: [],
-	add_block: function (name, pic, pos) {
+	addBlock: function (name, pic, pos) {
 		var new_block = new Buf_event(name, pic, pos)
 		this[name] = new_block
 		this.array.push(new_block)
@@ -84,12 +63,12 @@ var EventBlocks = {
 	getBlock: function (name) {
 		return this[name]
 	},
-	set_default: function () {
+	setDefault: function () {
 		this.array.forEach(function (block) {
 			delete Dynamic_blocks[block.name]
 		})
-		this.add_block('x2', Imgs.event, {x: 0, y: 0})
-		this.add_block('x3', Imgs.event, {x: 0, y: 32})
+		this.addBlock('x2', Imgs.event, {x: 0, y: 0})
+		this.addBlock('x3', Imgs.event, {x: 0, y: 32})
 	}
 
 }
@@ -154,15 +133,15 @@ var Room = {
 		}
 		Room.list.push(this);
 		Room.reposition()
-		this.set_original_img();
-		b_Controller.set_enter_to_room.call(this);
+		this.setOriginalImg();
+		b_Controller.setEnterToRoom.call(this);
 	},
 	exit: function () {
 		this.point_pos = {
 			x: 10,
 			y: 7
 		}
-		b_Controller.set_exit_from_room.call(this)
+		b_Controller.setExitFromRoom.call(this)
 		Room.list.splice(0, 1);
 		Room.reposition()
 	}

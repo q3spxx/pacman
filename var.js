@@ -3,11 +3,10 @@ empty,
 door,
 energiser,
 imgs = [],
-anim = [],
 text_buf = [],
 audio = [],
 audio_mess = [],
-enemy_arr = [],
+enemyArr = [],
 color = {
 	white: 'rgba(255,255,255,255)',
 	black: 'rgba(0,0,0,255)'
