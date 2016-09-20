@@ -37,9 +37,9 @@ var MapObjects = {
 		this[name] = new Category(states)
 	},
 	init: function () {
-		this.addCategory('doors', [{image: 'door', block: true}, {image: 'empty', block: false}])
-		this.addCategory('foods', [{image: 'food', block: false}, {image: 'empty', block: false}])
-		this.addCategory('energisers', [{image: 'energiser', block: false}, {image: 'empty', block: false}])
+		this.addCategory('doors', [{name: 'door', symbol: 'd', image: 'door', block: true}, {name: 'empty', symbol: 'e',image: 'empty', block: false}])
+		this.addCategory('foods', [{name: 'food', symbol: 'f', image: 'food', block: false}, {name: 'empty', symbol: 'e', image: 'empty', block: false}])
+		this.addCategory('energisers', [{name: 'energiser', symbol: 'g', image: 'energiser', block: false}, {name: 'empty', symbol: 'e', image: 'empty', block: false}])
 		this.addObject('empty',     Blocks.getBlock('empty'),     false,  "e", 'static')
 		this.addObject('wall',      Blocks.getBlock('wall'),      true,   "w", 'static')
 		this.addObject('food',      Blocks.getBlock('food'),      false,  "f", 'dynamic')
@@ -50,6 +50,7 @@ var MapObjects = {
 		this[category][symbol + this[category].id] = new Item(name, o, category)
 		this[category].array.push(this[category][symbol + this[category].id])
 		this[category].id++
+		return this[category].array[this[category].array.length - 1]
 	}
 }
 

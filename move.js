@@ -1,16 +1,16 @@
 var Move = {
 	set: function () {
 		if (Col.check.call(this)) {
-			var offset_check = Col.offset_check.call(this);
-			if (offset_check != false) {
-				this.pos.x += offset_check.x;
-				this.pos.y += offset_check.y;
+			var offsetCheck = Col.offsetCheck.call(this);
+			if (offsetCheck != false) {
+				this.pos.x += offsetCheck.x;
+				this.pos.y += offsetCheck.y;
 			} else {
 				return false;
 			};
 		};
-		this.pos.x += this.m_pos.x;
-		this.pos.y += this.m_pos.y;
+		this.pos.x += this.mPos.x;
+		this.pos.y += this.mPos.y;
 
 		//Portal
 		if (this.pos.x < 0) {
@@ -20,7 +20,7 @@ var Move = {
 		};
 
 		if (this.id != 4) {
-			var res = Col.check_player.call(this);
+			var res = Col.checkPlayer.call(this);
 			if (res) {
 				if (Event.status == 0 &&
 					_data.status != 'special' &&
@@ -53,8 +53,24 @@ var Move = {
 			};
 		};
 		if (this.id == 4) {
-			Col.check_item.call(this);
-			if (Event.buf_event) {
+			var cell = Col.checkCell.call(this);
+			if (cell != false) {
+				switch (cell.object.name) {
+					case 'food':
+						cell.item.changeState()
+						Sounds.step.play()
+						_Data.addPoints(20)
+						_Data.roundPoints++
+						_Data.checkEndRound()
+					break
+
+					case 'energiser':
+						cell.item.changeState()
+						_Data.addPoints(50)
+					break
+				}
+			}
+			/*if (Event.buf_event) {
 				Col.check_event.call(this)
 			};
 			if (Event.status == 1) {
@@ -62,11 +78,11 @@ var Move = {
 				if (enemy != false) {
 					Controller.kill_enemy(enemy);
 				};
-			};
+			};*/
 		};
 		return true;
 	},
-	ai_arrows: function () {
+	aiDirection: function () {
 		//действия при окончании пути
 		if (this.path.length == 0) {
 			this.stop();
@@ -77,17 +93,17 @@ var Move = {
 					var x = Player.pos.x - this.pos.x;
 					var y = Player.pos.y - this.pos.y;
 					if (x < 0) {
-						this.m_pos.x = -1;
+						this.mPos.x = -1;
 						this.curAction = 0;
 					} else if (x > 0) {
-						this.m_pos.x = 1;
+						this.mPos.x = 1;
 						this.curAction = 2;
 					};
 					if (y < 0) {
-						this.m_pos.y = -1;
+						this.mPos.y = -1;
 						this.curAction = 1;
 					} else if (y > 0) {
-						this.m_pos.y = 1;
+						this.mPos.y = 1;
 						this.curAction = 3;
 					};
 				};
@@ -157,9 +173,10 @@ var Move = {
 		};
 		// проверка видимости цели
 		if (this.behavior == "passive") {
-			var res = b_Controller.check_visibility.call(this);
+			var res = behaviorController.checkVisibility.call(this);
 			if (res) {
-				b_Controller.set_chase.call(this);
+				console.log('looked')
+				behaviorController.setChase.call(this);
 			};
 		};
 	}

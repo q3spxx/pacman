@@ -41,11 +41,26 @@ var _Tools = {
 			return sound;
 		}
 	},
-	gen_id: function () {
+	genId: function () {
 		var random = "";
 		for (var i = 0; i < 8; i++) {
 			random += Math.floor(Math.random() * 9);
 		}
 		return Number(random);
+	},
+	setInterval: function (method, ms) {
+		var id = _Tools.genId()
+		var interval = new Interval(id, method, ms, this)
+		_Data.intervals.push(interval)
+		return interval.id
+	},
+	clearInterval: function (id) {
+		for (var i = 0; i < _Data.intervals.length; i++) {
+			if (_Data.intervals[i].id == id) {
+				clearInterval(_Data.intervals[i].handle)
+				_Data.intervals.splice(i, 1)
+				return
+			};
+		}
 	}
 }

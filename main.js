@@ -6,7 +6,7 @@ var Timer = {
 	},
 	stop: function () {
 		var date = new Date()
-		console.log(date.getTime() - this.time)
+		console.log(date.getTime() - this.time + " ms")
 	}
 }
 
@@ -15,6 +15,7 @@ var Game = {
 	init: function () {
 		Timer.start()
 		this.changeInit()
+		_Data.status = "init";
 
 	},
 	changeInit: function () {
@@ -50,6 +51,14 @@ var Game = {
 			case 7:
 				console.log("Инициализация ввода...")
 				this.initControls()
+				break
+			case 8:
+				console.log("Инициализация сообщений...")
+				this.initMess()
+				break
+			case 9:
+				console.log("Запуск рендера, предстартовая проверка...")
+				this.ready()
 				break
 		}
 	},
@@ -141,8 +150,46 @@ var Game = {
 	initControls: function () {
 		Controls.keyDown.on();
 		Controls.keyUp.on();
-		return
-		ready();
+		this.status = 8
+		this.changeInit()
+	},
+	initMess: function () {
+		Mess.init()
+		Outputs.init()
+		this.status = 9
+		this.changeInit()
+	},
+	ready: function () {
+		gl.start();
+		_Data.status = "ready";
+		Mess.setMess('pressEnter')
+		this.status = 10
+		Timer.stop()
+	},
+	begin: function () {
+		Mess.hideMess('pressEnter')
+		Mess.setMess('level')
+		Sounds.begin.play();
+		setTimeout(function () {
+			Game.start()
+		}, 4000);
+	},
+	start: function () {
+		_Data.status = "isRunned";
+		Controller.start.call(Player)
+		Controller.start.call(Blinky)
+	},
+	pause: function () {
+		_Data.intervals.forEach(function (interval) {
+			interval.pause()
+		})
+		_Data.status = 'pause'
+	},
+	continue: function () {
+		_Data.intervals.forEach(function (interval) {
+			interval.continue()
+		})
+		_Data.status = 'isRunned'
 	}
 }
 
@@ -199,20 +246,7 @@ function initEnemyPosition () {
 	Room.enter.call(Paul);
 }
 
-function ready () {
-	gl.start();
-	_data.status = "ready";
-	_data.center_mess_switch = true;
-	_data.set_center_mess("press enter");
-};
 
-function start () {
-	_data.center_mess_switch = true;
-	_data.set_center_mess("Level: " + _data.level);
-	_data.status = "play";
-	Sounds.begin.play();
-	setTimeout(start_game, 4000);
-};
 function start_game () {
 	_data.center_mess_switch = false;
 	Sounds.signal.play()

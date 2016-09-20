@@ -50,7 +50,7 @@ var Controls = {
 						};
 				break
 				case 13: if (_Data.status == 'ready') {
-						start()
+						Game.begin()
 					} else if (_Data.status == 'shop') {
 						Shop.close()
 					}
@@ -61,6 +61,14 @@ var Controls = {
 				break
 				case 69: if (Special.shock.ready && Special.shock.level > 0) {Special.shock.start()}
 				break
+				case 27:
+					if (_Data.status == 'pause') {
+						Game.continue()
+						Mess.hideMess('pause')
+					} else {
+						Game.pause()
+						Mess.setMess('pause')
+					};
 			}
 			
 		};

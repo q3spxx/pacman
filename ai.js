@@ -92,13 +92,13 @@ var Astar = {
 };
 
 var ai = {
-	player_pos: {
+	playerPos: {
 		x: 10,
 		y: 15
 	},
 	hPlayer: function (n) {
-		var xd = Math.abs(n.x - this.player_pos.x);
-		var yd = Math.abs(n.y - this.player_pos.y);
+		var xd = Math.abs(n.x - this.playerPos.x);
+		var yd = Math.abs(n.y - this.playerPos.y);
 		return Math.pow(xd, 2) + Math.pow(yd, 2);
 	},
 	getMaxF: function (arr) {
@@ -113,22 +113,22 @@ var ai = {
 		});
 		return sort[0];
 	},
-	search_path: function () {
+	searchPath: function () {
 		var self = this;
 		if (((self.pos.x / 32) - (Math.floor(self.pos.x / 32))) != 0 ||
 			((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
 			return;
 		};
-		var current_pos = {
+		var currentPos = {
 			x: Math.floor(self.pos.x / 32),
 			y: Math.floor(self.pos.y / 32)
 		};
-		if (current_pos.x == self.point_pos.x && current_pos.y == self.point_pos.y) {
+		if (currentPos.x == self.pointPos.x && currentPos.y == self.pointPos.y) {
 			return;
 		};
 		self.path = [];
-		Astar.s = Astar.defineNum(current_pos);
-		Astar.e = Astar.defineNum(self.point_pos);
+		Astar.s = Astar.defineNum(currentPos);
+		Astar.e = Astar.defineNum(self.pointPos);
 		self.path = Astar.func();
 		_Map.graphClear();
 		Astar.clear();
@@ -139,12 +139,12 @@ var ai = {
 			((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
 			return;
 		};
-		var current_pos = {
+		var currentPos = {
 			x: Math.floor(self.pos.x / 32),
 			y: Math.floor(self.pos.y / 32)
 		};
 		self.path = [];
-		var num = Astar.defineNum(current_pos);
+		var num = Astar.defineNum(currentPos);
 		var neighs = _Map.graph[num].neighs.map(function (n) {
 			var f = ai.hPlayer(n);
 			return {f: f, x: n.x, y: n.y}
@@ -159,22 +159,22 @@ var ai = {
 			return;
 		};
 
-		var current_pos = {
+		var currentPos = {
 			x: Math.floor(self.pos.x / 32),
 			y: Math.floor(self.pos.y / 32)
 		};
 
-		var num = Astar.defineNum(current_pos);
+		var num = Astar.defineNum(currentPos);
 
 		var random;
 
 		do {
 			random = Math.round((_Map.graph[num].neighs.length - 1) * Math.random());
-		} while (_Map.grid[_Map.graph[num].neighs[random].x][_Map.graph[num].neighs[random].y].block);
+		} while (_Map.grid[_Map.graph[num].neighs[random].x][_Map.graph[num].neighs[random].y].object.block);
 
-		self.point_pos = _Map.graph[num].neighs[random];
+		self.pointPos = _Map.graph[num].neighs[random];
 
-		ai.search_path.call(self);
+		ai.searchPath.call(self);
 	},
 	free: function () {
 		ai.search_path.call(this);

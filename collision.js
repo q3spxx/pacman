@@ -1,45 +1,46 @@
 var Col = {
 	check: function (offset) {
-		if (this.id != 4 && this.shocked) {
+		/*if (this.id != 4 && this.shocked) {
 			return true
-		}
+		}*/
 
-		var new_pos = {};
-		new_pos.x = this.pos.x + this.m_pos.x;
-		new_pos.y = this.pos.y + this.m_pos.y;
+		var newPos = {};
+		newPos.x = this.pos.x + this.mPos.x;
+		newPos.y = this.pos.y + this.mPos.y;
 
 
 		if (offset != undefined) {
-			new_pos.x += offset.x;
-			new_pos.y += offset.y;
+			newPos.x += offset.x;
+			newPos.y += offset.y;
 		};
-
-		if (new_pos.x < 0 || new_pos.x + 32 > 672) {
+		//Portal
+		if (newPos.x < 0 || newPos.x + 32 > 672) {
 			return false
 		};
 
-		var x = Math.floor(new_pos.x / 32);
-		var y = Math.floor(new_pos.y / 32);
-		var width = Math.floor((new_pos.x + 31) / 32);
-		var height = Math.floor((new_pos.y + 31) / 32);
+		var x = Math.floor(newPos.x / 32);
+		var y = Math.floor(newPos.y / 32);
+		var width = Math.floor((newPos.x + 31) / 32);
+		var height = Math.floor((newPos.y + 31) / 32);
 		
-		if (_Map.grid[x][y].block ||
-				_Map.grid[width][height].block ||
-				_Map.grid[width][y].block ||
-				_Map.grid[x][height].block) {
+		if (_Map.grid[x][y].object.block ||
+			_Map.grid[width][height].object.block ||
+			_Map.grid[width][y].object.block ||
+			_Map.grid[x][height].object.block) {
 			return true;
 		} else {
 			return false;
 		};
 	},
-	offset_check: function () {
-		if (this.id != 4 && this.shocked) {
+	offsetCheck: function () {
+		/*if (this.id != 4 && this.shocked) {
 			return false
-		}
+		}*/
 		var offset = {};
-		if (this.m_pos.y != 0) {
+		if (this.mPos.y != 0) {
 			offset.y = 0;
 			for (var x = -20; x <= 20; x++) {
+				//Portal
 				if (this.pos.x + x < 0 || this.pos.x + x > 640) {
 					return false
 				};
@@ -50,7 +51,7 @@ var Col = {
 			};
 		};
 		offset.x = 0;
-		if (this.m_pos.x != 0) {
+		if (this.mPos.x != 0) {
 			offset.x = 0;
 			for (var y = -20; y <= 20; y++) {
 				offset.y = y;
@@ -62,15 +63,20 @@ var Col = {
 		offset.y = 0;
 		return false;
 	},
-	check_item: function () {
+	checkCell: function () {
 		if (this.pos.x < 0 ||
 				this.pos.x > 640) {
-			return;
+			return false
 		};
 		var x = Math.floor((this.pos.x + 16) / 32);
 		var y = Math.floor((this.pos.y + 16) / 32);
-		var id = _Map.grid[x][y].id;
-		if (id != 0) {
+
+		if (_Map.grid[x][y].object.type == 'dynamic') {
+			return _Map.grid[x][y]
+		} else {
+			return false
+		}
+		/*if (id != 0) {
 			if (id == 2) {
 				Sounds.step.play()
 				_Map.grid[x][y].make_empty();
@@ -92,7 +98,7 @@ var Col = {
 				Col.bitch_check()
 				Event.start();
 			};
-		};
+		};*/
 	},
 	check_enemy: function () {
 		for (var i = 0; i < enemy_arr.length; i++) {
@@ -105,7 +111,7 @@ var Col = {
 		};
 		return false;
 	},
-	check_player: function () {
+	checkPlayer: function () {
 		if (this.pos.x + 16 > Player.pos.x &&
 				this.pos.x + 16 < Player.pos.x + 32 &&
 				this.pos.y + 16 > Player.pos.y &&

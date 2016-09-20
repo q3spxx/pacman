@@ -3,10 +3,23 @@ var _Data = {
 		elem: null
 	},
 	imgsIsLoaded: false,
-	center_mess_switch: false,
-	center_mess: "",
-	set_center_mess: function (mess) {
-		this.center_mess = mess;
+	intervals: [],
+	volume: 0.1,
+	level: 1,
+	lifes: 3,
+	gameSpeed: 7,
+	roundPoints: 0,
+	scope: 0,
+	addPoints: function (points) {
+		this.scope += points
+	},
+	checkEndRound: function () {
+		if (this.roundPoints == MapObjects.foods.array.length) {
+			console.log("End round")
+		}
+	},
+	roundDefault: function () {
+		this.roundPoints = 0
 	},
 	kill: false,
 	kills: 0,
@@ -30,7 +43,6 @@ var _Data = {
 			_data.kills = 0;
 		}, 3000);
 	},
-	volume: 0.00,
 	firstblood: true,
 	change_volume: function (input) {
 		_data.volume = Number(input.value) / 100;
@@ -39,9 +51,6 @@ var _Data = {
 		});
 	},
 	status: null,
-	game_speed: 6,
-	level: 1,
-	lifes: 3,
 	reinit_level: function () {
 		setTimeout(function () {
 			console.log("reinit")

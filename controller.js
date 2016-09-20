@@ -1,10 +1,10 @@
 var Controller = {
 		start: function () {
-			this.handle = setInterval(function () {
+			this.handle = _Tools.setInterval(function () {
 
 				if (this.id != 4) {
 					switch (this.behavior) {
-						case 'chase': ai.search_path.call(this)
+						case 'chase': ai.searchPath.call(this)
 						break
 						case 'fear': ai.fear.call(this)
 						break
@@ -25,31 +25,17 @@ var Controller = {
 						case 'exit_from_room': ai.free.call(this)
 						break
 					}
-					Move.ai_arrows.call(this);
+					Move.aiDirection.call(this);
 				} else {
-					ai.player_pos.x = Math.floor((this.pos.x) / 32);
-					ai.player_pos.y = Math.floor((this.pos.y) / 32);
+					ai.playerPos.x = Math.floor((this.pos.x) / 32);
+					ai.playerPos.y = Math.floor((this.pos.y) / 32);
 				};
 
 		 		Move.set.call(this);
-			}.bind(this), this.speed);
+			}.bind(this), this.speed - _Data.gameSpeed);
 		},
 		stop: function () {
 			clearInterval(this.handle);
-		},
-		game_pause: function () {
-			_data.status = "pause";
-			enemy_arr.forEach(function (enemy) {
-				Controller.stop.call(enemy);
-			});
-			Controller.stop.call(Player);
-		},
-		game_continue: function () {
-			_data.status = "play";
-			enemy_arr.forEach(function (enemy) {
-				Controller.start.call(enemy)
-			});
-			Controller.start.call(Player)
 		},
 		kill_enemy: function (enemy) {
 			if (
@@ -154,31 +140,49 @@ var Controller = {
 		}
 	};
 
-	var b_Controller = {
-		check_visibility: function () {
+	var behaviorController = {
+		checkVisibility: function () {
 			var pos = {
-				x: Math.floor(this.pos.x / 32),
-				y: Math.floor(this.pos.y / 32)
+				x: Math.floor((this.pos.x + 16) / 32),
+				y: Math.floor((this.pos.y + 16) / 32)
+			};
+			if (pos.x == ai.playerPos.x) {
+				var distance = Math.abs(pos.y - ai.playerPos.y)
+				if (Math.abs(pos.y + this.mPos.y - ai.playerPos.y) >= distance) {
+					return false
+				}
+				while (pos.y != ai.playerPos.y) {
+					if (_Map.grid[pos.x][pos.y].object.block) {
+						return false
+					};
+					pos.y += this.mPos.y
+				}
+				return true
+			}
+			if (pos.y == ai.playerPos.y) {
+				var distance = Math.abs(pos.x - ai.playerPos.x)
+				if (Math.abs(pos.x + this.mPos.x - ai.playerPos.x) >= distance) {
+					return false
+				}
+				while (pos.x != ai.playerPos.x) {
+					if (_Map.grid[pos.x][pos.y].object.block) {
+						return false
+					};
+					pos.x += this.mPos.x
+					if (pos.x < 0) {
+						pos.x = 20
+					} else if (pos.x > 20) {
+						pos.x = 0
+					};
+				}
+				return true
 			};
 
-			while (pos.x != Math.floor((ai.player_pos.x + 16) / 32) && pos.y != Math.floor((ai.player_pos.y + 16) / 32)) {
-				if (_Map.grid[pos.x][pos.y].block) {
-					return false;
-				};
-				pos.x += this.m_pos.x;
-				pos.y += this.m_pos.y;
-				if (pos.x < 0) {
-					pos.x = 20
-				} else if (pos.x > 20) {
-					pos.x = 0
-				};
-			};
-
-			return true;
+			return false
 		},
 		setChase: function () {
 			this.behavior = "chase";
-			this.point_pos = ai.player_pos;
+			this.pointPos = ai.playerPos;
 		},
 		setFear: function () {
 			this.behavior = "fear";
@@ -207,7 +211,25 @@ var Controller = {
 		}
 	};
 
-	var Event = {
+	var Events = {
+		energiserEvent: {
+			timer: null,
+			timerDelay: 30,
+			timeToStart: 0,
+			setTimer: function () {
+				this.timeToStart = this.timerDelay
+				this.timer = _Tools.setInterval(function () {
+					this.timeToStart--
+					if (this.timeToStart == 0) {
+						this.removeTimer()
+						console.log("start")
+					}
+				}.bind(this), 1000)
+			},
+			removeTimer: function () {
+				_Tools.clearInterval(this.timer)
+			}
+		},
 		status: false,
 		update: 0,
 		duration: 5000,

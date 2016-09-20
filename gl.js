@@ -1,28 +1,36 @@
 var gl = {
 	anim: [],
+	mess: [],
+	outputs:[],
 	special: [],
 	event: [],
 	shock: [],
 	buf_event: [],
 	fps: 0,
 	ms: 0,
-	fps_timer: function () {
-		var new_date = new Date();
-		var ms = new_date.getTime();
+	fpsTimer: function () {
+		var newDate = new Date();
+		var ms = newDate.getTime();
 		gl.fps = (1000 / (ms - gl.ms)).toFixed(1);
 		gl.ms = ms;
-		map.fillStyle = 'rgb(255,255,255)';
+		map.fillStyle = color.white;
 		map.font = "16px Arial";
-		map.textBaseline = "top";
-		map.fillText("fps: " + gl.fps, 560, 10);
+		map.textBaseline = "middle";
+		map.textAlign = "left"
+		map.fillText("fps: " + gl.fps, 544, 16);
 	},
 	start: function () {
 		var date = new Date();
 		gl.ms = date.getTime();
-		Anim.handle = setInterval(Anim.changeFrame, 200);
+		Anim.handle = _Tools.setInterval(Anim.changeFrame, 200);
 		setInterval(function () {
 			gl.render();
 			gl.animationRender();
+			gl.messageRender()
+			if (Outputs.on) {
+				gl.outputsRender()
+			}
+			gl.fpsTimer();
 			/*gl.draw_special();
 			gl.draw_bomb()
 			gl.draw_shock()
@@ -35,7 +43,6 @@ var gl = {
 			gl.mess();
 			gl.draw_center_mess()
 			gl.draw_sound_mess()
-			gl.fps_timer();
 			gl.skill_icons()
 			gl.draw_shop()*/
 		}, 33);
@@ -70,14 +77,55 @@ var gl = {
 						);
 		});
 	},
-	mess: function () {
-		text_buf.forEach(function (buf) {
-			map.fillStyle = 'rgba(' + buf.color + ',1)';
-			map.font = buf.size + 'px Arial';
-			map.textBaseline = "top";
-			map.fillText(buf.text, 	buf.pos.x + Anim.type[buf.type][buf.cur_frame].x,
-															buf.pos.y + Anim.type[buf.type][buf.cur_frame].y);
+	messageRender: function () {
+		gl.mess.forEach(function (buf) {
+			var pos = buf.getPos()
+			map.fillStyle = 'rgba(' + buf.color + ', 1)';
+			var font = ""
+			if (buf.bold) {
+				font += "bold "
+			};
+			font += buf.size + 'px Arial'
+			map.font = font;
+			map.textAlign = buf.textAlign
+			map.textBaseline = buf.baseLine;
+			map.fillText(buf.getText(), pos.x, pos.y);
 		});
+	},
+	outputsRender: function () {
+		gl.outputs.forEach(function (buf) {
+			switch (buf.type) {
+				case 'text':
+					var pos = buf.getPos()
+					map.fillStyle = 'rgba(' + buf.color + ', 1)';
+					var font = ""
+					if (buf.bold) {
+						font += "bold "
+					};
+					font += buf.size + 'px Arial'
+					map.font = font;
+					map.textAlign = buf.textAlign
+					map.textBaseline = buf.baseLine;
+					map.fillText(buf.getText(), pos.x, pos.y);
+				break
+
+				case 'image':
+					var pos = buf.getPos()
+					for (var i = 0; i < buf.repeat(); i++) {
+						map.drawImage(	buf.img,
+										buf.imgX,
+										buf.imgY,
+										buf.imgW,
+										buf.imgH,
+										pos.x + i * buf.w,
+										pos.y,
+										buf.w,
+										buf.h
+										)
+					}
+				break
+			}
+		})
 	},
 	scope: function () {
 		map.fillStyle = 'rgb(255,255,255)';

@@ -8,14 +8,16 @@ audio = [],
 audio_mess = [],
 enemyArr = [],
 color = {
-	white: 'rgba(255,255,255,255)',
-	black: 'rgba(0,0,0,255)'
+	white: '255,255,255',
+	black: '0,0,0'
 },
 room_t = null,
 Imgs = {
 	icons: {}
 },
-Player,
+Player = {
+	pos: {}
+},
 Blinky,
 Pinky,
 Bob,

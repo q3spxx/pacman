@@ -1,3 +1,28 @@
+function Interval (id, method, ms, context) {
+	this.id = id
+	this.startDate = null
+	this.pauseDate = null
+	this.handle = null
+	this.context = context
+	this.method = function () {
+		this.startDate = new Date().getTime()
+		method.call(this.context)
+	}
+	this.pause = function () {
+		clearInterval(this.handle)
+		this.pauseDate = new Date().getTime()
+	}
+	this.continue = function () {
+		var time = this.ms - (this.pauseDate - this.startDate)
+		setTimeout(function () {
+			this.method.call(this.context)
+			this.handle = setInterval(this.method.bind(this), ms)
+		}.bind(this), time)
+	}
+	this.ms = ms
+	this.handle = setInterval(this.method.bind(this), ms)
+}
+
 function Grid () {
 	var grid = [];
 	for (var x = 0; x < 21; x++) {
@@ -17,7 +42,7 @@ function EventCell (x, y, type) {
 	this.type = type
 }
 function Buf_event (name, pic, pos) {
-	this.id = _Tools.gen_id()
+	this.id = _Tools.genId()
 	this.name = name
 	this.img = {}
 	this.img.pic = pic
@@ -33,7 +58,7 @@ function Buf_event (name, pic, pos) {
 }
 
 function Block (name, pic, pos) {
-	this.id = _Tools.gen_id()
+	this.id = _Tools.genId()
 	this.name = name
 	this.pic = pic
 	this.pos = pos
@@ -47,7 +72,7 @@ function Block (name, pic, pos) {
 
 
 function MapObject (name, image, block, symbol, type) {
-	this.id = _Tools.gen_id()
+	this.id = _Tools.genId()
 	this.name = name
 	this.block = block
 	this.image = image
@@ -81,6 +106,8 @@ function Item (name, o, category) {
 		this.gridLink.image = Blocks[this.states[this.curState].image]
 		this.gridLink.block = this.states[this.curState].block
 		this.gridLink.graphObject = this.states[this.curState].block
+		this.gridLink.name = this.states[this.curState].name
+		this.gridLink.symbol = this.states[this.curState].symbol
 	}
 }
 
@@ -88,7 +115,8 @@ var Cell__proto__ = {
 	setObject: function (name, symbol, category) {
 		this.object = $.extend(true, {}, MapObjects[name])
 		if (category) {
-			MapObjects.addItem(category, symbol, name, this.object)
+			var item = MapObjects.addItem(category, symbol, name, this.object)
+			this.item = item
 		};
 	}
 }
@@ -113,7 +141,7 @@ function Animation (img, x, y, w, h, totalFrames, repeat) {
 	}
 }
 function AnimationBuffer (context, name) {
-	this.id = _Tools.gen_id()
+	this.id = _Tools.genId()
 	this.pos = context.pos;
 	this.curFrame = 0;
 	this.img = context.anim[name].img
@@ -121,6 +149,52 @@ function AnimationBuffer (context, name) {
 	this.frames = context.anim[name].frames
 	this.repeat = context.anim[name].repeat;
 };
+
+function Message (place, ms, getText) {
+	this.place = place
+	this.getText = getText
+	this.ms = ms
+	messageBuffer = null
+}
+
+function MessageBuffer (getText, color, size, baseLine, textAlign, bold, getPos, offsetY, type) {
+	this.id = _Tools.genId()
+	this.getText = getText
+	this.color = color
+	this.size = size
+	this.bold = bold
+	this.baseLine = baseLine
+	this.textAlign = textAlign
+	this.offsetY = offsetY
+	this.type = type
+	this.getPos = getPos
+}
+
+function OutputTextBuffer (getText, color, size, baseLine, textAlign, bold, getPos, type) {
+	this.id = _Tools.genId()
+	this.getText = getText
+	this.color = color
+	this.size = size
+	this.bold = bold
+	this.baseLine = baseLine
+	this.textAlign = textAlign
+	this.type = type
+	this.getPos = getPos
+}
+
+function OutputImageBuffer (type, img, imgX, imgY, imgW, imgH, getPos, w, h, repeat) {
+	this.id = _Tools.genId()
+	this.type = type
+	this.img = img
+	this.imgX = imgX
+	this.imgY = imgY
+	this.imgW = imgW
+	this.imgH = imgH
+	this.getPos = getPos
+	this.w = w
+	this.h = h
+	this.repeat = repeat
+}
 
 function GraphCell (x, y, num) {
 	this.x = x
@@ -142,8 +216,8 @@ function _Player () {
 		y: 0
 	}
 	this.handle = null
-	this.curAction = 0
-	this.speed = 7
+	this.curAction = null
+	this.speed = 13
 	this.anim = Anim.lib.pacman
 	this.animationBufferId = null
 	this.isDead = function () {
@@ -171,7 +245,7 @@ function _Enemy (id, pos, anim, behavior) {
 	this.anim = anim
 	this.animationBufferId = null
 	this.curAction = 0
-	this.speed = 8
+	this.speed = 14
 	this.path = []
 	this.pointPos = {x: 0, y: 0}
 	this.behavior = behavior
@@ -186,7 +260,7 @@ function _Enemy (id, pos, anim, behavior) {
 		this.mPos.x = 0
 		this.mPos.y = 0
 		this.shocked = false
-		this.curAction = 0
+		this.curAction = null
 		this.path = []
 		this.pointPos = {x: 0, y: 0}
 		this.left()
@@ -197,26 +271,30 @@ function Character () {
 	this.left = function () {
 		this.mPos.x = -1;
 		this.mPos.y = 0;
-		this.curAction = 0;
+		if (this.curAction == 0) {return};
 		this.changeAnimation("left")
+		this.curAction = 0;
 	}
 	this.right = function () {
 		this.mPos.x = 1;
 		this.mPos.y = 0;
-		this.curAction = 2;
+		if (this.curAction == 2) {return};
 		this.changeAnimation("right")
+		this.curAction = 2;
 	}
 	this.up = function () {
 		this.mPos.x = 0;
 		this.mPos.y = -1;
-		this.curAction = 1;
+		if (this.curAction == 1) {return};
 		this.changeAnimation("up")
+		this.curAction = 1;
 	}
 	this.down = function () {
 		this.mPos.x = 0;
 		this.mPos.y = 1;
-		this.curAction = 3;
+		if (this.curAction == 3) {return};
 		this.changeAnimation("down")
+		this.curAction = 3;
 	}
 	this.stop = function () {
 		this.mPos.x = 0;
