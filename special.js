@@ -10,8 +10,8 @@ var Special = {
 		},
 		start: function () {
 			_data.status = "special";
-			Player.m_pos.x = 0;
-			Player.m_pos.y = 0;
+			Player.mPos.x = 0;
+			Player.mPos.y = 0;
 			Sounds.get_over_here.play();
 
 			var type;
@@ -208,8 +208,8 @@ var Special = {
 		},
 		start: function () {
 			_data.status = "special";
-			Player.m_pos.x = 0;
-			Player.m_pos.y = 0;
+			Player.mPos.x = 0;
+			Player.mPos.y = 0;
 			Special.bomb.handle = setInterval(function () {
 				if (this.radius < this.max_radius()) {
 					this.radius += 1;
@@ -249,7 +249,7 @@ var Special = {
 		}
 	},
 	shot: {
-		level: 0,
+		level: 10,
 		ready: true,
 		laser: false,
 		cooldown_handle: null,
@@ -258,12 +258,13 @@ var Special = {
 			return 10 * this.level
 		},
 		start: function () {
-			_data.status = "special";
-			Player.m_pos.x = 0;
-			Player.m_pos.y = 0;
+			console.log(111)
+			//_data.status = "special";
+			Player.mPos.x = 0;
+			Player.mPos.y = 0;
 
 			Sounds.shot.play()
-
+			return
 			var enemy = Col.enemy_in_line_check();
 
 			if (enemy != false) {

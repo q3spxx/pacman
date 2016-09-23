@@ -2,6 +2,7 @@ var gl = {
 	anim: [],
 	mess: [],
 	outputs:[],
+	effects: [],
 	special: [],
 	event: [],
 	shock: [],
@@ -24,7 +25,10 @@ var gl = {
 		gl.ms = date.getTime();
 		Anim.handle = _Tools.setInterval(Anim.changeFrame, 200);
 		setInterval(function () {
+
+
 			gl.render();
+			gl.effectsRender()
 			gl.animationRender();
 			gl.messageRender()
 			if (Outputs.on) {
@@ -125,6 +129,25 @@ var gl = {
 					}
 				break
 			}
+		})
+	},
+	effectsRender: function () {
+		this.effects.forEach(function (effect) {
+			effect.particles.forEach(function (particle) {
+				map.beginPath()
+				map.arc(
+						effect.x + particle.x,
+						effect.y + particle.y,
+						2,
+						0,
+						2 * Math.PI,
+						false
+						)
+				map.fillStyle = 'rgba(' + effect.color + ', 0.5)';
+				map.fill()
+				map.strokeStyle = 'rgba(' + effect.color + ', 0)'
+				map.stroke()
+			})
 		})
 	},
 	scope: function () {

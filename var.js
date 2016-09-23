@@ -9,7 +9,8 @@ audio_mess = [],
 enemyArr = [],
 color = {
 	white: '255,255,255',
-	black: '0,0,0'
+	black: '0,0,0',
+	red: '217,0,0'
 },
 room_t = null,
 Imgs = {

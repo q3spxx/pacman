@@ -208,6 +208,16 @@ function GraphCell (x, y, num) {
 	this.num = num
 }
 
+function Effect (particles, x, y) {
+	this.id = _Tools.genId()
+	this.particles = particles
+	this.color = color.red
+	this.x = x
+	this.y = y
+	this.delay = 5
+	this.intervalId = null
+}
+
 function _Player () {
 	this.id = 4
 	this.pos = {x: 0, y: 0}
