@@ -251,31 +251,29 @@ var Special = {
 	shot: {
 		level: 10,
 		ready: true,
-		laser: false,
 		cooldown_handle: null,
 		cooldown: 7,
 		chanse: function () {
 			return 10 * this.level
 		},
 		start: function () {
-			console.log(111)
-			//_data.status = "special";
-			Player.mPos.x = 0;
-			Player.mPos.y = 0;
+			/*Player.mPos.x = 0
+			Player.mPos.y = 0*/
 
 			Sounds.shot.play()
-			return
-			var enemy = Col.enemy_in_line_check();
+			var enemy = Col.enemyInLine();
 
 			if (enemy != false) {
-				if (Col.miss_check()) {
-					_data.change_sound(audio_mess)
+				if (Col.missCheck()) {
+					Effects.blood.add(enemy)
+					Mess.setMess('headShot')
 					Sounds.headshot.play()
-					Controller.kill_enemy(enemy)
+					behaviorController.killEnemy(enemy)
 				} else {
-					Anim.show_mess('miss', {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
+					Mess.setMess('miss', enemy.pos)
 				}
 			}
+			return
 
 			Special.shot.ready = false;
 			Special.shot.cooldown_handle = setInterval(function () {

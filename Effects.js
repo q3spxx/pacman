@@ -1,11 +1,13 @@
 var Effects = {
 	blood: {
-		particles: 50,
-		angle: 10,
-		maxDistance: 64,
-		Particle: function (x, y) {
+		particles: 100,
+		angle: 20,
+		maxDistance: 96,
+		maxSize: 3,
+		Particle: function (x, y, size) {
 			this.x = x
 			this.y = y
+			this.size = size
 		},
 		add: function (char) {
 
@@ -54,7 +56,8 @@ var Effects = {
 				var angle = Number((((Math.random() * this.angle) - this.angle / 2 + directionAngle) * Math.PI / 180).toFixed(2))
 				var x = Math.floor(Math.cos(angle) * randomDistance)
 				var y = Math.floor(Math.sin(angle) * randomDistance)
-				var particle = new this.Particle(x, y)
+				var size = Math.floor(Math.random() * this.maxSize)
+				var particle = new this.Particle(x, y, size)
 				particles.push(particle)
 			}
 

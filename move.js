@@ -18,21 +18,26 @@ var Move = {
 		} else if (this.pos.x > 640) {
 			this.pos.x = 0;
 		};
-
 		if (this.id != 4) {
 			var res = Col.checkPlayer.call(this);
 			if (res) {
-				if (Event.status == 0 &&
-					_data.status != 'special' &&
-					this.behavior != 'go_to_room' &&
-					this.behavior != 'enter_to_room' &&
-					this.behavior != 'exit_from_room' &&
-					this.behavior != 'in_room'
-					) {
-					Controller.game_pause();
-					Player.is_dead();
+				if (this.behavior == 'chase' ||
+					this.behavior == 'passive') {
+					if (!Events.energiser.activated) {
+						Game.stop()
+						Player.isDead();
+						_Data.lifes--
+						_Tools.setTimeout(function () {
+							if (_Data.lifes > 0) {
+								Game.default()
+								Game.start()
+							} else {
+								Mess.setMess('gameOver')
+							}
+						}, 900)
+					}
+					return
 					Sounds.dead.play()
-					_data.lifes -= 1;
 					_data.total_kills = 0
 					Sounds.signal.pause();
 					Sounds.signal.currentTime = 0;
@@ -67,18 +72,22 @@ var Move = {
 					case 'energiser':
 						cell.item.changeState()
 						_Data.addPoints(50)
+						Events.energiser.activate()
 					break
 				}
 			}
 			/*if (Event.buf_event) {
 				Col.check_event.call(this)
-			};
-			if (Event.status == 1) {
-				var enemy = Col.check_enemy.call(this);
-				if (enemy != false) {
-					Controller.kill_enemy(enemy);
-				};
 			};*/
+			if (Events.energiser.activated) {
+				var enemy = Col.checkEnemy.call(this);
+				if (
+					enemy != false && enemy.behavior == "fear" ||
+					enemy != false && enemy.behavior == "fearPreTimeout"
+					) {
+					behaviorController.killEnemy(enemy)
+				};
+			};
 		};
 		return true;
 	},
@@ -93,25 +102,29 @@ var Move = {
 					var x = Player.pos.x - this.pos.x;
 					var y = Player.pos.y - this.pos.y;
 					if (x < 0) {
-						this.mPos.x = -1;
-						this.curAction = 0;
+						this.left();
 					} else if (x > 0) {
-						this.mPos.x = 1;
-						this.curAction = 2;
+						this.right();
 					};
 					if (y < 0) {
-						this.mPos.y = -1;
-						this.curAction = 1;
+						this.up();
 					} else if (y > 0) {
-						this.mPos.y = 1;
-						this.curAction = 3;
+						this.down();
 					};
 				};
-			} else if (this.behavior == "enter_to_room") {
-				close_door();
-				b_Controller.set_in_room.call(this);
-			} else if (this.behavior == "exit_from_room") {
-				close_door();
+			} else if (this.behavior == "enterToRoom") {
+				if (Col.doorFix()) {
+					if (MapObjects.doors.d0.curState == 1) {
+						MapObjects.doors.d0.changeState()
+					}
+				}
+				behaviorController.setInRoom.call(this);
+			} else if (this.behavior == "exitFromRoom") {
+				if (Col.doorFix()) {
+					if (MapObjects.doors.d0.curState == 1) {
+						MapObjects.doors.d0.changeState()
+					}
+				}
 				if (Event.status == 1) {
 					if (Event.timeout) {
 						this.set_fear_pre_timeout_img()
@@ -120,11 +133,11 @@ var Move = {
 					}
 					b_Controller.set_fear.call(this)
 				} else {
-					b_Controller.set_passive.call(this);
+					behaviorController.setPassive.call(this);
 				};
-			} else if (this.behavior == 'go_to_room') {
-				Room.enter.call(this)
-			};
+			} else if (this.behavior == 'goToRoom') {
+				this.enterToRoom()
+			}
 			return;
 		};
 		//Удаление достигнутой точки
@@ -132,24 +145,24 @@ var Move = {
 			this.path.splice(0, 1);
 		};
 		//фикс двери
-		if (this.behavior != 'enter_to_room' && this.behavior != 'exit_from_room') {
+		/*if (this.behavior != 'enter_to_room' && this.behavior != 'exit_from_room') {
 				if (this.path[0] != undefined) {
 					if (this.path[0].x == 10 && this.path[0].y == 8) {
 						this.path = [];
 					};
 				};
-		};
+		};*/
 		//Остановка после достижения конечной точки
 		if (this.path.length == 0) {
 			this.stop();
 			return;
 		};
 
-		if (this.behavior == "enter_to_room" || this.behavior == "exit_from_room") {
+		/*if (this.behavior == "enter_to_room" || this.behavior == "exit_from_room") {
 			if (this.path[0].x == 10 && this.path[0].y == 8) {
 				open_door();
 			}
-		}
+		}*/
 
 		if (this.pos.x == this.path[0].x * 32) {
 			if (this.pos.y > this.path[0].y * 32) {

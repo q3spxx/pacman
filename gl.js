@@ -93,7 +93,7 @@ var gl = {
 			map.font = font;
 			map.textAlign = buf.textAlign
 			map.textBaseline = buf.baseLine;
-			map.fillText(buf.getText(), pos.x, pos.y);
+			map.fillText(buf.getText(), pos.x, pos.y + buf.offsetY);
 		});
 	},
 	outputsRender: function () {
@@ -138,7 +138,7 @@ var gl = {
 				map.arc(
 						effect.x + particle.x,
 						effect.y + particle.y,
-						2,
+						particle.size,
 						0,
 						2 * Math.PI,
 						false

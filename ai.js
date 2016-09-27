@@ -115,10 +115,10 @@ var ai = {
 	},
 	searchPath: function () {
 		var self = this;
-		if (((self.pos.x / 32) - (Math.floor(self.pos.x / 32))) != 0 ||
+		/*if (((self.pos.x / 32) - (Math.floor(self.pos.x / 32))) != 0 ||
 			((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
 			return;
-		};
+		};*/
 		var currentPos = {
 			x: Math.floor(self.pos.x / 32),
 			y: Math.floor(self.pos.y / 32)
@@ -170,13 +170,13 @@ var ai = {
 
 		do {
 			random = Math.round((_Map.graph[num].neighs.length - 1) * Math.random());
-		} while (_Map.grid[_Map.graph[num].neighs[random].x][_Map.graph[num].neighs[random].y].object.block);
+		} while (_Map.grid[_Map.graph[num].neighs[random].x][_Map.graph[num].neighs[random].y].object.block || _Map.graph[num].neighs[random].x == 10 && _Map.graph[num].neighs[random].y == 8);
 
 		self.pointPos = _Map.graph[num].neighs[random];
 
 		ai.searchPath.call(self);
 	},
 	free: function () {
-		ai.search_path.call(this);
+		ai.searchPath.call(this);
 	}
 };

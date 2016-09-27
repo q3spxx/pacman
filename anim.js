@@ -47,21 +47,73 @@ var Anim = {
 		this.addAnimation('blinky', 'up', Imgs.blinky, 0, 32, 32, 32, 2, true)
 		this.addAnimation('blinky', 'right', Imgs.blinky, 0, 64, 32, 32, 2, true)
 		this.addAnimation('blinky', 'down', Imgs.blinky, 0, 96, 32, 32, 2, true)
+		this.addAnimation('blinky', 'default', Imgs.blinky, 0, 128, 32, 32, 2, true)
+		this.addAnimation('blinky', 'eyesLeft', Imgs.eyes, 0, 0, 32, 32, 2, true)
+		this.addAnimation('blinky', 'eyesUp', Imgs.eyes, 0, 32, 32, 32, 2, true)
+		this.addAnimation('blinky', 'eyesRight', Imgs.eyes, 0, 64, 32, 32, 2, true)
+		this.addAnimation('blinky', 'eyesDown', Imgs.eyes, 0, 96, 32, 32, 2, true)
+		this.addAnimation('blinky', 'fearLeft', Imgs.fear, 0, 0, 32, 32, 2, true)
+		this.addAnimation('blinky', 'fearUp', Imgs.fear, 0, 32, 32, 32, 2, true)
+		this.addAnimation('blinky', 'fearRight', Imgs.fear, 0, 64, 32, 32, 2, true)
+		this.addAnimation('blinky', 'fearDown', Imgs.fear, 0, 96, 32, 32, 2, true)
+		this.addAnimation('blinky', 'fearPreTimeoutLeft', Imgs.fearPreTimeout, 0, 0, 32, 32, 2, true)
+		this.addAnimation('blinky', 'fearPreTimeoutUp', Imgs.fearPreTimeout, 0, 32, 32, 32, 2, true)
+		this.addAnimation('blinky', 'fearPreTimeoutRight', Imgs.fearPreTimeout, 0, 64, 32, 32, 2, true)
+		this.addAnimation('blinky', 'fearPreTimeoutDown', Imgs.fearPreTimeout, 0, 96, 32, 32, 2, true)
 
 		this.addAnimation('pinky', 'left', Imgs.pinky, 0, 0, 32, 32, 2, true)
 		this.addAnimation('pinky', 'up', Imgs.pinky, 0, 32, 32, 32, 2, true)
 		this.addAnimation('pinky', 'right', Imgs.pinky, 0, 64, 32, 32, 2, true)
 		this.addAnimation('pinky', 'down', Imgs.pinky, 0, 96, 32, 32, 2, true)
+		this.addAnimation('pinky', 'default', Imgs.pinky, 0, 128, 32, 32, 2, true)
+		this.addAnimation('pinky', 'eyesLeft', Imgs.eyes, 0, 0, 32, 32, 2, true)
+		this.addAnimation('pinky', 'eyesUp', Imgs.eyes, 0, 32, 32, 32, 2, true)
+		this.addAnimation('pinky', 'eyesRight', Imgs.eyes, 0, 64, 32, 32, 2, true)
+		this.addAnimation('pinky', 'eyesDown', Imgs.eyes, 0, 96, 32, 32, 2, true)
+		this.addAnimation('pinky', 'fearLeft', Imgs.fear, 0, 0, 32, 32, 2, true)
+		this.addAnimation('pinky', 'fearUp', Imgs.fear, 0, 32, 32, 32, 2, true)
+		this.addAnimation('pinky', 'fearRight', Imgs.fear, 0, 64, 32, 32, 2, true)
+		this.addAnimation('pinky', 'fearDown', Imgs.fear, 0, 96, 32, 32, 2, true)
+		this.addAnimation('pinky', 'fearPreTimeoutLeft', Imgs.fearPreTimeout, 0, 0, 32, 32, 2, true)
+		this.addAnimation('pinky', 'fearPreTimeoutUp', Imgs.fearPreTimeout, 0, 32, 32, 32, 2, true)
+		this.addAnimation('pinky', 'fearPreTimeoutRight', Imgs.fearPreTimeout, 0, 64, 32, 32, 2, true)
+		this.addAnimation('pinky', 'fearPreTimeoutDown', Imgs.fearPreTimeout, 0, 96, 32, 32, 2, true)
 
 		this.addAnimation('bob', 'left', Imgs.bob, 0, 0, 32, 32, 2, true)
 		this.addAnimation('bob', 'up', Imgs.bob, 0, 32, 32, 32, 2, true)
 		this.addAnimation('bob', 'right', Imgs.bob, 0, 64, 32, 32, 2, true)
 		this.addAnimation('bob', 'down', Imgs.bob, 0, 96, 32, 32, 2, true)
+		this.addAnimation('bob', 'default', Imgs.bob, 0, 128, 32, 32, 2, true)
+		this.addAnimation('bob', 'eyesLeft', Imgs.eyes, 0, 0, 32, 32, 2, true)
+		this.addAnimation('bob', 'eyesUp', Imgs.eyes, 0, 32, 32, 32, 2, true)
+		this.addAnimation('bob', 'eyesRight', Imgs.eyes, 0, 64, 32, 32, 2, true)
+		this.addAnimation('bob', 'eyesDown', Imgs.eyes, 0, 96, 32, 32, 2, true)
+		this.addAnimation('bob', 'fearLeft', Imgs.fear, 0, 0, 32, 32, 2, true)
+		this.addAnimation('bob', 'fearUp', Imgs.fear, 0, 32, 32, 32, 2, true)
+		this.addAnimation('bob', 'fearRight', Imgs.fear, 0, 64, 32, 32, 2, true)
+		this.addAnimation('bob', 'fearDown', Imgs.fear, 0, 96, 32, 32, 2, true)
+		this.addAnimation('bob', 'fearPreTimeoutLeft', Imgs.fearPreTimeout, 0, 0, 32, 32, 2, true)
+		this.addAnimation('bob', 'fearPreTimeoutUp', Imgs.fearPreTimeout, 0, 32, 32, 32, 2, true)
+		this.addAnimation('bob', 'fearPreTimeoutRight', Imgs.fearPreTimeout, 0, 64, 32, 32, 2, true)
+		this.addAnimation('bob', 'fearPreTimeoutDown', Imgs.fearPreTimeout, 0, 96, 32, 32, 2, true)
 
 		this.addAnimation('paul', 'left', Imgs.paul, 0, 0, 32, 32, 2, true)
 		this.addAnimation('paul', 'up', Imgs.paul, 0, 32, 32, 32, 2, true)
 		this.addAnimation('paul', 'right', Imgs.paul, 0, 64, 32, 32, 2, true)
 		this.addAnimation('paul', 'down', Imgs.paul, 0, 96, 32, 32, 2, true)
+		this.addAnimation('paul', 'default', Imgs.paul, 0, 128, 32, 32, 2, true)
+		this.addAnimation('paul', 'eyesLeft', Imgs.eyes, 0, 0, 32, 32, 2, true)
+		this.addAnimation('paul', 'eyesUp', Imgs.eyes, 0, 32, 32, 32, 2, true)
+		this.addAnimation('paul', 'eyesRight', Imgs.eyes, 0, 64, 32, 32, 2, true)
+		this.addAnimation('paul', 'eyesDown', Imgs.eyes, 0, 96, 32, 32, 2, true)
+		this.addAnimation('paul', 'fearLeft', Imgs.fear, 0, 0, 32, 32, 2, true)
+		this.addAnimation('paul', 'fearUp', Imgs.fear, 0, 32, 32, 32, 2, true)
+		this.addAnimation('paul', 'fearRight', Imgs.fear, 0, 64, 32, 32, 2, true)
+		this.addAnimation('paul', 'fearDown', Imgs.fear, 0, 96, 32, 32, 2, true)
+		this.addAnimation('paul', 'fearPreTimeoutLeft', Imgs.fearPreTimeout, 0, 0, 32, 32, 2, true)
+		this.addAnimation('paul', 'fearPreTimeoutUp', Imgs.fearPreTimeout, 0, 32, 32, 32, 2, true)
+		this.addAnimation('paul', 'fearPreTimeoutRight', Imgs.fearPreTimeout, 0, 64, 32, 32, 2, true)
+		this.addAnimation('paul', 'fearPreTimeoutDown', Imgs.fearPreTimeout, 0, 96, 32, 32, 2, true)
 	},
 	addAnimation: function (category, name, img, x, y, w, h, totalFrames, repeat) {
 		this.lib[category][name] = new Animation(img, x, y, w, h, totalFrames, repeat)
@@ -69,27 +121,19 @@ var Anim = {
 	addAnimationBuffer: function (context, name) {
 		var animationBuffer = new AnimationBuffer(context, name);
 		gl.anim.push(animationBuffer);
-		context.animationBufferId = animationBuffer.id
+		context.animationBuffer = animationBuffer
 	},
-	removeAnimationBuffer: function (animationBufferId) {
+	removeAnimationBuffer: function (animationBuffer) {
+		if (animationBuffer == null) {
+			return
+		}
 		for (var i = 0; i < gl.anim.length; i++) {
-			if (animationBufferId == gl.anim[i].id) {
+			if (animationBuffer.id == gl.anim[i].id) {
 				gl.anim.splice(i, 1)
 				return
 			};
 		}
 	}
-};
-function init_type () {
-	var type = [];
-	for (var i = 16; i >= -16; i = i - 2) {
-		var pos = {
-			x: 0,
-			y: i
-		}
-		type.push(pos);
-	};
-	Anim.type.push(type);
 };
 function change_buf_event_frame () {
 	setInterval(function () {

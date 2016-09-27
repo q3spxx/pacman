@@ -99,12 +99,12 @@ var Game = {
 			}.bind(this), 10);
 	},
 	loadAudio: function () {
-		for (key in audio_src) {
-			Sounds[key] = _Tools.audio.load('audio/' + audio_src[key])
+		for (key in audioSrc) {
+			Sounds[key] = _Tools.audio.load('audio/' + audioSrc[key])
 			audio.push(Sounds[key])
 		}
-		for (key in audio_mess_src) {
-			Sounds[key] = _Tools.audio.load('audio/' + audio_mess_src[key])
+		for (key in audioMessSrc) {
+			Sounds[key] = _Tools.audio.load('audio/' + audioMessSrc[key])
 			audio.push(Sounds[key])
 			audio_mess.push(Sounds[key])
 		}
@@ -178,10 +178,17 @@ var Game = {
 		_Data.status = "isRunned";
 		Controller.start.call(Player)
 		Controller.start.call(Blinky)
+		Controller.start.call(Pinky)
+		Controller.start.call(Bob)
+		Controller.start.call(Paul)
+		Room.start()
 	},
 	pause: function () {
 		_Data.intervals.forEach(function (interval) {
 			interval.pause()
+		})
+		_Data.timeouts.forEach(function (timeout) {
+			timeout.pause()
 		})
 		_Data.status = 'pause'
 	},
@@ -189,7 +196,33 @@ var Game = {
 		_Data.intervals.forEach(function (interval) {
 			interval.continue()
 		})
+		_Data.timeouts.forEach(function (timeout) {
+			timeout.continue()
+		})
 		_Data.status = 'isRunned'
+	},
+	stop: function () {
+		Room.stop()
+		Controller.stop.call(Player)
+		enemyArr.forEach(function (enemy) {
+			Controller.stop.call(enemy)
+		})
+		if (Events.energiser.timer) {
+			Events.energiser.removeTimer()
+		}
+		if (Events.energiser.activated) {
+			Events.energiser.deactivate()
+		}
+	},
+	default: function () {
+		Player.setDefault()
+		enemyArr.forEach(function (enemy) {
+			enemy.setDefault()
+		})
+		_Data.status = 'ready'
+	},
+	nextRound: function () {
+
 	}
 }
 

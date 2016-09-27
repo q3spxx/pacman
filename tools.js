@@ -62,5 +62,21 @@ var _Tools = {
 				return
 			};
 		}
+	},
+	setTimeout: function (method, ms) {
+		var id = _Tools.genId()
+		var timeout = new Timeout(id, method, ms, this)
+		_Data.timeouts.push(timeout)
+		return id
+	},
+	clearTimeout: function (id) {
+		for (var i = 0; i < _Data.intervals.length; i++) {
+			if (_Data.intervals[i].id == id) {
+				clearTimeout(_Data.timeouts[i].handle)
+				_Data.timeouts.splice(i, 1)
+				return
+			};
+		}
+
 	}
 }

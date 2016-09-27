@@ -115,35 +115,51 @@ var Room = {
 			y: 9
 		}
 	],
-	go: function () {
-		this.point_pos = {
+	start: function () {
+		this.handle = _Tools.setInterval(this.releaseEnemy.bind(this), 5000)
+	},
+	stop: function () {
+		_Tools.clearInterval(this.handle)
+		this.list = []
+	},
+	releaseEnemy: function () {
+		if (this.list.length > 0) {
+			this.list[0].exitFromRoom()
+		}
+	},
+	goToRoom: function () {
+		this.pointPos = {
 			x: 10,
 			y: 7
 		}
-		this.img = Imgs.go_to_room;
-		b_Controller.set_go_to_room.call(this)
+		behaviorController.setGoToRoom.call(this)
 	},
 	reposition: function () {
 		Room.list.forEach(function (enemy, i) {
-			enemy.point_pos = Room.position[i];
+			enemy.pointPos = Room.position[i];
 		});
 	},
 	enter: function () {
 		if (Room.list.length == 3) {
-			Room.exit.call(Room.list[0])
+			Room.releaseEnemy()
 		}
 		Room.list.push(this);
+		if (MapObjects.doors.d0.curState == 0) {
+			MapObjects.doors.d0.changeState()
+		}
 		Room.reposition()
-		this.setOriginalImg();
-		b_Controller.setEnterToRoom.call(this);
+		behaviorController.setEnterToRoom.call(this);
 	},
 	exit: function () {
-		this.point_pos = {
+		this.pointPos = {
 			x: 10,
 			y: 7
 		}
-		b_Controller.setExitFromRoom.call(this)
+		behaviorController.setExitFromRoom.call(this)
 		Room.list.splice(0, 1);
+		if (MapObjects.doors.d0.curState == 0) {
+			MapObjects.doors.d0.changeState()
+		}
 		Room.reposition()
 	}
 };

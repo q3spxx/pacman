@@ -47,7 +47,7 @@ var BlocksPos = {
 					'ewwwwwwwwwwwwwwwwwwwe' 
 		return res
 	},
-	getMaskPath: function () {
+	getMaskOfPath: function () {
 		var res =   'wwwwwwwwwwwwwwwwwwwww' +
 					'wweeeeeeeeweeeeeeeeww' +
 					'wwewwewwwewewwwewweww' +

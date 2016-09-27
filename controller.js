@@ -8,6 +8,8 @@ var Controller = {
 						break
 						case 'fear': ai.fear.call(this)
 						break
+						case "fearPreTimeout": ai.fear.call(this)
+						break
 						case 'passive': ai.passive.call(this)
 						break
 						case 'waiting': 
@@ -16,13 +18,13 @@ var Controller = {
 						break
 						case 'free': ai.free.call(this)
 						break
-						case 'go_to_room': ai.free.call(this)
+						case 'goToRoom': ai.free.call(this)
 						break
-						case "enter_to_room": ai.free.call(this)
+						case "enterToRoom": ai.searchPath.call(this)
 						break
-						case "in_room": ai.free.call(this)
+						case "inRoom": ai.searchPath.call(this)
 						break
-						case 'exit_from_room': ai.free.call(this)
+						case 'exitFromRoom': ai.searchPath.call(this)
 						break
 					}
 					Move.aiDirection.call(this);
@@ -35,23 +37,90 @@ var Controller = {
 			}.bind(this), this.speed - _Data.gameSpeed);
 		},
 		stop: function () {
-			clearInterval(this.handle);
-		},
-		kill_enemy: function (enemy) {
-			if (
-				enemy.behavior == 'go_to_room' ||
-				enemy.behavior == 'enter_to_room' ||
-				enemy.behavior == 'exit_from_room' ||
-				enemy.behavior == 'in_room'
-				) {
-				return
-			}
+			_Tools.clearInterval(this.handle);
+		}
+	};
 
-			enemy.path = [];
-			enemy.path[0] = {
-				x: Math.floor(enemy.pos.x /32),
-				y: Math.floor(enemy.pos.y /32)
+	var behaviorController = {
+		checkVisibility: function () {
+			var pos = {
+				x: Math.floor((this.pos.x + 16) / 32),
+				y: Math.floor((this.pos.y + 16) / 32)
+			};
+			if (pos.x == ai.playerPos.x) {
+				var distance = Math.abs(pos.y - ai.playerPos.y)
+				if (Math.abs(pos.y + this.mPos.y - ai.playerPos.y) >= distance) {
+					return false
+				}
+				while (pos.y != ai.playerPos.y) {
+					if (_Map.grid[pos.x][pos.y].object.block) {
+						return false
+					};
+					pos.y += this.mPos.y
+				}
+				return true
 			}
+			if (pos.y == ai.playerPos.y) {
+				var distance = Math.abs(pos.x - ai.playerPos.x)
+				if (Math.abs(pos.x + this.mPos.x - ai.playerPos.x) >= distance) {
+					return false
+				}
+				while (pos.x != ai.playerPos.x) {
+					if (_Map.grid[pos.x][pos.y].object.block) {
+						return false
+					};
+					pos.x += this.mPos.x
+					if (pos.x < 0) {
+						pos.x = 20
+					} else if (pos.x > 20) {
+						pos.x = 0
+					};
+				}
+				return true
+			};
+
+			return false
+		},
+		setChase: function () {
+			this.behavior = "chase";
+			this.pointPos = ai.playerPos;
+		},
+		setFear: function () {
+			this.behavior = "fear";
+		},
+		setFearPreTimeout: function () {
+			this.behavior = "fearPreTimeout"
+		},
+		setPassive: function () {
+			this.behavior = "passive";
+		},
+		setWaiting: function () {
+			this.behavior = "waiting";
+		},
+		setFree: function (point) {
+			this.point_pos = point;
+			this.behavior = "free";
+		},
+		setGoToRoom: function () {
+			this.behavior = "goToRoom"
+		},
+		setEnterToRoom: function () {
+			this.behavior = "enterToRoom"
+		},
+		setInRoom: function () {
+			this.behavior = "inRoom"
+		},
+		setExitFromRoom: function () {
+			this.behavior = 'exitFromRoom';
+		},
+		killEnemy: function (enemy) {
+			enemy.goToRoom()
+			var points = 100 * Math.pow(2, Kill.getGain())
+			_Data.addPoints(points)
+			Mess.setMess(points, enemy.pos)
+			Kill.activate()
+
+			/*
 
 			if (enemy.behavior == 'grab') {
 				enemy.pos.x = Math.floor(enemy.pos.x / 32) * 32
@@ -136,98 +205,76 @@ var Controller = {
 
 			Anim.show_mess(points, {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
 			Scope.main += points;
-			enemy.go_to_room();
-		}
-	};
-
-	var behaviorController = {
-		checkVisibility: function () {
-			var pos = {
-				x: Math.floor((this.pos.x + 16) / 32),
-				y: Math.floor((this.pos.y + 16) / 32)
-			};
-			if (pos.x == ai.playerPos.x) {
-				var distance = Math.abs(pos.y - ai.playerPos.y)
-				if (Math.abs(pos.y + this.mPos.y - ai.playerPos.y) >= distance) {
-					return false
-				}
-				while (pos.y != ai.playerPos.y) {
-					if (_Map.grid[pos.x][pos.y].object.block) {
-						return false
-					};
-					pos.y += this.mPos.y
-				}
-				return true
-			}
-			if (pos.y == ai.playerPos.y) {
-				var distance = Math.abs(pos.x - ai.playerPos.x)
-				if (Math.abs(pos.x + this.mPos.x - ai.playerPos.x) >= distance) {
-					return false
-				}
-				while (pos.x != ai.playerPos.x) {
-					if (_Map.grid[pos.x][pos.y].object.block) {
-						return false
-					};
-					pos.x += this.mPos.x
-					if (pos.x < 0) {
-						pos.x = 20
-					} else if (pos.x > 20) {
-						pos.x = 0
-					};
-				}
-				return true
-			};
-
-			return false
-		},
-		setChase: function () {
-			this.behavior = "chase";
-			this.pointPos = ai.playerPos;
-		},
-		setFear: function () {
-			this.behavior = "fear";
-		},
-		setPassive: function () {
-			this.behavior = "passive";
-		},
-		setWaiting: function () {
-			this.behavior = "waiting";
-		},
-		setFree: function (point) {
-			this.point_pos = point;
-			this.behavior = "free";
-		},
-		setGoToRoom: function () {
-			this.behavior = "go_to_room"
-		},
-		setEnterToRoom: function () {
-			this.behavior = "enter_to_room"
-		},
-		setInRoom: function () {
-			this.behavior = "in_room"
-		},
-		setExitFromRoom: function () {
-			this.behavior = 'exit_from_room';
+			enemy.go_to_room();*/
 		}
 	};
 
 	var Events = {
-		energiserEvent: {
-			timer: null,
-			timerDelay: 30,
+		energiser: {
+			activated: false,
+			duration: 10,
+			timeToEnd: 0,
+			handle: null,
+			timer: false,
+			timerHandle: null,
+			timerDelay: 5,
 			timeToStart: 0,
 			setTimer: function () {
 				this.timeToStart = this.timerDelay
-				this.timer = _Tools.setInterval(function () {
+				this.timer = true
+				this.timerHandle = _Tools.setInterval(function () {
 					this.timeToStart--
 					if (this.timeToStart == 0) {
 						this.removeTimer()
-						console.log("start")
+						this.activate()
 					}
 				}.bind(this), 1000)
 			},
 			removeTimer: function () {
-				_Tools.clearInterval(this.timer)
+				_Tools.clearInterval(this.timerHandle)
+				this.timer = false
+			},
+			deactivate: function () {
+				_Tools.clearInterval(this.handle)
+				this.activated = false
+			},
+			activate: function () {
+
+				if (this.activated) {
+					this.deactivate()
+				}
+
+				this.activated = true
+				this.timeToEnd = this.duration
+
+				enemyArr.forEach(function (enemy) {
+					if (
+						enemy.behavior == "passive" ||
+						enemy.behavior == "chase" ||
+						enemy.behavior == "fear" ||
+						enemy.behavior == "fearPreTimeout"
+						) {
+						behaviorController.setFear.call(enemy)
+					}
+				})
+
+				this.handle = _Tools.setInterval(function () {
+					if (this.timeToEnd == 0) {
+						this.deactivate()
+						enemyArr.forEach(function (enemy) {
+							if (enemy.behavior == "fearPreTimeout") {
+								behaviorController.setPassive.call(enemy)
+							}
+						})
+					} else if (this.timeToEnd == Math.floor(this.duration * 0.3)) {
+						enemyArr.forEach(function (enemy) {
+							if (enemy.behavior == "fear") {
+								behaviorController.setFearPreTimeout.call(enemy)
+							}
+						})
+					}
+					this.timeToEnd--
+				}.bind(this), 1000)
 			}
 		},
 		status: false,
@@ -362,7 +409,7 @@ var Controller = {
 			enemy_arr.forEach(function (enemy) {
 				if (
 					enemy.behavior == "in_room" || 
-					enemy.behavior == "enter_to_room" || 
+					enemy.behavior == "enterToRoom" || 
 					enemy.behavior == "exit_from_room" || 
 					enemy.behavior == "go_to_room" 
 					) {

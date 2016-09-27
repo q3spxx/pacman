@@ -100,13 +100,13 @@ var Col = {
 			};
 		};*/
 	},
-	check_enemy: function () {
-		for (var i = 0; i < enemy_arr.length; i++) {
-			if (this.pos.x + 16 > enemy_arr[i].pos.x &&
-					this.pos.x + 16 < enemy_arr[i].pos.x + 32 &&
-					this.pos.y + 16 > enemy_arr[i].pos.y &&
-					this.pos.y + 16 < enemy_arr[i].pos.y + 32) {
-				return enemy_arr[i];
+	checkEnemy: function () {
+		for (var i = 0; i < enemyArr.length; i++) {
+			if (this.pos.x + 16 > enemyArr[i].pos.x &&
+					this.pos.x + 16 < enemyArr[i].pos.x + 32 &&
+					this.pos.y + 16 > enemyArr[i].pos.y &&
+					this.pos.y + 16 < enemyArr[i].pos.y + 32) {
+				return enemyArr[i];
 			};
 		};
 		return false;
@@ -118,6 +118,17 @@ var Col = {
 				this.pos.y + 16 < Player.pos.y + 32) {
 			return true;
 		};
+	},
+	doorFix: function () {
+		for (var i = 0; i < enemyArr.length; i++) {
+			if (Math.floor(enemyArr[i].pos.x / 32) == 10 &&
+				Math.floor(enemyArr[i].pos.y / 32) == 8 ||
+				Math.floor((enemyArr[i].pos.x + 31) / 32) == 10 &&
+				Math.floor((enemyArr[i].pos.y + 31) / 32) == 8) {
+				return false
+			}
+		}
+		return true
 	},
 	special_check: function () {
 		var x = Math.floor((this.x + this.w) / 32);
@@ -213,7 +224,7 @@ var Col = {
 			return false
 		}
 	},
-	enemy_in_line_check: function () {
+	enemyInLine: function () {
 		var x = Math.floor(Player.pos.x / 32)
 		var y = Math.floor(Player.pos.y / 32)
 
@@ -230,7 +241,7 @@ var Col = {
 			break 
 		}
 
-		var enemy_pos = enemy_arr.map(function (enemy) {
+		var enemyPos = enemyArr.map(function (enemy) {
 			var pos = {
 				id: enemy.id,
 				x: Math.floor(enemy.pos.x / 32),
@@ -239,12 +250,11 @@ var Col = {
 			return pos
 		})
 
-
 		do {
 
-			for (var i = 0; i < enemy_pos.length; i++) {
-				if (enemy_pos[i].x == x && enemy_pos[i].y == y && enemy_arr[enemy_pos[i].id].behavior != 'grab' && enemy_arr[enemy_pos[i].id].behavior != 'go_to_room') {
-					return enemy_arr[enemy_pos[i].id]
+			for (var i = 0; i < enemyPos.length; i++) {
+				if (enemyPos[i].x == x && enemyPos[i].y == y && enemyArr[enemyPos[i].id].behavior != 'grab' && enemyArr[enemyPos[i].id].behavior != 'goToRoom') {
+					return enemyArr[enemyPos[i].id]
 				};
 			}
 			x += direction.x
@@ -253,10 +263,10 @@ var Col = {
 				return false
 			}
 		}
-		while (!_Map.grid[x][y].block)
+		while (!_Map.grid[x][y].object.block)
 		return false
 	},
-	miss_check: function () {
+	missCheck: function () {
 		var random = Math.floor(Math.random() * 100)
 		if (Special.shot.chanse() > random) {
 			return true

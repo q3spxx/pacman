@@ -16,26 +16,37 @@ var Controls = {
 			window.removeEventListener("keyup", Controls.handler);
 		}
 	},
+	checkButtonStatus: function (e) {
+		for (var i = 0; i < Controls.buttons[e.key].statuses.length; i++) {
+			if (Controls.buttons[e.key].statuses[i] == _Data.status) {
+				return false
+			}
+		}
+		return true
+	},
 	handler: function (e) {
-		/*if (_data.status == "special" ||
-			_data.status == "pause") {
-			Player.stop();
-			return;
-		};*/
+		if (!(e.key in Controls.buttons)) {
+			return
+		}
+
+		if (Controls.checkButtonStatus(e)) {
+			return
+		}
+
 		if (e.type == "keydown") {
 			e.preventDefault();
-			switch (e.keyCode) {
-				case 37: Player.left()
+			switch (e.key) {
+				case 'ArrowLeft': Player.left()
 				break
-				case 38: if (_Data.status == 'shop') {
+				case 'ArrowUp': if (_Data.status == 'shop') {
 							Shop.cursor.up()
 						} else {
 							Player.up()
 						};
 				break
-				case 39: Player.right()
+				case 'ArrowRight': Player.right()
 				break
-				case 40: if (_Data.status == 'shop') {
+				case 'ArrowDown': if (_Data.status == 'shop') {
 							Shop.cursor.down()
 						} else {
 							Player.down()
@@ -49,7 +60,7 @@ var Controls = {
 							Event.start()
 						};
 				break
-				case 13: if (_Data.status == 'ready') {
+				case 'Enter': if (_Data.status == 'ready') {
 						Game.begin()
 					} else if (_Data.status == 'shop') {
 						Shop.close()
@@ -57,11 +68,11 @@ var Controls = {
 				break
 				case 82: if (Special.bomb.ready && Special.bomb.level > 0) {Special.bomb.start()}
 				break
-				case 87: if (Special.shot.ready && Special.shot.level > 0) {Special.shot.start()};
+				case 'w': if (Special.shot.ready && Special.shot.level > 0) {Special.shot.start()};
 				break
 				case 69: if (Special.shock.ready && Special.shock.level > 0) {Special.shock.start()}
 				break
-				case 27:
+				case 'Escape':
 					if (_Data.status == 'pause') {
 						Game.continue()
 						Mess.hideMess('pause')
@@ -75,5 +86,28 @@ var Controls = {
 		if (e.type == "keyup") {
 			//Player.set_stop()
 		};
+	},
+	buttons: {
+		ArrowLeft: {
+			statuses: ['isRunned']
+		},
+		ArrowUp: {
+			statuses: ['isRunned']
+		},
+		ArrowRight: {
+			statuses: ['isRunned']
+		},
+		ArrowDown: {
+			statuses: ['isRunned']
+		},
+		Enter: {
+			statuses: ['ready']
+		},
+		Escape: {
+			statuses: ['isRunned', 'pause', 'playerIsDead']
+		},
+		w: {
+			statuses: ['isRunned']
+		}
 	}
 };

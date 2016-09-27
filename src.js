@@ -6,11 +6,11 @@ var image_src = {
 	bob: 'bob.png',
 	paul: 'paul.png',
 	fear: 'fear.png',
-	fear_pre_timeout: 'fear_pre_timeout.png',
+	fearPreTimeout: 'fearPreTimeout.png',
 	dead: 'dead.png',
 	cord: 'special.png',
 	yo: 'yo.png',
-	go_to_room: 'go_to_room.png',
+	eyes: 'eyes.png',
 	brick: 'brick.png',
 	shock: 'shock.png',
 	event: 'event.png'
@@ -23,7 +23,7 @@ var image_icons_src = {
 	shock: 'shock_icon.png'
 }
 
-var audio_src = {
+var audioSrc = {
 	bitch: 'bitch.mp3',
 	get_over_here: 'goh.mp3',
 	bones: 'bones.mp3',
@@ -39,7 +39,7 @@ var audio_src = {
 	shop: 'shop.mp3'
 }
 
-var audio_mess_src = {
+var audioMessSrc = {
 	firstblood: 'firstblood.mp3',
 	doublekill: 'doublekill.mp3',
 	multikill: 'multikill.mp3',

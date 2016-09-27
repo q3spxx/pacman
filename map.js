@@ -1,6 +1,7 @@
 var _Map = {
 	grid: null,
 	graph: null,
+	gridOfPath: null,
 	eventGraph: null,
 	createGrid: function () {
 		this.grid = new Grid();
@@ -39,18 +40,32 @@ var _Map = {
 		var num = 0;
 		var x = 0;
 		var y = 0;
-		var maskPath = BlocksPos.getMaskPath().split("");
-		maskPath.forEach(function (cell) {
+		this.gridOfPath = function () {
+				var arr = []
+				for (var i = 0; i < 21; i++) {
+					arr.push([])
+					for (var j = 0; j < 21; j++) {
+						arr[i].push({})
+					}
+				}
+				return arr
+			}()
+		var maskOfPath = BlocksPos.getMaskOfPath().split("");
+		maskOfPath.forEach(function (cell) {
 			switch (cell) {
 				case "w":
-					break
+					_Map.gridOfPath[x][y].block = true
+				break
 				case "e": 
 					var graphCell = new GraphCell(x, y, num)
 					graph.push(graphCell)
 					_Map.grid[x][y].object.graphObject = graphCell
+					_Map.gridOfPath[x][y].block = false
 					num++
-					break
+				break
 			}
+			_Map.gridOfPath[x][y].x = x
+			_Map.gridOfPath[x][y].y = y
 			x++
 			if (x > 20) {
 				x = 0
@@ -58,7 +73,7 @@ var _Map = {
 			}
 		})
 		graph.forEach(function (gO) {
-			var cords = _Map.searchNeighbors(_Map.grid[gO.x][gO.y], _Map.grid);
+			var cords = _Map.searchNeighbors(_Map.gridOfPath[gO.x][gO.y], _Map.gridOfPath);
 			var neighs = cords.map(function (cord) {
 				for (var i = 0; i < graph.length; i++) {
 					if (cord.x == graph[i].x && cord.y == graph[i].y) {
@@ -85,8 +100,9 @@ var _Map = {
 		return arr;
 	},
 	search: function (cell, grid, x, y) {
-			var nX = cell.x/32 + x;
-			var nY = cell.y/32 + y;
+		var nX = cell.x + x
+		var nY = cell.y + y
+
 			if (nY < 0) {
 				return false;
 			};
@@ -107,8 +123,7 @@ var _Map = {
 					return false;
 				};
 			};
-		if (!_Map.grid[nX][nY].object.block) {
-
+		if (!_Map.gridOfPath[nX][nY].block) {
 			return {x: nX, y: nY}
 		};
 		return false;
@@ -134,6 +149,23 @@ var _Map = {
 			var eventCell = new EventCell(x, y, cell)
 			x++
 			return eventCell
+		})
+	},
+	default: function () {
+		MapObjects.doors.array.forEach(function (door) {
+			if (door.curState == 1) {
+				door.changeState()
+			}
+		})
+		MapObjects.foods.array.forEach(function (food) {
+			if (food.curState == 1) {
+				food.changeState()
+			}
+		})
+		MapObjects.energisers.array.forEach(function (energiser) {
+			if (energiser.curState == 1) {
+				energiser.changeState()
+			}
 		})
 	}
 }

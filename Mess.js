@@ -43,11 +43,10 @@ var Mess = {
 			bold: false,
 			offsetY: 32,
 			getPos: function () {
-				var pos = {
+				return {
 					x: Player.pos.x + 16,
-					y: Player.pos.y + this.offsetY
+					y: Player.pos.y + 16
 				}
-				return pos
 			}
 		}
 	},
@@ -67,29 +66,46 @@ var Mess = {
 		this.addMessage('multikill', 'soundMessage', 1000, function () {
 			return 'Multi kill!'
 		})
+		this.addMessage('headShot', 'soundMessage', 1000, function () {
+			return 'Headshot!'
+		})
 		this.addMessage('level', 'centerMessage', 4000, function () {
 			return 'Level: ' + _Data.level
-		})
-		this.addMessage('points', 'pointsMessage', false, function () {
-			return 200
 		})
 	},
 	addMessage: function (name, place, ms, getText) {
 		this.lib[name] = new Message(place, ms, getText)
 	},
-	setMess: function (mess) {
-		this.addMessageBuffer(Mess.lib[mess].place,
-							  Mess.lib[mess].getText, 
-							  Mess.lib[mess].ms,
-							  mess)
+	setMess: function (mess, pos) {
+		if (mess in Mess.lib) {
+			this.addMessageBuffer(Mess.lib[mess].place,
+								  Mess.lib[mess].getText, 
+								  Mess.lib[mess].ms,
+								  mess,
+								  pos)
+		} else {
+			this.addMessageBuffer('pointsMessage', function () {return mess}, false, mess, pos)
+		}
 	},
-	addMessageBuffer: function (place, getText, ms, mess) {
-
+	addMessageBuffer: function (place, getText, ms, mess, pos) {
 		gl.mess.forEach(function (buf, i) {
-			if (buf.type == Mess.place[place].type) {
+			if (buf.type == Mess.place[place].type && buf.type != 2) {
 				gl.mess.splice(i, 1)
 			};
 		})
+		var getPos;
+		if (pos != undefined) {
+			var x = pos.x + 16
+			var y = pos.y + 16
+			getPos = function () {
+				return {
+					x: x,
+					y: y
+				}
+			}
+		} else {
+			getPos = Mess.place[place].getPos
+		}
 
 		var messageBuffer = new MessageBuffer(
 
@@ -99,13 +115,15 @@ var Mess = {
 				Mess.place[place].baseLine,
 				Mess.place[place].textAlign,
 				Mess.place[place].bold,
-				Mess.place[place].getPos,
+				getPos,
 				Mess.place[place].offsetY,
 				Mess.place[place].type
 
 			)
 		gl.mess.push(messageBuffer)
-		Mess.lib[mess].messageBuffer = messageBuffer
+		if (mess in Mess.lib) {
+			Mess.lib[mess].messageBuffer = messageBuffer
+		}
 		if (ms) {
 			var handle = setTimeout(function () {
 				Mess.removeMessageBuffer(this)
@@ -118,7 +136,7 @@ var Mess = {
 					_Tools.clearInterval(this.handle)
 					Mess.removeMessageBuffer(this)
 				};
-				this.offsetY = this.offsetY - 2
+				this.offsetY -= 2
 			}.bind(messageBuffer), 33)
 		};
 	},

@@ -23,6 +23,35 @@ function Interval (id, method, ms, context) {
 	this.handle = setInterval(this.method.bind(this), ms)
 }
 
+function Timeout (id, method, ms, context) {
+	this.id = id
+	this.startDate = new Date().getTime()
+	this.pauseDate = null
+	this.handle = null
+	this.context = context
+	this.method = function () {
+		for (var i = 0; i < _Data.timeouts.length; i++ ) {
+			if (_Data.timeouts[i].id == this.id) {
+				_Data.timeouts.splice(i, 1)
+				break
+			}
+		}
+		method.call(this.context)
+	}
+	this.pause = function () {
+		clearTimeout(this.handle)
+		this.pauseDate = new Date().getTime()
+	}
+	this.continue = function () {
+		var time = this.ms - (this.pauseDate - this.startDate)
+		this.handle = setTimeout(function () {
+			this.method.call(this)
+		}.bind(this), time)
+	}
+	this.ms = ms
+	this.handle = setTimeout(this.method.bind(this), ms)
+}
+
 function Grid () {
 	var grid = [];
 	for (var x = 0; x < 21; x++) {
@@ -105,7 +134,7 @@ function Item (name, o, category) {
 
 		this.gridLink.image = Blocks[this.states[this.curState].image]
 		this.gridLink.block = this.states[this.curState].block
-		this.gridLink.graphObject = this.states[this.curState].block
+		this.gridLink.graphObject.block = this.states[this.curState].block
 		this.gridLink.name = this.states[this.curState].name
 		this.gridLink.symbol = this.states[this.curState].symbol
 	}
@@ -142,6 +171,7 @@ function Animation (img, x, y, w, h, totalFrames, repeat) {
 }
 function AnimationBuffer (context, name) {
 	this.id = _Tools.genId()
+	this.name = name
 	this.pos = context.pos;
 	this.curFrame = 0;
 	this.img = context.anim[name].img
@@ -229,10 +259,11 @@ function _Player () {
 	this.curAction = null
 	this.speed = 13
 	this.anim = Anim.lib.pacman
-	this.animationBufferId = null
+	this.animationBuffer = null
 	this.isDead = function () {
 		this.stop();
 		this.changeAnimation("dead")
+		_Data.status = "playerIsDead"
 	}
 	this.setDefault = function () {
 		this.pos.x = 320
@@ -253,7 +284,7 @@ function _Enemy (id, pos, anim, behavior) {
 	}
 	this.handle = null
 	this.anim = anim
-	this.animationBufferId = null
+	this.animationBuffer = null
 	this.curAction = 0
 	this.speed = 14
 	this.path = []
@@ -272,8 +303,12 @@ function _Enemy (id, pos, anim, behavior) {
 		this.shocked = false
 		this.curAction = null
 		this.path = []
-		this.pointPos = {x: 0, y: 0}
-		this.left()
+		this.pointPos = {x: this.default.pos.x / 32,
+						 y: this.default.pos.y / 32}
+		this.changeAnimation('default')
+		if (this.default.behavior == "inRoom") {
+			Room.list.push(this)
+		}
 	}
 }
 
@@ -281,57 +316,143 @@ function Character () {
 	this.left = function () {
 		this.mPos.x = -1;
 		this.mPos.y = 0;
-		if (this.curAction == 0) {return};
-		this.changeAnimation("left")
 		this.curAction = 0;
+		if (this.id != 4 && this.behavior == "goToRoom" ||
+			this.id != 4 && this.behavior == "enterToRoom") {
+			if (this.animationBuffer.name != 'eyesLeft') {
+				this.changeAnimation("eyesLeft")
+			} else if (this.id != 4 && this.behavior == "fear") {
+				this.changeAnimation("fearLeft")
+			}
+			return
+		} else if (this.id != 4 && this.behavior == "fear") {
+			if (this.animationBuffer.name != 'fearLeft') {
+				this.changeAnimation("fearLeft")
+			}
+			return
+		} else if (this.id != 4 && this.behavior == "fearPreTimeout") {
+			if (this.animationBuffer.name != 'fearPreTimeoutLeft') {
+				this.changeAnimation("fearPreTimeoutLeft")
+			}
+			return
+		}
+		if (this.animationBuffer == null || this.animationBuffer.name != 'left') {
+			this.changeAnimation("left")
+		}
 	}
 	this.right = function () {
 		this.mPos.x = 1;
 		this.mPos.y = 0;
-		if (this.curAction == 2) {return};
-		this.changeAnimation("right")
 		this.curAction = 2;
+		if (this.id != 4 && this.behavior == "goToRoom" ||
+			this.id != 4 && this.behavior == "enterToRoom") {
+			if (this.animationBuffer.name != 'eyesRight') {
+				this.changeAnimation("eyesRight")
+			} else if (this.id != 4 && this.behavior == "fear") {
+				this.changeAnimation("fearRight")
+			}
+			return
+		} else if (this.id != 4 && this.behavior == "fear") {
+			if (this.animationBuffer.name != 'fearRight') {
+				this.changeAnimation("fearRight")
+			}
+			return
+		} else if (this.id != 4 && this.behavior == "fearPreTimeout") {
+			if (this.animationBuffer.name != 'fearPreTimeoutRight') {
+				this.changeAnimation("fearPreTimeoutRight")
+			}
+			return
+		}
+		if (this.animationBuffer == null || this.animationBuffer.name != 'right') {
+			this.changeAnimation("right")
+		}
 	}
 	this.up = function () {
 		this.mPos.x = 0;
 		this.mPos.y = -1;
-		if (this.curAction == 1) {return};
-		this.changeAnimation("up")
 		this.curAction = 1;
+		if (this.id != 4 && this.behavior == "goToRoom" ||
+			this.id != 4 && this.behavior == "enterToRoom") {
+			if (this.animationBuffer.name != 'eyesUp') {
+				this.changeAnimation("eyesUp")
+			} else if (this.id != 4 && this.behavior == "fear") {
+				this.changeAnimation("fearUp")
+			}
+			return
+		} else if (this.id != 4 && this.behavior == "fear") {
+			if (this.animationBuffer.name != 'fearUp') {
+				this.changeAnimation("fearUp")
+			}
+			return
+		} else if (this.id != 4 && this.behavior == "fearPreTimeout") {
+			if (this.animationBuffer.name != 'fearPreTimeoutUp') {
+				this.changeAnimation("fearPreTimeoutUp")
+			}
+			return
+		}
+		if (this.animationBuffer == null || this.animationBuffer.name != 'up') {
+			this.changeAnimation("up")
+		}
 	}
 	this.down = function () {
 		this.mPos.x = 0;
 		this.mPos.y = 1;
-		if (this.curAction == 3) {return};
-		this.changeAnimation("down")
 		this.curAction = 3;
+		if (this.id != 4 && this.behavior == "goToRoom" ||
+			this.id != 4 && this.behavior == "enterToRoom") {
+			if (this.animationBuffer.name != 'eyesDown') {
+				this.changeAnimation("eyesDown")
+			}
+			return
+		} else if (this.id != 4 && this.behavior == "fear") {
+			if (this.animationBuffer.name != 'fearDown') {
+				this.changeAnimation("fearDown")
+			}
+			return
+		} else if (this.id != 4 && this.behavior == "fearPreTimeout") {
+			if (this.animationBuffer.name != 'fearPreTimeoutDown') {
+				this.changeAnimation("fearPreTimeoutDown")
+			}
+			return
+		}
+		if (this.animationBuffer == null || this.animationBuffer.name != 'down') {
+			this.changeAnimation("down")
+		}
 	}
 	this.stop = function () {
 		this.mPos.x = 0;
 		this.mPos.y = 0;
+		this.curAction = 4
+		if (this.id != 4 && this.behavior == 'goToRoom' ||
+			this.id != 4 && this.behavior == 'enterToRoom') {
+			return
+		}
+		if (this.id != 4 && this.animationBuffer.name != 'default') {
+			this.changeAnimation('default')
+		}
 	}
 	this.changeAnimation = function (name) {
-		Anim.removeAnimationBuffer(this.animationBufferId)
+		Anim.removeAnimationBuffer(this.animationBuffer)
 		Anim.addAnimationBuffer(this, name)
 	}
 }
 
 function AIPrototype () {
-	this.setFearImg = function () {
-		this.img = Imgs.fear;
-	};
 	this.setFearPreTimeoutImg = function () {
 		this.img = Imgs.fear_pre_timeout;
 	};
-	this.set_goToRoomImg = function () {
-		this.img = Imgs.go_to_room;
-	};
+	this.enterToRoom = function () {
+		if (this.behavior == "goToRoom") {
+			Room.enter.call(this)
+		}
+	}
 	this.goToRoom = function () {
-
-		Room.go.call(this)
+		Room.goToRoom.call(this)
 	};
 	this.exitFromRoom = function () {
-		Room.exit.call(this)
+		if (this.behavior == "inRoom") {
+			Room.exit.call(this)
+		}
 	};
 };
 

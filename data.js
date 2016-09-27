@@ -4,10 +4,11 @@ var _Data = {
 	},
 	imgsIsLoaded: false,
 	intervals: [],
+	timeouts: [],
 	volume: 0.1,
 	level: 1,
 	lifes: 3,
-	gameSpeed: 7,
+	gameSpeed: 5,
 	roundPoints: 0,
 	scope: 0,
 	addPoints: function (points) {
@@ -16,6 +17,13 @@ var _Data = {
 	checkEndRound: function () {
 		if (this.roundPoints == MapObjects.foods.array.length) {
 			console.log("End round")
+			this.level++
+			this.roundPoints = 0
+
+			Game.stop()
+			Game.default()
+			_Map.default()
+			Game.begin()
 		}
 	},
 	roundDefault: function () {
@@ -87,3 +95,32 @@ var _Data = {
 		});
 	}
 };
+
+var Kill = {
+	gain: 1,
+	getGain: function () {
+		return this.gain
+	},
+	timer: false,
+	delay: 5,
+	timeToEnd: 0,
+	handle: null,
+	activate: function () {
+		if (this.timer) {
+			_Tools.clearInterval(this.handle)
+		}
+
+		this.gain++
+		this.timer = true
+		this.timeToEnd = this.delay
+
+		this.handle = _Tools.setInterval(function () {
+			if (this.timeToEnd == 0) {
+				this.gain = 1
+				this.timer = false
+				_Tools.clearInterval(this.handle)
+			}
+			this.timeToEnd--
+		}.bind(this), 1000)
+	}
+}
