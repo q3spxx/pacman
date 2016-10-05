@@ -180,6 +180,44 @@ function AnimationBuffer (context, name) {
 	this.repeat = context.anim[name].repeat;
 };
 
+function LowLayerBuffer (img, getParams, ms) {
+	this.start = new Date().getTime()
+	this.id = _Tools.genId()
+	this.pic = {
+		img: img,
+		x: 0,
+		y: 0,
+		w: 0,
+		h: 0
+	}
+	this.pos = {
+		x: 0,
+		y: 0,
+		w: 0,
+		h: 0
+	}
+	this.ms = ms
+	this.getParams = getParams
+	this.getParams()
+	this.handle = _Tools.setInterval(function () {
+		var date = new Date().getTime()
+		if (date - this.start > this.ms) {
+			this.removeBUffer.call(this)
+			return
+		}
+		this.getParams()
+	}.bind(this), 33)
+	this.__proto__.removeBUffer = function () {
+		_Tools.clearInterval(this.handle)
+		for (var i = 0; i < gl.lowLayer.length; i++) {
+			if (this.id = gl.lowLayer[i].id) {
+				gl.lowLayer.splice(i, 1)
+				return
+			}
+		}
+	}
+}
+
 function Message (place, ms, getText) {
 	this.place = place
 	this.getText = getText

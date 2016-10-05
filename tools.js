@@ -15,9 +15,43 @@ var _Tools = {
 	},
 	inputs: {
 		volume: {
-			setValue: function (value) {
-				document.getElementById('volume').value = value * 100;
+			mousedown: false,
+			y: 0,
+			up: function () {
+				if (_Data.volume < 1) {
+					_Data.volume = _Data.volume + 0.01
+					_Data.volume = Number(_Data.volume.toFixed(2))
+				}
+				Sounds.changeVolume()
+				this.rotate()
+			}, 
+			down: function () {
+				if (_Data.volume > 0) {
+					_Data.volume = _Data.volume - 0.01
+					_Data.volume = Number(_Data.volume.toFixed(2))
+				}
+				Sounds.changeVolume()
+				this.rotate()
+			},
+			changeVolume: function (e) {
+				if (this.mousedown) {
+					if (this.y > e.clientY) {
+						this.up()
+					} else {
+						this.down()
+					}
+				}
+			},
+			rotate: function () {
+				$('#volume')[0].style.transform = 'rotate(' + Math.floor(_Data.volume * 270) + 'deg)'
+			},
+			mousedownEnable: function () {
+				this.mousedown = true
+			},
+			mousedownDisable: function () {
+				this.mousedown = false
 			}
+
 		}
 	},
 	img: {

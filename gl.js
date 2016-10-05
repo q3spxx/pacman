@@ -4,6 +4,7 @@ var gl = {
 	outputs:[],
 	effects: [],
 	special: [],
+	lowLayer: [],
 	event: [],
 	shock: [],
 	buf_event: [],
@@ -28,6 +29,7 @@ var gl = {
 
 
 			gl.render();
+			gl.lowLayerRender()
 			gl.effectsRender()
 			gl.animationRender();
 			gl.messageRender()
@@ -35,6 +37,7 @@ var gl = {
 				gl.outputsRender()
 			}
 			gl.fpsTimer();
+			//gl.postRender()
 			/*gl.draw_special();
 			gl.draw_bomb()
 			gl.draw_shock()
@@ -148,6 +151,23 @@ var gl = {
 				map.strokeStyle = 'rgba(' + effect.color + ', 0)'
 				map.stroke()
 			})
+		})
+	},
+	postRender: function () {
+		map.drawImage(Imgs.elt, 0, 0, 672, 672, 0, 0, 672, 672)
+	},
+	lowLayerRender: function () {
+		this.lowLayer.forEach(function (buf) {
+			map.drawImage(	buf.pic.img,
+							buf.pic.x,
+							buf.pic.y,
+							buf.pic.w,
+							buf.pic.h,
+							buf.pos.x,
+							buf.pos.y,
+							buf.pos.w,
+							buf.pos.h
+							)
 		})
 	},
 	scope: function () {

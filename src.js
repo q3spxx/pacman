@@ -6,6 +6,10 @@ var image_src = {
 	bob: 'bob.png',
 	paul: 'paul.png',
 	fear: 'fear.png',
+	blinkyFear: 'blinkyFear.png',
+	pinkyFear: 'pinkyFear.png',
+	bobFear: 'bobFear.png',
+	paulFear: 'paulFear.png',
 	fearPreTimeout: 'fearPreTimeout.png',
 	dead: 'dead.png',
 	cord: 'special.png',
@@ -13,7 +17,9 @@ var image_src = {
 	eyes: 'eyes.png',
 	brick: 'brick.png',
 	shock: 'shock.png',
-	event: 'event.png'
+	event: 'event.png',
+	elt: 'elt.png',
+	fireOfShot: 'fireOfShot.png'
 }
 
 var image_icons_src = {

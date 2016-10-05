@@ -2,6 +2,11 @@ var Sounds = {
 	on: false,
 	mess: '',
 	update: false,
+	changeVolume: function () {
+		audio.forEach(function (sound) {
+				sound.volume = _Data.volume;
+		})
+	},
 	show_mess: function (mess) {
 		if (Sounds.on) {
 			Sounds.update = true

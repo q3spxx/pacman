@@ -1,4 +1,24 @@
 var Special = {
+	playerStop: function () {
+		Player.mPos.x = 0
+		Player.mPos.y = 0
+	},
+	playerGo: function () {
+		switch (Player.curAction) {
+			case 0:
+				Player.left()
+			break
+			case 1:
+				Player.up()
+			break
+			case 2:
+				Player.right()
+			break
+			case 3:
+				Player.down()
+			break
+		}
+	},
 	get_over_here: {
 		level: 0,
 		cooldown_handle: null,
@@ -249,7 +269,7 @@ var Special = {
 		}
 	},
 	shot: {
-		level: 10,
+		level: 1,
 		ready: true,
 		cooldown_handle: null,
 		cooldown: 7,
@@ -257,10 +277,14 @@ var Special = {
 			return 10 * this.level
 		},
 		start: function () {
-			/*Player.mPos.x = 0
-			Player.mPos.y = 0*/
+			Special.playerStop()
+			_Tools.setTimeout(function () {
+				Special.playerGo()
+			}, 200)
 
 			Sounds.shot.play()
+			var buffer = new LowLayerBuffer(Imgs.fireOfShot, this.getParams, 200)
+			gl.lowLayer.push(buffer)
 			var enemy = Col.enemyInLine();
 
 			if (enemy != false) {
@@ -286,15 +310,49 @@ var Special = {
 				}
 			}, 1000)
 
-			_data.status = "play";
+		},
+		getParams: function () {
+
 			switch (Player.curAction) {
-				case 0: Player.left();
+				case 0:
+					this.pic.x = 0
+					this.pic.y = 0
+					this.pic.w = 96
+					this.pic.h = 32
+					this.pos.x = Player.pos.x - 68
+					this.pos.y = Player.pos.y
+					this.pos.w = 96
+					this.pos.h = 32
 				break
-				case 1: Player.up();
+				case 1:
+					this.pic.x = 96
+					this.pic.y = 0
+					this.pic.w = 32
+					this.pic.h = 96
+					this.pos.x = Player.pos.x
+					this.pos.y = Player.pos.y - 68
+					this.pos.w = 32
+					this.pos.h = 96
 				break
-				case 2: Player.right();
+				case 2:
+					this.pic.x = 128
+					this.pic.y = 0
+					this.pic.w = 96
+					this.pic.h = 32
+					this.pos.x = Player.pos.x + 4
+					this.pos.y = Player.pos.y
+					this.pos.w = 96
+					this.pos.h = 32
 				break
-				case 3: Player.down();
+				case 3:
+					this.pic.x = 224
+					this.pic.y = 0
+					this.pic.w = 32
+					this.pic.h = 96
+					this.pos.x = Player.pos.x
+					this.pos.y = Player.pos.y + 4
+					this.pos.w = 32
+					this.pos.h = 96
 				break
 			}
 		}

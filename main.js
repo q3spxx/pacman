@@ -67,7 +67,20 @@ var Game = {
 		_Tools.canvas.setSize(672, 672);
 		map = _Tools.canvas.getContext('2d');
 
-		_Tools.inputs.volume.setValue(_Data.volume)
+		$('body').on('mousemove', function (e) {
+			e.isDefaultPrevented()
+			_Tools.inputs.volume.changeVolume(e)
+		})
+		$('#volume').on('mousedown', function (e) {
+			e.isDefaultPrevented()
+			_Tools.inputs.volume.y = e.clientY
+			_Tools.inputs.volume.mousedownEnable(e)
+		})
+		$('#volume').on('mouseup', function (e) {
+			e.isDefaultPrevented()
+			_Tools.inputs.volume.mousedownDisable()
+		})
+		_Tools.inputs.volume.rotate()
 		this.status = 1
 		this.changeInit()
 	},
@@ -109,12 +122,11 @@ var Game = {
 			audio_mess.push(Sounds[key])
 		}
 
+		Sounds.changeVolume()
+
 		Sounds.signal.loop = true;
 		Sounds.shop.loop = true
 
-		audio.forEach(function (sound) {
-				sound.volume = _Data.volume;
-		})
 		console.log("Загрузка аудио 100%")
 		this.status = 3
 		this.changeInit()
