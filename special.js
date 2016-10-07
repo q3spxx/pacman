@@ -19,21 +19,34 @@ var Special = {
 			break
 		}
 	},
-	get_over_here: {
-		level: 0,
-		cooldown_handle: null,
+	cord: {
+		level: 10,
+		distance: 0,
+		status: 'notActive',
+		enemy: false,
+		emitter: false,
+		bloodLine: {
+			x: 0,
+			y: 0
+		},
+		cooldownHandle: null,
 		cooldown: 5,
 		ready: true,
 		handle: null,
-		max_height: function () {
-			return 64 + this.level * 52
+		maxDistance: function () {
+			return this.level * 64
 		},
 		start: function () {
-			_data.status = "special";
+			_Data.status = "special";
 			Player.mPos.x = 0;
 			Player.mPos.y = 0;
-			Sounds.get_over_here.play();
+			Sounds.getOverHere.play();
 
+			this.status = 'runned'
+
+			var buffer = new LowLayerBuffer(Imgs.cord, this.getParams, 10000)
+			gl.lowLayer.push(buffer)
+			return
 			var type;
 
 			var img = {
@@ -97,6 +110,196 @@ var Special = {
 					Special.get_over_here.cooldown -= 1
 				}
 			}, 1000)
+		},
+		getParams: function () {
+
+			var pic = {
+				x: 0,
+				y: 0,
+				pos: {
+					x: Player.pos.x + 14,
+					y: Player.pos.y + 14
+				}
+			}
+
+			if (Special.cord.status == 'runned') {
+				Special.cord.distance += 30
+			} else if (Special.cord.status == 'return') {
+				Special.cord.distance -= 30
+			}
+
+			switch (Player.curAction) {
+				case 0:
+					pic.w = Special.cord.distance
+					pic.h = 4
+					pic.pos.w = Special.cord.distance * -1
+					pic.pos.h = 4
+				break
+				case 1:
+					pic.w = 4
+					pic.h = Special.cord.distance
+					pic.pos.w = 4
+					pic.pos.h = Special.cord.distance * -1
+				break
+				case 2:
+					pic.w = Special.cord.distance
+					pic.h = 4
+					pic.pos.w = Special.cord.distance
+					pic.pos.h = 4
+				break
+				case 3:
+					pic.w = 4
+					pic.h = Special.cord.distance
+					pic.pos.w = 4
+					pic.pos.h = Special.cord.distance
+				break
+			}
+			if (Math.abs(pic.pos.w) > Special.cord.maxDistance() ||
+				Math.abs(pic.pos.h) > Special.cord.maxDistance()) {
+				Special.cord.status = 'return'
+				return
+			}
+			if (pic.pos.x + pic.pos.w >= 672 ||
+				pic.pos.x + pic.pos.w < 0 ||
+				_Map.grid[Math.floor((pic.pos.x + pic.pos.w) / 32)]
+						 [Math.floor((pic.pos.y + pic.pos.h) / 32)].object.block) {
+				Special.cord.status = 'return'
+				switch (Player.curAction) {
+					case 0:
+						pic.pos.w = (Math.floor((pic.pos.x + pic.pos.w)  / 32) * 32) - pic.pos.x + 32
+					break
+					case 1:
+						pic.pos.h = (Math.floor((pic.pos.y + pic.pos.h)  / 32) * 32) - pic.pos.y + 32
+					break
+					case 2:
+						pic.pos.w = (Math.floor((pic.pos.x + pic.pos.w)  / 32) * 32) - pic.pos.x
+					break
+					case 3:
+						pic.pos.h = (Math.floor((pic.pos.y + pic.pos.h)  / 32) * 32) - pic.pos.y
+					break
+				}
+			}
+
+			if (Special.cord.enemy) {
+				Special.cord.emitter.pos.x = pic.pos.x + pic.pos.w
+				Special.cord.emitter.pos.y = pic.pos.y + pic.pos.h
+				switch (Player.curAction) {
+					case 0:
+						Special.cord.enemy.pos.x = pic.pos.x + pic.pos.w - 	16				
+						Special.cord.enemy.pos.y = pic.pos.y -  14				
+					break
+					case 1:
+						Special.cord.enemy.pos.x = pic.pos.x -  14				
+						Special.cord.enemy.pos.y = pic.pos.y + pic.pos.h - 	16				
+					break
+					case 2:
+						Special.cord.enemy.pos.x = pic.pos.x + pic.pos.w + 	16				
+						Special.cord.enemy.pos.y = pic.pos.y -  14				
+					break
+					case 3:
+						Special.cord.enemy.pos.x = pic.pos.x -  14				
+						Special.cord.enemy.pos.y = pic.pos.y + pic.pos.h + 	16				
+					break
+				}
+
+			}
+
+			if (Special.cord.distance <= 0) {
+				Special.cord.distance = 0
+				Special.cord.status = "notActive"
+				this.removeBuffer()
+				if (Special.cord.enemy) {
+					behaviorController.killEnemy(Special.cord.enemy)
+					Special.cord.enemy = false
+					Special.cord.emitter.remove()
+					Special.cord.emitter = false
+				}
+				_Data.status = 'isRunned'
+			}
+
+			if (Special.cord.status == 'runned') {
+				for (var i = 0; i < enemyArr.length; i++) {
+					if (
+						pic.pos.x + pic.pos.w + 2 > enemyArr[i].pos.x &&
+						pic.pos.x + pic.pos.w + 2 < enemyArr[i].pos.x + 32 &&
+						pic.pos.y + pic.pos.h + 2 > enemyArr[i].pos.y &&
+						pic.pos.y + pic.pos.h + 2 < enemyArr[i].pos.y + 32
+						) {
+						if (enemyArr[i].behavior == 'goToRoom') {
+							continue
+						}
+						Special.cord.enemy = enemyArr[i]
+						Special.cord.enemy.path = []
+						Special.cord.enemy.mPos.x = 0
+						Special.cord.enemy.mPos.y = 0
+						behaviorController.setIsBusted.call(Special.cord.enemy)
+						Special.cord.status = 'return'
+
+
+						switch (Player.curAction) {
+							case 0:
+								pic.pos.w = Special.cord.enemy.pos.x - pic.pos.x + 16
+							break
+							case 1:
+								pic.pos.h = Special.cord.enemy.pos.y - pic.pos.y + 16
+							break
+							case 2:
+								pic.pos.w = pic.pos.x - Special.cord.enemy.pos.x + 16
+							break
+							case 3:
+								pic.pos.h = pic.pos.y - Special.cord.enemy.pos.y + 16
+							break
+						}
+						Special.cord.emitter = Effects.emitter.add(Imgs.blood, pic.pos.x + pic.pos.w, pic.pos.y + pic.pos.h, 16, 8, 50, 20, Effects.emitter.lib.line)
+						Special.cord.bloodLine.x = Special.cord.enemy.pos.x
+						Special.cord.bloodLine.y = Special.cord.enemy.pos.y
+						var lowLayer = new LowLayerBuffer(Imgs.bloodLine, function () {
+							if (!Special.cord.enemy) {
+								return
+							}
+							var bloodLine = {
+								pos: {}
+							}
+							bloodLine.y = 0
+							bloodLine.pos.x = Special.cord.bloodLine.x
+							bloodLine.pos.y = Special.cord.bloodLine.y
+							bloodLine.pos.w = Special.cord.enemy.pos.x - Special.cord.bloodLine.x + 32
+							bloodLine.pos.h = Special.cord.enemy.pos.y - Special.cord.bloodLine.y + 64
+							switch (Player.curAction) {
+								case 0:
+									bloodLine.x = 0
+									bloodLine.w = 96
+									bloodLine.h = 32
+
+								break
+								case 1:
+									bloodLine.x = 96
+									bloodLine.w = 32
+									bloodLine.h = 96
+								break
+								case 2:
+									bloodLine.x = 128
+									bloodLine.w = 96
+									bloodLine.h = 32
+								break
+								case 3:
+									bloodLine.x = 160
+									bloodLine.w = 32
+									bloodLine.h = 96
+								break
+							}
+						this.picArr = []
+						this.picArr.push(bloodLine)
+						}, 10000)
+						gl.lowLayer.push(lowLayer)
+						break
+					}
+				}
+			}
+
+			this.picArr = []
+			this.picArr.push(pic)
+
 		},
 		return_cord: function (e) {
 			var enemy = e;
@@ -269,7 +472,7 @@ var Special = {
 		}
 	},
 	shot: {
-		level: 1,
+		level: 10,
 		ready: true,
 		cooldown_handle: null,
 		cooldown: 7,
@@ -313,48 +516,54 @@ var Special = {
 		},
 		getParams: function () {
 
+			this.picArr = []
+			var pic = {
+				pos: {}
+			}
+
 			switch (Player.curAction) {
 				case 0:
-					this.pic.x = 0
-					this.pic.y = 0
-					this.pic.w = 96
-					this.pic.h = 32
-					this.pos.x = Player.pos.x - 68
-					this.pos.y = Player.pos.y
-					this.pos.w = 96
-					this.pos.h = 32
+					pic.x = 0
+					pic.y = 0
+					pic.w = 96
+					pic.h = 32
+					pic.pos.x = Player.pos.x - 68
+					pic.pos.y = Player.pos.y
+					pic.pos.w = 96
+					pic.pos.h = 32
 				break
 				case 1:
-					this.pic.x = 96
-					this.pic.y = 0
-					this.pic.w = 32
-					this.pic.h = 96
-					this.pos.x = Player.pos.x
-					this.pos.y = Player.pos.y - 68
-					this.pos.w = 32
-					this.pos.h = 96
+					pic.x = 96
+					pic.y = 0
+					pic.w = 32
+					pic.h = 96
+					pic.pos.x = Player.pos.x
+					pic.pos.y = Player.pos.y - 68
+					pic.pos.w = 32
+					pic.pos.h = 96
 				break
 				case 2:
-					this.pic.x = 128
-					this.pic.y = 0
-					this.pic.w = 96
-					this.pic.h = 32
-					this.pos.x = Player.pos.x + 4
-					this.pos.y = Player.pos.y
-					this.pos.w = 96
-					this.pos.h = 32
+					pic.x = 128
+					pic.y = 0
+					pic.w = 96
+					pic.h = 32
+					pic.pos.x = Player.pos.x + 4
+					pic.pos.y = Player.pos.y
+					pic.pos.w = 96
+					pic.pos.h = 32
 				break
 				case 3:
-					this.pic.x = 224
-					this.pic.y = 0
-					this.pic.w = 32
-					this.pic.h = 96
-					this.pos.x = Player.pos.x
-					this.pos.y = Player.pos.y + 4
-					this.pos.w = 32
-					this.pos.h = 96
+					pic.x = 224
+					pic.y = 0
+					pic.w = 32
+					pic.h = 96
+					pic.pos.x = Player.pos.x
+					pic.pos.y = Player.pos.y + 4
+					pic.pos.w = 32
+					pic.pos.h = 96
 				break
 			}
+			this.picArr.push(pic)
 		}
 	},
 	shock: {

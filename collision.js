@@ -153,22 +153,6 @@ var Col = {
 		};
 		return false;
 	},
-	special_check_enemy: function () {
-		var x = Math.floor(this.x + this.w - 4 + this.img.w / 2);
-		var y = Math.floor(this.y + this.h - 4 + this.img.h / 2);
-
-		for (var i = 0; i < enemy_arr.length; i++) {
-			if (
-				x > enemy_arr[i].pos.x + 12 &&
-				x < enemy_arr[i].pos.x + 20 &&
-				y > enemy_arr[i].pos.y + 12 &&
-				y < enemy_arr[i].pos.y + 20 
-				) {
-				return enemy_arr[i];
-			};
-		};
-		return false
-	},
 	bomb_check: function () {
 		var r_x = Player.pos.x + 16;
 		var r_y = Player.pos.y + 16;

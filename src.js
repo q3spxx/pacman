@@ -12,14 +12,16 @@ var image_src = {
 	paulFear: 'paulFear.png',
 	fearPreTimeout: 'fearPreTimeout.png',
 	dead: 'dead.png',
-	cord: 'special.png',
+	cord: 'cord.png',
 	yo: 'yo.png',
 	eyes: 'eyes.png',
 	brick: 'brick.png',
 	shock: 'shock.png',
 	event: 'event.png',
 	elt: 'elt.png',
-	fireOfShot: 'fireOfShot.png'
+	fireOfShot: 'fireOfShot.png',
+	blood: "blood.png",
+	bloodLine: 'bloodLine.png'
 }
 
 var image_icons_src = {
@@ -31,7 +33,7 @@ var image_icons_src = {
 
 var audioSrc = {
 	bitch: 'bitch.mp3',
-	get_over_here: 'goh.mp3',
+	getOverHere: 'goh.mp3',
 	bones: 'bones.mp3',
 	yo: 'yo.mp3',
 	dead: 'dead.mp3',

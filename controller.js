@@ -14,7 +14,7 @@ var Controller = {
 						break
 						case 'waiting': 
 						break
-						case 'grab':
+						case 'isBusted':
 						break
 						case 'free': ai.free.call(this)
 						break
@@ -113,6 +113,9 @@ var Controller = {
 		setExitFromRoom: function () {
 			this.behavior = 'exitFromRoom';
 		},
+		setIsBusted: function () {
+			this.behavior = 'isBusted'
+		},
 		killEnemy: function (enemy) {
 			enemy.goToRoom()
 			var points = 100 * Math.pow(2, Kill.getGain())
@@ -122,11 +125,6 @@ var Controller = {
 
 			/*
 
-			if (enemy.behavior == 'grab') {
-				enemy.pos.x = Math.floor(enemy.pos.x / 32) * 32
-				enemy.pos.y = Math.floor(enemy.pos.y / 32) * 32
-				Sounds.bones.play()
-			}
 			if (enemy.shocked) {
 				enemy.shocked = false
 			}

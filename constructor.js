@@ -183,13 +183,8 @@ function AnimationBuffer (context, name) {
 function LowLayerBuffer (img, getParams, ms) {
 	this.start = new Date().getTime()
 	this.id = _Tools.genId()
-	this.pic = {
-		img: img,
-		x: 0,
-		y: 0,
-		w: 0,
-		h: 0
-	}
+	this.img = img
+	this.picArr = []
 	this.pos = {
 		x: 0,
 		y: 0,
@@ -202,12 +197,12 @@ function LowLayerBuffer (img, getParams, ms) {
 	this.handle = _Tools.setInterval(function () {
 		var date = new Date().getTime()
 		if (date - this.start > this.ms) {
-			this.removeBUffer.call(this)
+			this.removeBuffer.call(this)
 			return
 		}
 		this.getParams()
 	}.bind(this), 33)
-	this.__proto__.removeBUffer = function () {
+	this.__proto__.removeBuffer = function () {
 		_Tools.clearInterval(this.handle)
 		for (var i = 0; i < gl.lowLayer.length; i++) {
 			if (this.id = gl.lowLayer[i].id) {

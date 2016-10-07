@@ -52,7 +52,7 @@ var Controls = {
 							Player.down()
 						};
 				break
-				case 81: if (Special.get_over_here.ready && Special.get_over_here.level > 0) {Special.get_over_here.start()};
+				case 'q': if (Special.cord.ready && Special.cord.level > 0) {Special.cord.start()};
 				break
 				case 32: if (_Data.status == 'shop') {
 							Shop.try_buy()
@@ -104,9 +104,12 @@ var Controls = {
 			statuses: ['ready']
 		},
 		Escape: {
-			statuses: ['isRunned', 'pause', 'playerIsDead']
+			statuses: ['isRunned', 'pause', 'playerIsDead', 'special']
 		},
 		w: {
+			statuses: ['isRunned']
+		},
+		q: {
 			statuses: ['isRunned']
 		}
 	}

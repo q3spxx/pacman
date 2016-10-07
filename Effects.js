@@ -78,5 +78,118 @@ var Effects = {
 			}.bind(effectBuffer), 1000)
 			gl.effects.push(effectBuffer)
 		}
+	},
+	emitter: {
+		particle: function (parent, callback) {
+			this.id = _Tools.genId()
+			this.__proto__ = Effects.emitter.particleProto
+			this.handle = null
+			this.state = 0
+			this.parent = parent
+			this.distance = Math.floor(this.parent.radius * Math.random())
+			this.size = Math.floor(Math.random() * parent.size)
+			this.img = this.parent.img
+			this.callback = callback
+			this.x = 0
+			this.y = 0
+
+			var angle = Math.floor(360 * Math.random())
+			this.vector = {
+				x: Math.round(Math.cos(angle) * this.parent.speed),
+				y: Math.round(Math.sin(angle) * this.parent.speed)
+			}
+			this.handle = _Tools.setInterval(function () {
+				if (this.state > this.distance) {
+					_Tools.clearInterval(this.handle)
+					this.removeParticle()
+					this.parent.createParticle()
+				}
+				this.x += this.vector.x
+				this.y += this.vector.y
+				this.size *= 0.95
+				this.state++
+			}.bind(this), Math.floor(Math.random() * 100))
+
+		},
+		particleProto: {
+			removeParticle: function () {
+				for (var i = 0; i < this.parent.particles.length; i++) {
+					if (this.id == this.parent.particles[i].id) {
+						this.parent.particles.splice(i, 1)
+						return
+					}
+				}
+			},
+			pause: function () {
+				for (var i = 0; i < _Data.intervals.length; i++) {
+					if (_Data.intervals[i].id == this.handle) {
+						_Data.intervals[i].pause()
+						return
+					}
+				}
+			},
+			continue: function () {
+				for (var i = 0; i < _Data.intervals.length; i++) {
+					if (_Data.intervals[i].id == this.handle) {
+						_Data.intervals[i].continue()
+						return
+					}
+				}
+			}
+		},
+		emitter: function (img, x, y, radius, speed, countParticles, sizeParticle, callback) {
+			this.id = _Tools.genId()
+			this.__proto__ = Effects.emitter.emitterProto
+			this.pos = {
+				x: x,
+				y: y
+			},
+			this.img = img
+			this.size = sizeParticle
+			this.radius = radius
+			this.speed = speed
+			this.particles = []
+			for (var i = 0; i < countParticles; i++) {
+				this.createParticle(callback)
+			}
+		},
+		emitterProto: {
+			createParticle: function (callback) {
+				var particle = new Effects.emitter.particle(this, callback)
+				this.particles.push(particle)
+				return
+			},
+			pause: function () {
+				this.particles.forEach(function (particle) {
+					particle.pause()
+				})
+			},
+			continue: function () {
+				this.particles.forEach(function (particle) {
+					particle.continue()
+				})
+			},
+			remove: function () {
+				this.particles.forEach(function (particle) {
+					particle.removeParticle()
+				})
+				for (var i = 0; i < gl.emitters.length; i++) {
+					if (this.id == gl.emitters[i].id) {
+						gl.emitters.splice(i, 1)
+						return
+					}
+				}
+			}
+		},
+		add: function (img, x, y, radius, speed, countParticles, sizeParticle, callback) {
+			var emitter = new this.emitter(img, x, y, radius, speed, countParticles, sizeParticle, callback)
+			gl.emitters.push(emitter)
+			return emitter
+		},
+		lib: {
+			line: function () {
+				return
+			}
+		}
 	}
 }

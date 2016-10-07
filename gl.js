@@ -5,6 +5,7 @@ var gl = {
 	effects: [],
 	special: [],
 	lowLayer: [],
+	emitters: [],
 	event: [],
 	shock: [],
 	buf_event: [],
@@ -31,13 +32,14 @@ var gl = {
 			gl.render();
 			gl.lowLayerRender()
 			gl.effectsRender()
-			gl.animationRender();
+			gl.animationRender()
+			gl.emittersRender()
 			gl.messageRender()
 			if (Outputs.on) {
 				gl.outputsRender()
 			}
 			gl.fpsTimer();
-			//gl.postRender()
+			gl.postRender()
 			/*gl.draw_special();
 			gl.draw_bomb()
 			gl.draw_shock()
@@ -158,30 +160,37 @@ var gl = {
 	},
 	lowLayerRender: function () {
 		this.lowLayer.forEach(function (buf) {
-			map.drawImage(	buf.pic.img,
-							buf.pic.x,
-							buf.pic.y,
-							buf.pic.w,
-							buf.pic.h,
-							buf.pos.x,
-							buf.pos.y,
-							buf.pos.w,
-							buf.pos.h
+			buf.picArr.forEach(function (pic) {
+
+			map.drawImage(	buf.img,
+							pic.x,
+							pic.y,
+							pic.w,
+							pic.h,
+							pic.pos.x,
+							pic.pos.y,
+							pic.pos.w,
+							pic.pos.h
 							)
+			})
 		})
 	},
-	scope: function () {
-		map.fillStyle = 'rgb(255,255,255)';
-		map.font = "16px Arial";
-		map.textAlign = "left";
-		map.textBaseline = "top";
-		map.fillText("Scope: " + Scope.main, 40, 10);
-	},
-	level: function () {
-		map.fillStyle = 'rgb(255,255,255)';
-		map.font = "16px Arial";
-		map.textBaseline = "top";
-		map.fillText("Level: " + _data.level, 200, 10);
+	emittersRender: function () {
+		this.emitters.forEach(function (emitter) {
+			emitter.particles.forEach(function (particle) {
+				map.drawImage(
+					particle.img,
+					0,
+					0,
+					32,
+					32,
+					particle.x + Math.floor(particle.size / 2) * -1 + particle.parent.pos.x,
+					particle.y + Math.floor(particle.size / 2) * -1 + particle.parent.pos.y,
+					particle.size,
+					particle.size
+					)
+			})
+		})
 	},
 	draw_special: function () {
 		this.special.forEach(function(buf){
