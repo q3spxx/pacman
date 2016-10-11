@@ -1,13 +1,14 @@
 var Effects = {
 	blood: {
-		particles: 100,
-		angle: 20,
+		particles: 50,
+		angle: 30,
 		maxDistance: 96,
-		maxSize: 3,
-		Particle: function (x, y, size) {
+		maxSize: 10,
+		Particle: function (x, y, size, parent) {
 			this.x = x
 			this.y = y
 			this.size = size
+			this.parent = parent
 		},
 		add: function (char) {
 
@@ -47,23 +48,34 @@ var Effects = {
 				}
 				distance++
 			}
-
 			var saturation = distance / this.maxDistance
 
 			var particles = []
+			var effectBuffer = new Effect(particles, effectPos.x, effectPos.y, Imgs.blood)
+			var lowDistance = Math.floor(this.particles * 0.1)
+			var lowDistanceSum = 0
+
 			while (particles.length < this.particles * saturation) {
 				var randomDistance = Math.floor(Math.random() * distance)
+				if (randomDistance <= distance * 0.3) {
+					if (lowDistance < lowDistanceSum) {
+						randomDistance = Math.floor((Math.random() * distance * 0.7) + (distance * 0.3))
+					}
+					lowDistanceSum++
+				}
 				var angle = Number((((Math.random() * this.angle) - this.angle / 2 + directionAngle) * Math.PI / 180).toFixed(2))
 				var x = Math.floor(Math.cos(angle) * randomDistance)
 				var y = Math.floor(Math.sin(angle) * randomDistance)
-				var size = Math.floor(Math.random() * this.maxSize)
-				var particle = new this.Particle(x, y, size)
-				particles.push(particle)
+				var size = Math.floor(this.maxSize - (this.maxSize * (randomDistance / distance)))
+				if (size < this.maxSize * 0.2) {
+					size = Math.floor(this.maxSize * 0.2)
+				}
+				var particle = new this.Particle(x, y, size, effectBuffer)
+				effectBuffer.particles.push(particle)
 			}
 
 
-			var effectBuffer = new Effect(particles, effectPos.x, effectPos.y)
-			effectBuffer.intervalId = _Tools.setInterval(function () {
+			effectBuffer.intervalId = _Tools.setInterval.call(effectBuffer, function () {
 				if (this.delay == 0) {
 					for (var i = 0; i < gl.effects.length; i++) {
 						if (gl.effects[i].id == this.id) {
@@ -95,10 +107,10 @@ var Effects = {
 
 			var angle = Math.floor(360 * Math.random())
 			this.vector = {
-				x: Math.round(Math.cos(angle) * this.parent.speed),
-				y: Math.round(Math.sin(angle) * this.parent.speed)
+				x: Math.round(Math.cos(angle) * this.parent.radius / 4),
+				y: Math.round(Math.sin(angle) * this.parent.radius / 4)
 			}
-			this.handle = _Tools.setInterval(function () {
+			this.handle = _Tools.setInterval.call(this, function () {
 				if (this.state > this.distance) {
 					_Tools.clearInterval(this.handle)
 					this.removeParticle()
@@ -106,13 +118,15 @@ var Effects = {
 				}
 				this.x += this.vector.x
 				this.y += this.vector.y
-				this.size *= 0.95
+				this.size *= 1 - (1 / this.distance)
 				this.state++
-			}.bind(this), Math.floor(Math.random() * 100))
+			}.bind(this), this.parent.speed)
+
 
 		},
 		particleProto: {
 			removeParticle: function () {
+				_Tools.clearInterval(this.handle)
 				for (var i = 0; i < this.parent.particles.length; i++) {
 					if (this.id == this.parent.particles[i].id) {
 						this.parent.particles.splice(i, 1)
@@ -137,8 +151,9 @@ var Effects = {
 				}
 			}
 		},
-		emitter: function (img, x, y, radius, speed, countParticles, sizeParticle, callback) {
+		emitter: function (img, x, y, radius, speed, countParticles, sizeParticle, ms, callback) {
 			this.id = _Tools.genId()
+			this.handle = null
 			this.__proto__ = Effects.emitter.emitterProto
 			this.pos = {
 				x: x,
@@ -151,6 +166,15 @@ var Effects = {
 			this.particles = []
 			for (var i = 0; i < countParticles; i++) {
 				this.createParticle(callback)
+			}
+
+			if (ms != undefined) {
+				this.handle = _Tools.setTimeout.call(this, function () {
+					this.remove()
+				}.bind(this), ms)
+			}
+
+			if (callback != undefined) {
 			}
 		},
 		emitterProto: {
@@ -170,9 +194,9 @@ var Effects = {
 				})
 			},
 			remove: function () {
-				this.particles.forEach(function (particle) {
-					particle.removeParticle()
-				})
+				while (this.particles.length > 0) {
+					this.particles[0].removeParticle()
+				}
 				for (var i = 0; i < gl.emitters.length; i++) {
 					if (this.id == gl.emitters[i].id) {
 						gl.emitters.splice(i, 1)
@@ -181,8 +205,8 @@ var Effects = {
 				}
 			}
 		},
-		add: function (img, x, y, radius, speed, countParticles, sizeParticle, callback) {
-			var emitter = new this.emitter(img, x, y, radius, speed, countParticles, sizeParticle, callback)
+		add: function (img, x, y, radius, speed, countParticles, sizeParticle, ms, callback) {
+			var emitter = new this.emitter(img, x, y, radius, speed, countParticles, sizeParticle, ms, callback)
 			gl.emitters.push(emitter)
 			return emitter
 		},

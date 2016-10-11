@@ -70,15 +70,19 @@ var Controls = {
 				break
 				case 'w': if (Special.shot.ready && Special.shot.level > 0) {Special.shot.start()};
 				break
-				case 69: if (Special.shock.ready && Special.shock.level > 0) {Special.shock.start()}
+				case 'e': if (Special.shock.ready && Special.shock.level > 0) {Special.shock.start()}
 				break
 				case 'Escape':
 					if (_Data.status == 'pause') {
-						Game.continue()
+						setTimeout(function () {
+							Game.continue()
+						}, Game.speed * 3)
 						Mess.hideMess('pause')
 					} else {
-						Game.pause()
 						Mess.setMess('pause')
+						setTimeout(function () {
+							Game.pause()
+						}, Game.speed * 3)
 					};
 			}
 			
@@ -110,6 +114,9 @@ var Controls = {
 			statuses: ['isRunned']
 		},
 		q: {
+			statuses: ['isRunned']
+		},
+		e: {
 			statuses: ['isRunned']
 		}
 	}

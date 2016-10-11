@@ -1,6 +1,6 @@
 var Controller = {
 		start: function () {
-			this.handle = _Tools.setInterval(function () {
+			this.handle = _Tools.setInterval.call(this, function () {
 
 				if (this.id != 4) {
 					switch (this.behavior) {
@@ -12,7 +12,7 @@ var Controller = {
 						break
 						case 'passive': ai.passive.call(this)
 						break
-						case 'waiting': 
+						case 'shocked': return
 						break
 						case 'isBusted':
 						break
@@ -34,7 +34,7 @@ var Controller = {
 				};
 
 		 		Move.set.call(this);
-			}.bind(this), this.speed - _Data.gameSpeed);
+			}.bind(this), this.speed);
 		},
 		stop: function () {
 			_Tools.clearInterval(this.handle);
@@ -115,6 +115,11 @@ var Controller = {
 		},
 		setIsBusted: function () {
 			this.behavior = 'isBusted'
+		},
+		setShocked: function () {
+			this.stop()
+			this.path = []
+			this.behavior = 'shocked'
 		},
 		killEnemy: function (enemy) {
 			enemy.goToRoom()

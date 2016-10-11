@@ -5,12 +5,16 @@ var gl = {
 	effects: [],
 	special: [],
 	lowLayer: [],
+	highLayer: [],
 	emitters: [],
 	event: [],
 	shock: [],
 	buf_event: [],
 	fps: 0,
-	ms: 0,
+	ms: new Date().getTime(),
+	clear: function () {
+		map.clearRect(0, 0, _Data.canvas.elem.width, _Data.canvas.elem.height)
+	},
 	fpsTimer: function () {
 		var newDate = new Date();
 		var ms = newDate.getTime();
@@ -21,11 +25,11 @@ var gl = {
 		map.textBaseline = "middle";
 		map.textAlign = "left"
 		map.fillText("fps: " + gl.fps, 544, 16);
-	},
+	}, 
 	start: function () {
 		var date = new Date();
 		gl.ms = date.getTime();
-		Anim.handle = _Tools.setInterval(Anim.changeFrame, 200);
+		Anim.handle = _Tools.setInterval.call(Anim, Anim.changeFrame, 200);
 		setInterval(function () {
 
 
@@ -56,7 +60,7 @@ var gl = {
 			gl.draw_shop()*/
 		}, 33);
 	},
-	render: function () {
+	map: function () {
 		_Map.grid.forEach(function (xArr) {
 			xArr.forEach(function (cell) {
 				map.drawImage(cell.object.image.pic,
@@ -73,7 +77,7 @@ var gl = {
 		});
 	},
 	animationRender: function () {
-		gl.anim.forEach(function (buffer) {
+		this.anim.forEach(function (buffer) {
 			map.drawImage(buffer.img,
 						buffer.frames[buffer.curFrame].x,
 						buffer.frames[buffer.curFrame].y,
@@ -139,19 +143,17 @@ var gl = {
 	effectsRender: function () {
 		this.effects.forEach(function (effect) {
 			effect.particles.forEach(function (particle) {
-				map.beginPath()
-				map.arc(
-						effect.x + particle.x,
-						effect.y + particle.y,
-						particle.size,
-						0,
-						2 * Math.PI,
-						false
-						)
-				map.fillStyle = 'rgba(' + effect.color + ', 0.5)';
-				map.fill()
-				map.strokeStyle = 'rgba(' + effect.color + ', 0)'
-				map.stroke()
+				map.drawImage(
+					particle.parent.img,
+					0,
+					0,
+					32,
+					32,
+					particle.parent.x + particle.x,
+					particle.parent.y + particle.y,
+					particle.size,
+					particle.size
+					)
 			})
 		})
 	},
@@ -160,6 +162,23 @@ var gl = {
 	},
 	lowLayerRender: function () {
 		this.lowLayer.forEach(function (buf) {
+			buf.picArr.forEach(function (pic) {
+
+			map.drawImage(	buf.img,
+							pic.x,
+							pic.y,
+							pic.w,
+							pic.h,
+							pic.pos.x,
+							pic.pos.y,
+							pic.pos.w,
+							pic.pos.h
+							)
+			})
+		})
+	},
+	highLayerRender: function () {
+		this.highLayer.forEach(function (buf) {
 			buf.picArr.forEach(function (pic) {
 
 			map.drawImage(	buf.img,

@@ -154,10 +154,14 @@ var ai = {
 	},
 	passive: function () {
 		var self = this;
-		if (((self.pos.x / 32) - (Math.floor(self.pos.x / 32))) != 0 ||
+		/*if (((self.pos.x / 32) - (Math.floor(self.pos.x / 32))) != 0 ||
 				((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
 			return;
-		};
+		};*/
+
+		if (this.path.length != 0) {
+			return
+		}
 
 		var currentPos = {
 			x: Math.floor(self.pos.x / 32),

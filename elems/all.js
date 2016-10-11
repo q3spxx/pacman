@@ -116,7 +116,7 @@ var Room = {
 		}
 	],
 	start: function () {
-		this.handle = _Tools.setInterval(this.releaseEnemy.bind(this), 5000)
+		this.handle = _Tools.setInterval.call(this, this.releaseEnemy.bind(this), 5000)
 	},
 	stop: function () {
 		_Tools.clearInterval(this.handle)

@@ -21,7 +21,9 @@ var image_src = {
 	elt: 'elt.png',
 	fireOfShot: 'fireOfShot.png',
 	blood: "blood.png",
-	bloodLine: 'bloodLine.png'
+	bloodLine: 'bloodLine.png',
+	shockPartical: 'shockPartical.png',
+	shocked: 'shocked.png'
 }
 
 var image_icons_src = {

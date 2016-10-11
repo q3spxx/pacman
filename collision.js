@@ -130,29 +130,6 @@ var Col = {
 		}
 		return true
 	},
-	special_check: function () {
-		var x = Math.floor((this.x + this.w) / 32);
-		var y = Math.floor((this.y + this.h) / 32);
-		var w = Math.floor((this.x + this.w + this.img.w) / 32);
-		var h = Math.floor((this.y + this.h + this.img.h) / 32);
-
-		if (
-			w > 20 && y == 9 ||
-			x < 0 && y == 9
-			) {
-			return true;
-		};
-
-		if (
-			_Map.grid[x][y].block ||
-			_Map.grid[x][h].block ||
-			_Map.grid[w][y].block ||
-			_Map.grid[w][h].block
-			) {
-			return true;
-		};
-		return false;
-	},
 	bomb_check: function () {
 		var r_x = Player.pos.x + 16;
 		var r_y = Player.pos.y + 16;

@@ -1,9 +1,11 @@
 var Special = {
 	playerStop: function () {
+		_Data.status = 'special'
 		Player.mPos.x = 0
 		Player.mPos.y = 0
 	},
 	playerGo: function () {
+		_Data.status = 'isRunned'
 		switch (Player.curAction) {
 			case 0:
 				Player.left()
@@ -20,11 +22,12 @@ var Special = {
 		}
 	},
 	cord: {
-		level: 10,
+		level: 5,
 		distance: 0,
 		status: 'notActive',
 		enemy: false,
 		emitter: false,
+		speed: 5,
 		bloodLine: {
 			x: 0,
 			y: 0
@@ -44,72 +47,9 @@ var Special = {
 
 			this.status = 'runned'
 
-			var buffer = new LowLayerBuffer(Imgs.cord, this.getParams, 10000)
+			var buffer = new LowLayerBuffer(Imgs.cord, this.getParams, this.speed, 10000)
 			gl.lowLayer.push(buffer)
 			return
-			var type;
-
-			var img = {
-				pic: Imgs.cord,
-				x: 0,
-				y: 0,
-				w: 4,
-				h: 4
-			};
-
-			var special_buf = new Special_buf(img, 4, 4);
-
-			gl.special.push(special_buf);
-
-			Special.get_over_here.handle = setInterval(function () {
-				switch (Player.curAction) {
-					case 0: this.w -= 4 
-					break
-					case 1: this.h -= 4
-					break
-					case 2: this.w += 4
-					break
-					case 3: this.h += 4
-					break
-				}
-
-				var enemy = Col.special_check_enemy.call(this);
-
-				if (enemy != false &&
-					enemy.behavior != 'go_to_room' &&
-					enemy.behavior != 'exit_from_room' &&
-					enemy.behavior != 'enter_to_room' &&
-					enemy.behavior != 'in_room'
-					) {
-					Special.get_over_here.stop();
-					Sounds.scream.play()
-					enemy.behavior = "grab";
-					enemy.stop();
-					enemy.path = [];
-					Special.get_over_here.return_cord.call(this, enemy);
-					return;
-				};
-
-				if (Col.special_check.call(this) || 
-					Math.abs(this.w) > Special.get_over_here.max_height() ||
-					Math.abs(this.h) > Special.get_over_here.max_height()) {
-					Special.get_over_here.stop();
-					Special.get_over_here.return_cord.call(this);
-					return;
-				};
-			}.bind(special_buf), 1);
-
-
-			Special.get_over_here.ready = false
-			Special.get_over_here.cooldown_handle = setInterval(function () {
-				if (Special.get_over_here.cooldown == 0) {
-					Special.get_over_here.ready = true
-					Special.get_over_here.cooldown = 5
-					clearInterval(Special.get_over_here.cooldown_handle)
-				} else {
-					Special.get_over_here.cooldown -= 1
-				}
-			}, 1000)
 		},
 		getParams: function () {
 
@@ -123,9 +63,9 @@ var Special = {
 			}
 
 			if (Special.cord.status == 'runned') {
-				Special.cord.distance += 30
+				Special.cord.distance += 4
 			} else if (Special.cord.status == 'return') {
-				Special.cord.distance -= 30
+				Special.cord.distance -= 4
 			}
 
 			switch (Player.curAction) {
@@ -209,6 +149,7 @@ var Special = {
 				Special.cord.status = "notActive"
 				this.removeBuffer()
 				if (Special.cord.enemy) {
+					Sounds.bones.play()
 					behaviorController.killEnemy(Special.cord.enemy)
 					Special.cord.enemy = false
 					Special.cord.emitter.remove()
@@ -250,7 +191,7 @@ var Special = {
 								pic.pos.h = pic.pos.y - Special.cord.enemy.pos.y + 16
 							break
 						}
-						Special.cord.emitter = Effects.emitter.add(Imgs.blood, pic.pos.x + pic.pos.w, pic.pos.y + pic.pos.h, 16, 8, 50, 20, Effects.emitter.lib.line)
+						Special.cord.emitter = Effects.emitter.add(Imgs.blood, pic.pos.x + pic.pos.w, pic.pos.y + pic.pos.h, 20, 5, 50, 24)
 						Special.cord.bloodLine.x = Special.cord.enemy.pos.x
 						Special.cord.bloodLine.y = Special.cord.enemy.pos.y
 						var lowLayer = new LowLayerBuffer(Imgs.bloodLine, function () {
@@ -261,36 +202,48 @@ var Special = {
 								pos: {}
 							}
 							bloodLine.y = 0
-							bloodLine.pos.x = Special.cord.bloodLine.x
-							bloodLine.pos.y = Special.cord.bloodLine.y
-							bloodLine.pos.w = Special.cord.enemy.pos.x - Special.cord.bloodLine.x + 32
-							bloodLine.pos.h = Special.cord.enemy.pos.y - Special.cord.bloodLine.y + 64
 							switch (Player.curAction) {
 								case 0:
+									bloodLine.pos.x = Special.cord.bloodLine.x
+									bloodLine.pos.y = Special.cord.bloodLine.y
+									bloodLine.pos.w = Special.cord.enemy.pos.x - Special.cord.bloodLine.x
+									bloodLine.pos.h = 32
 									bloodLine.x = 0
 									bloodLine.w = 96
 									bloodLine.h = 32
 
 								break
 								case 1:
+									bloodLine.pos.x = Special.cord.bloodLine.x
+									bloodLine.pos.y = Special.cord.bloodLine.y
+									bloodLine.pos.w = 32
+									bloodLine.pos.h = Special.cord.enemy.pos.y - Special.cord.bloodLine.y
 									bloodLine.x = 96
 									bloodLine.w = 32
 									bloodLine.h = 96
 								break
 								case 2:
+									bloodLine.pos.x = Special.cord.bloodLine.x + 32
+									bloodLine.pos.y = Special.cord.bloodLine.y
+									bloodLine.pos.w = Special.cord.enemy.pos.x - Special.cord.bloodLine.x - 32
+									bloodLine.pos.h = 32
 									bloodLine.x = 128
 									bloodLine.w = 96
 									bloodLine.h = 32
 								break
 								case 3:
-									bloodLine.x = 160
+									bloodLine.pos.x = Special.cord.bloodLine.x
+									bloodLine.pos.y = Special.cord.bloodLine.y + 32
+									bloodLine.pos.w = 32
+									bloodLine.pos.h = Special.cord.enemy.pos.y - Special.cord.bloodLine.y - 32
+									bloodLine.x = 224
 									bloodLine.w = 32
 									bloodLine.h = 96
 								break
 							}
 						this.picArr = []
 						this.picArr.push(bloodLine)
-						}, 10000)
+						}, Special.cord.speed, 10000)
 						gl.lowLayer.push(lowLayer)
 						break
 					}
@@ -299,65 +252,8 @@ var Special = {
 
 			this.picArr = []
 			this.picArr.push(pic)
-
-		},
-		return_cord: function (e) {
-			var enemy = e;
-			Special.get_over_here.handle = setInterval(function(){
-				switch (Player.curAction) {
-					case 0: this.w += 4
-							if (enemy && enemy.behavior == 'grab') {enemy.pos.x += 4}
-					break
-					case 1: this.h += 4
-							if (enemy && enemy.behavior == 'grab') {enemy.pos.y += 4}
-					break
-					case 2: this.w -= 4
-							if (enemy && enemy.behavior == 'grab') {enemy.pos.x -= 4}
-					break
-					case 3: this.h -= 4
-							if (enemy && enemy.behavior == 'grab') {enemy.pos.y -= 4}
-					break
-				}
-
-				if (Player.curAction == 4) {
-					if (enemy) {
-						enemy.path[0] = {
-							x: Math.floor(enemy.pos.x /32),
-							y: Math.floor(enemy.pos.y /32)
-						}
-						b_Controller.set_passive.call(enemy)
-					}
-					Special.get_over_here.stop.call(this);
-				}
-
-				if (this.w == 4 && this.h == 4) {
-					Special.get_over_here.stop.call(this);
-
-					switch (Player.curAction) {
-						case 0: Player.left();
-						break
-						case 1: Player.up();
-						break
-						case 2: Player.right();
-						break
-						case 3: Player.down();
-						break
-					}
-
-					_data.status = "play";
-				}
-
-			}.bind(this), 1); 
-		},
-		stop: function () {
-			clearInterval(Special.get_over_here.handle);
-			for (var i = 0; i < gl.special.length; i++) {
-				if (this.id == gl.special[i].id) {
-					gl.special.splice(i, 1);
-					break
-				};
-			};
 		}
+
 	},
 	yo: {
 		handle: null,
@@ -474,6 +370,8 @@ var Special = {
 	shot: {
 		level: 10,
 		ready: true,
+		emitter: false,
+		speed: 5,
 		cooldown_handle: null,
 		cooldown: 7,
 		chanse: function () {
@@ -483,15 +381,16 @@ var Special = {
 			Special.playerStop()
 			_Tools.setTimeout(function () {
 				Special.playerGo()
-			}, 200)
+			}, 100)
 
 			Sounds.shot.play()
-			var buffer = new LowLayerBuffer(Imgs.fireOfShot, this.getParams, 200)
+			var buffer = new LowLayerBuffer(Imgs.fireOfShot, this.getParams, this.speed, 100)
 			gl.lowLayer.push(buffer)
 			var enemy = Col.enemyInLine();
 
 			if (enemy != false) {
 				if (Col.missCheck()) {
+					this.emitter = Effects.emitter.add(Imgs.blood, enemy.pos.x + 16, enemy.pos.y + 16, 16, 5, 50, 16, 200)
 					Effects.blood.add(enemy)
 					Mess.setMess('headShot')
 					Sounds.headshot.play()
@@ -568,80 +467,112 @@ var Special = {
 	},
 	shock: {
 		ready: true,
-		level: 0,
+		level: 10,
+		distance: 0,
+		duration: 5000,
+		emitter: false,
+		speed: 7,
+		enemy: false,
 		handle: null,
 		cooldown: 5,
 		cooldown_handle: null,
-		duration: 500,
 		start: function () {
-			_data.status = 'special'
-			Player.stop()
-
-			var shock = new Shock_buf(Imgs.shock, Player.pos.x, Player.pos.y, 32, 32)
-			gl.shock.push(shock)
-
-			this.handle = setInterval(function () {
-				switch (Player.curAction) {
-					case 0: this.x += -4
-							this.y += 0
-					break
-					case 1: this.x += 0
-							this.y += -4
-					break
-					case 2: this.x += 4
-							this.y += 0
-					break
-					case 3: this.x += 0
-							this.y += 4
-					break
+			Special.playerStop()
+			var lowLayer = new LowLayerBuffer(Imgs.shock, this.getParams, this.speed, 10000)
+			gl.lowLayer.push(lowLayer)
+		},
+		getParams: function () {
+			var pic = {
+				x: 0,
+				y: 0,
+				w: 32,
+				h: 32,
+				pos: {
+					w: 32,
+					h: 32
 				}
-				var enemy = Col.shock_enemy_check.call(this)
-				if (enemy != false) {
-					enemy.stop()
-					enemy.shocked = true
-					Anim.show_mess('Stun', {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
-					setTimeout(function () {
-						this.shocked = false
-					}.bind(enemy), Special.shock.duration  + 300 * Special.shock.level)
-					Special.shock.stop.call(this)
+			}
+
+			switch (Player.curAction) {
+				case 0:
+					pic.pos.x = Player.pos.x - Special.shock.distance
+					pic.pos.y = Player.pos.y
+				break
+				case 1:
+					pic.pos.x = Player.pos.x
+					pic.pos.y = Player.pos.y - Special.shock.distance
+				break
+				case 2:
+					pic.pos.x = Player.pos.x + Special.shock.distance + 32
+					pic.pos.y = Player.pos.y
+				break
+				case 3:
+					pic.pos.x = Player.pos.x
+					pic.pos.y = Player.pos.y + Special.shock.distance + 32
+				break
+			}
+			if (!this.emitter) {
+				this.emitter = Effects.emitter.add(Imgs.shockPartical, pic.pos.x + 16, pic.pos.y + 16, 16, 64, 50, 16)
+			} else {
+				this.emitter.pos.x = pic.pos.x + 16
+				this.emitter.pos.y = pic.pos.y + 16
+			};
+
+			if (_Map.grid[Math.floor(pic.pos.x / 32)][Math.floor(pic.pos.y / 32)].object.block ||
+				_Map.grid[Math.floor((pic.pos.x + 31) / 32)][Math.floor((pic.pos.y + 31) / 32)].object.block) {
+				Special.playerGo()
+				Special.shock.distance = 0
+				this.removeBuffer()
+				this.emitter.remove()
+				Special.shock.emitter = false
+			}
+			var enemy = Col.checkEnemy.call(pic)
+			if (enemy) {
+
+				Special.playerGo()
+				Special.shock.distance = 0
+				this.removeBuffer()
+				this.emitter.remove()
+				Special.shock.emitter = false
+
+				if (Special.shock.enemy) {
 					return
 				}
-				if (Col.shock_check.call(this)) {
-					Special.shock.stop.call(this)
-				}
+				Special.shock.enemy = true
 
-			}.bind(shock), 2)
+				behaviorController.setShocked.call(enemy)
+				var highLayer = new HighLayerBuffer(Imgs.shocked, function () {
+					var pic = {
+						y: 0,
+						w: 32,
+						h: 32,
+						pos: {
+							x: enemy.pos.x,
+							y: enemy.pos.y,
+							w: 32,
+							h: 32
+						}
+					}
+					pic.x = this.curFrame * 32
+					this.curFrame++
+					if (this.tFrames <= this.curFrame) {
+						this.curFrame = 0
+					}
+					this.picArr = []
+					this.picArr.push(pic)
+				}, 200, 2, Math.floor(Special.shock.duration * Special.shock.level / 10))
+				gl.highLayer.push(highLayer)
+				Special.shock.handle = _Tools.setTimeout.call(enemy, function () {
+					behaviorController.setPassive.call(this)
+					Special.shock.enemy = false
+					highLayer.removeBuffer()
+				}, Math.floor(Special.shock.duration * Special.shock.level / 10))
+			}
 
-			Special.shock.ready = false;
-			Special.shock.cooldown_handle = setInterval(function () {
-				if (Special.shock.cooldown == 0) {
-					Special.shock.ready = true
-					Special.shock.cooldown = 5
-					clearInterval(Special.shock.cooldown_handle)
-				} else {
-					Special.shock.cooldown -= 1
-				}
-			}, 1000)
-		},
-		stop: function () {
-			clearInterval(Special.shock.handle)
-			for (var i = 0; i < gl.shock.length; i++) {
-				if (gl.shock[i].id == this.id) {
-					gl.shock.splice(i, 1)
-					break
-				};
-			}
-			_data.status = 'play'
-			switch (Player.curAction) {
-				case 0: Player.left();
-				break
-				case 1: Player.up();
-				break
-				case 2: Player.right();
-				break
-				case 3: Player.down();
-				break
-			}
+			this.picArr = []
+			this.picArr.push(pic)
+
+			Special.shock.distance += 4
 		}
 	}
 }

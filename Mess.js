@@ -1,5 +1,6 @@
 var Mess = {
 	handles: [],
+	speed: 5,
 	lib: {},
 	place: {
 		centerMessage: {
@@ -125,19 +126,19 @@ var Mess = {
 			Mess.lib[mess].messageBuffer = messageBuffer
 		}
 		if (ms) {
-			var handle = setTimeout(function () {
+			var handle = _Tools.setTimeout.call(this, function () {
 				Mess.removeMessageBuffer(this)
 			}.bind(messageBuffer), ms)
 			this.handles.push(handle)
 		}
 		if (Mess.place[place].type == 2) {
-			messageBuffer.handle = _Tools.setInterval(function () {
+			messageBuffer.handle = _Tools.setInterval.call(messageBuffer, function () {
 				if (this.offsetY == 0) {
 					_Tools.clearInterval(this.handle)
 					Mess.removeMessageBuffer(this)
 				};
 				this.offsetY -= 2
-			}.bind(messageBuffer), 33)
+			}.bind(messageBuffer), this.speed)
 		};
 	},
 	removeMessageBuffer: function (messageBuffer) {

@@ -1,11 +1,22 @@
-function Interval (id, method, ms, context) {
-	this.id = id
-	this.startDate = null
+function Subscriber (method, ms, context) {
+	this.id = _Tools.genId()
+	this.method = method
+	this.ms = ms
+	this.context = context
+	this.time = 0
+}
+
+function TimeMapBuffer (subscriber) {
+	this.id = _Tools.genId()
+	this.method = subscriber.method
+	this.context = subscriber.context
+}
+
+function Interval (method, ms, context) {
+	this.startDate = new Date().getTime()
 	this.pauseDate = null
-	this.handle = null
 	this.context = context
 	this.method = function () {
-		this.startDate = new Date().getTime()
 		method.call(this.context)
 	}
 	this.pause = function () {
@@ -27,16 +38,15 @@ function Timeout (id, method, ms, context) {
 	this.id = id
 	this.startDate = new Date().getTime()
 	this.pauseDate = null
-	this.handle = null
 	this.context = context
 	this.method = function () {
+		method.call(this.context)
 		for (var i = 0; i < _Data.timeouts.length; i++ ) {
 			if (_Data.timeouts[i].id == this.id) {
 				_Data.timeouts.splice(i, 1)
 				break
 			}
 		}
-		method.call(this.context)
 	}
 	this.pause = function () {
 		clearTimeout(this.handle)
@@ -45,11 +55,31 @@ function Timeout (id, method, ms, context) {
 	this.continue = function () {
 		var time = this.ms - (this.pauseDate - this.startDate)
 		this.handle = setTimeout(function () {
-			this.method.call(this)
+			this.method()
 		}.bind(this), time)
 	}
 	this.ms = ms
 	this.handle = setTimeout(this.method.bind(this), ms)
+}
+
+function RenderBuffer (name, method) {
+	this.__proto__.enable = _Tools.enableBuffer
+	this.__proto__.disable = _Tools.disableBuffer
+	this.id = _Tools.genId()
+	this.context = gl
+	this.name = name
+	this.method = method
+	this.activated = false
+}
+
+function IntervalBuffer (name, method, ms) {
+	this.__proto__.enable = _Tools.enableBuffer
+	this.__proto__.disable = _Tools.disableBuffer
+	this.id = _Tools.genId()
+	this.context = gl
+	this.name = name
+	this.method = method
+	this.activated = false
 }
 
 function Grid () {
@@ -180,37 +210,60 @@ function AnimationBuffer (context, name) {
 	this.repeat = context.anim[name].repeat;
 };
 
-function LowLayerBuffer (img, getParams, ms) {
-	this.start = new Date().getTime()
-	this.id = _Tools.genId()
-	this.img = img
-	this.picArr = []
-	this.pos = {
-		x: 0,
-		y: 0,
-		w: 0,
-		h: 0
-	}
-	this.ms = ms
-	this.getParams = getParams
-	this.getParams()
-	this.handle = _Tools.setInterval(function () {
-		var date = new Date().getTime()
-		if (date - this.start > this.ms) {
-			this.removeBuffer.call(this)
-			return
-		}
-		this.getParams()
-	}.bind(this), 33)
+function LowLayerBuffer (img, getParams, speed, ms) {
 	this.__proto__.removeBuffer = function () {
-		_Tools.clearInterval(this.handle)
 		for (var i = 0; i < gl.lowLayer.length; i++) {
-			if (this.id = gl.lowLayer[i].id) {
+			if (this.id == gl.lowLayer[i].id) {
 				gl.lowLayer.splice(i, 1)
+				_Tools.clearInterval(this.handle)
 				return
 			}
 		}
 	}
+	this.start = new Date().getTime()
+	this.id = _Tools.genId()
+	this.img = img
+	this.picArr = []
+	this.ms = ms
+	this.getParams = getParams
+	this.getParams()
+	this.handle = _Tools.setInterval.call(this, function () {
+		var date = new Date().getTime()
+		if (date - this.start >= this.ms) {
+			this.removeBuffer()
+			return
+		}
+		this.getParams()
+	}.bind(this), speed)
+}
+
+function HighLayerBuffer (img, getParams, speed, tFrames, ms) {
+	this.__proto__.removeBuffer = function () {
+		for (var i = 0; i < gl.highLayer.length; i++) {
+			if (this.id == gl.highLayer[i].id) {
+				gl.highLayer.splice(i, 1)
+				_Tools.clearInterval(this.handle)
+				return
+			}
+		}
+	}
+	this.start = new Date().getTime()
+	this.id = _Tools.genId()
+	this.img = img
+	this.picArr = []
+	this.ms = ms
+	this.tFrames = tFrames
+	this.curFrame = 0
+	this.getParams = getParams
+	this.getParams()
+	this.handle = _Tools.setInterval.call(this, function () {
+		var date = new Date().getTime()
+		if (date - this.start >= this.ms) {
+			this.removeBuffer()
+			return
+		}
+		this.getParams()
+	}.bind(this), speed)
 }
 
 function Message (place, ms, getText) {
@@ -271,8 +324,9 @@ function GraphCell (x, y, num) {
 	this.num = num
 }
 
-function Effect (particles, x, y) {
+function Effect (particles, x, y, img) {
 	this.id = _Tools.genId()
+	this.img = img
 	this.particles = particles
 	this.color = color.red
 	this.x = x
@@ -290,7 +344,7 @@ function _Player () {
 	}
 	this.handle = null
 	this.curAction = null
-	this.speed = 13
+	this.speed = 9
 	this.anim = Anim.lib.pacman
 	this.animationBuffer = null
 	this.isDead = function () {
@@ -310,7 +364,6 @@ function _Player () {
 function _Enemy (id, pos, anim, behavior) {
 	this.id = id
 	this.pos = {x: 0, y: 0}
-	this.shocked = false
 	this.mPos = {
 		x: 0,
 		y: 0
@@ -319,7 +372,7 @@ function _Enemy (id, pos, anim, behavior) {
 	this.anim = anim
 	this.animationBuffer = null
 	this.curAction = 0
-	this.speed = 14
+	this.speed = 10
 	this.path = []
 	this.pointPos = {x: 0, y: 0}
 	this.behavior = behavior
@@ -333,7 +386,6 @@ function _Enemy (id, pos, anim, behavior) {
 		this.behavior = this.default.behavior
 		this.mPos.x = 0
 		this.mPos.y = 0
-		this.shocked = false
 		this.curAction = null
 		this.path = []
 		this.pointPos = {x: this.default.pos.x / 32,
@@ -457,7 +509,8 @@ function Character () {
 		this.mPos.y = 0;
 		this.curAction = 4
 		if (this.id != 4 && this.behavior == 'goToRoom' ||
-			this.id != 4 && this.behavior == 'enterToRoom') {
+			this.id != 4 && this.behavior == 'enterToRoom' ||
+			this.id != 4 && this.behavior == 'shocked') {
 			return
 		}
 		if (this.id != 4 && this.animationBuffer.name != 'default') {
@@ -514,12 +567,3 @@ function Event_buf (img, x, y) {
 	this.x = x;
 	this.y = y;
 };
-
-function Shock_buf (img, x, y, w, h) {
-	this.id = _data.gen_id()
-	this.img = img
-	this.x = x
-	this.y = y
-	this.w = w
-	this.h = h
-}

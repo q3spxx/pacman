@@ -83,19 +83,30 @@ var _Tools = {
 		return Number(random);
 	},
 	setInterval: function (method, ms) {
-		var id = _Tools.genId()
-		var interval = new Interval(id, method, ms, this)
-		_Data.intervals.push(interval)
-		return interval.id
+		//var id = _Tools.genId()
+		//var interval = new Interval(id, method, ms, this)
+		//_Data.intervals.push(interval)
+		//return id
+		var subscriber = new Subscriber(method, ms, this)
+		TimeMap.add(subscriber)
+		return subscriber.id
 	},
 	clearInterval: function (id) {
-		for (var i = 0; i < _Data.intervals.length; i++) {
+		/*for (var i = 0; i < _Data.intervals.length; i++) {
 			if (_Data.intervals[i].id == id) {
 				clearInterval(_Data.intervals[i].handle)
 				_Data.intervals.splice(i, 1)
 				return
 			};
+		}*/
+		for (var i = 0; i < TimeMap.subscribers.length; i++) {
+			if (id == TimeMap.subscribers[i].id) {
+				TimeMap.subscribers.splice(i, 1)
+				_Tools.clearInterval(id)
+				return true
+			}
 		}
+		return false
 	},
 	setTimeout: function (method, ms) {
 		var id = _Tools.genId()
@@ -112,5 +123,31 @@ var _Tools = {
 			};
 		}
 
+	},
+	enableBuffer: function () {
+		this.activated = true
+	},
+	disableBuffer: function () {
+		this.activated = false
+	}
+
+}
+
+var TimeMap = {
+	subscribers: [],
+	formation: function () {
+		this.subscribers.forEach(function (subscriber) {
+			subscriber.time += Game.speed
+			if (subscriber.time >= subscriber.ms) {
+				if (subscriber.time >= subscriber.ms) {
+				var timeMapBuffer = new TimeMapBuffer(subscriber)
+					Game.timeMap.push(timeMapBuffer)
+					subscriber.time -= subscriber.ms
+				}
+			}
+		})
+	},
+	add: function (subscriber) {
+		this.subscribers.push(subscriber)
 	}
 }

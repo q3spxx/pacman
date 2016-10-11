@@ -12,6 +12,12 @@ var Timer = {
 
 var Game = {
 	status: 0,
+	handle: null,
+	fps: 30,
+	speed: 5,
+	render: [],
+	timeMap: [],
+	interval: null,
 	init: function () {
 		Timer.start()
 		this.changeInit()
@@ -172,7 +178,20 @@ var Game = {
 		this.changeInit()
 	},
 	ready: function () {
-		gl.start();
+		//gl.start();
+		_Tools.setInterval.call(gl, gl.clear, Math.floor(1000 / this.fps))
+		_Tools.setInterval.call(gl, gl.map, Math.floor(1000 / this.fps))
+		_Tools.setInterval.call(gl, gl.lowLayerRender, Math.floor(1000 / this.fps))
+		_Tools.setInterval.call(gl, gl.effectsRender, Math.floor(1000 / this.fps))
+		_Tools.setInterval.call(gl, gl.animationRender, Math.floor(1000 / this.fps))
+		_Tools.setInterval.call(gl, gl.highLayerRender, Math.floor(1000 / this.fps))
+		_Tools.setInterval.call(gl, gl.emittersRender, Math.floor(1000 / this.fps))
+		_Tools.setInterval.call(gl, gl.messageRender, Math.floor(1000 / this.fps))
+		_Tools.setInterval.call(gl, gl.outputsRender, Math.floor(1000 / this.fps))
+		_Tools.setInterval.call(gl, gl.fpsTimer, Math.floor(1000 / this.fps))
+		_Tools.setInterval.call(gl, gl.postRender, Math.floor(1000 / this.fps))
+		Game.loop()
+		Anim.handle = _Tools.setInterval.call(Anim, Anim.changeFrame, 200);
 		_Data.status = "ready";
 		Mess.setMess('pressEnter')
 		this.status = 10
@@ -196,18 +215,14 @@ var Game = {
 		Room.start()
 	},
 	pause: function () {
-		_Data.intervals.forEach(function (interval) {
-			interval.pause()
-		})
+		Game.interval.pause()
 		_Data.timeouts.forEach(function (timeout) {
 			timeout.pause()
 		})
 		_Data.status = 'pause'
 	},
 	continue: function () {
-		_Data.intervals.forEach(function (interval) {
-			interval.continue()
-		})
+		Game.interval.continue()
 		_Data.timeouts.forEach(function (timeout) {
 			timeout.continue()
 		})
@@ -235,6 +250,50 @@ var Game = {
 	},
 	nextRound: function () {
 
+	},
+	loop: function () {
+		this.interval = new Interval(function () {
+			TimeMap.formation()
+			this.timeMap.forEach(function (timeMapBuffer) {
+				timeMapBuffer.method.call(timeMapBuffer.context)
+			})
+			this.timeMap = []
+		}.bind(this), this.speed)
+	},
+	addRenderBuffer: function (name, method) {
+		if (name == undefined || method == undefined) {
+			return false
+		}
+		var renderBuffer = new RenderBuffer(name, method)
+		this.render.push(renderBuffer)
+		return true
+	},
+	removeRenderBuffer: function (name) {
+		for (var i = 0; i < this.render.length; i++) {
+			if (name == this.render[i].name) {
+				this.render.splice(i, 1)
+				return true
+			}
+		}
+		return false
+	},
+	enableBuffer: function (name) {
+		for (var i = 0; i < this.render.length; i++) {
+			if (name == this.render[i].name) {
+				this.render[i].enable()
+				return true
+			}
+		}
+		return false
+	},
+	disableBuffer: function (name) {
+		for (var i = 0; i < this.render.length; i++) {
+			if (name == this.render[i].name) {
+				this.render[i].disable()
+				return true
+			}
+		}
+		return false
 	}
 }
 
