@@ -9,7 +9,7 @@ var Astar = {
 		return Math.pow(xd, 2) + Math.pow(yd, 2);
 	},
 	func: function () {
-		var e = Map.graph[this.e];
+		var e = _Map.graph[this.e];
 		e.g = 0;
 		e.h = this.h(e);
 		e.f = Math.pow(e.h, 2);
@@ -27,6 +27,9 @@ var Astar = {
 				return res;
 			};
 			n.neighs.forEach(function (son) {
+				if (son.block) {
+					return
+				};
 				var newg = Math.sqrt(n.g) + 1;
 				if (son.arr != null) {
 					return;
@@ -73,8 +76,8 @@ var Astar = {
 	},
 	defineNum: function (pos) {
 		var num = 0;
-		while (num < Map.graph.length) {
-			if (pos.x == Map.graph[num].x && pos.y == Map.graph[num].y) {
+		while (num < _Map.graph.length) {
+			if (pos.x == _Map.graph[num].x && pos.y == _Map.graph[num].y) {
 				return num;
 			};
 			num++;
@@ -89,13 +92,13 @@ var Astar = {
 };
 
 var ai = {
-	player_pos: {
+	playerPos: {
 		x: 10,
 		y: 15
 	},
 	hPlayer: function (n) {
-		var xd = Math.abs(n.x - this.player_pos.x);
-		var yd = Math.abs(n.y - this.player_pos.y);
+		var xd = Math.abs(n.x - this.playerPos.x);
+		var yd = Math.abs(n.y - this.playerPos.y);
 		return Math.pow(xd, 2) + Math.pow(yd, 2);
 	},
 	getMaxF: function (arr) {
@@ -110,39 +113,39 @@ var ai = {
 		});
 		return sort[0];
 	},
-	search_path: function () {
+	searchPath: function () {
 		var self = this;
-		if (((self.pos.x / 32) - (Math.floor(self.pos.x / 32))) != 0 ||
-				((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
+		/*if (((self.pos.x / 32) - (Math.floor(self.pos.x / 32))) != 0 ||
+			((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
 			return;
-		};
-		var current_pos = {
+		};*/
+		var currentPos = {
 			x: Math.floor(self.pos.x / 32),
 			y: Math.floor(self.pos.y / 32)
 		};
-		if (current_pos.x == self.point_pos.x && current_pos.y == self.point_pos.y) {
+		if (currentPos.x == self.pointPos.x && currentPos.y == self.pointPos.y) {
 			return;
 		};
 		self.path = [];
-		Astar.s = Astar.defineNum(current_pos);
-		Astar.e = Astar.defineNum(self.point_pos);
+		Astar.s = Astar.defineNum(currentPos);
+		Astar.e = Astar.defineNum(self.pointPos);
 		self.path = Astar.func();
-		Map.graphClear();
+		_Map.graphClear();
 		Astar.clear();
 	},
 	fear: function () {
 		var self = this;
 		if (((self.pos.x / 32) - (Math.floor(self.pos.x / 32))) != 0 ||
-				((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
+			((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
 			return;
 		};
-		var current_pos = {
+		var currentPos = {
 			x: Math.floor(self.pos.x / 32),
 			y: Math.floor(self.pos.y / 32)
 		};
 		self.path = [];
-		var num = Astar.defineNum(current_pos);
-		var neighs = Map.graph[num].neighs.map(function (n) {
+		var num = Astar.defineNum(currentPos);
+		var neighs = _Map.graph[num].neighs.map(function (n) {
 			var f = ai.hPlayer(n);
 			return {f: f, x: n.x, y: n.y}
 		});
@@ -151,29 +154,33 @@ var ai = {
 	},
 	passive: function () {
 		var self = this;
-		if (((self.pos.x / 32) - (Math.floor(self.pos.x / 32))) != 0 ||
+		/*if (((self.pos.x / 32) - (Math.floor(self.pos.x / 32))) != 0 ||
 				((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
 			return;
-		};
+		};*/
 
-		var current_pos = {
+		if (this.path.length != 0) {
+			return
+		}
+
+		var currentPos = {
 			x: Math.floor(self.pos.x / 32),
 			y: Math.floor(self.pos.y / 32)
 		};
 
-		var num = Astar.defineNum(current_pos);
+		var num = Astar.defineNum(currentPos);
 
 		var random;
 
 		do {
-			random = Math.round((Map.graph[num].neighs.length - 1) * Math.random());
-		} while (Map.grid[Map.graph[num].neighs[random].x][Map.graph[num].neighs[random].y].block);
+			random = Math.round((_Map.graph[num].neighs.length - 1) * Math.random());
+		} while (_Map.grid[_Map.graph[num].neighs[random].x][_Map.graph[num].neighs[random].y].object.block || _Map.graph[num].neighs[random].x == 10 && _Map.graph[num].neighs[random].y == 8);
 
-		self.point_pos = Map.graph[num].neighs[random];
+		self.pointPos = _Map.graph[num].neighs[random];
 
-		ai.search_path.call(self);
+		ai.searchPath.call(self);
 	},
 	free: function () {
-		ai.search_path.call(this);
+		ai.searchPath.call(this);
 	}
 };

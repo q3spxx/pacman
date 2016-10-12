@@ -10,31 +10,55 @@
 			text-align: center;
 			overflow: hidden;
 		}
+		body {
+			background-color: #000;
+			height: 1024px;
+			overflow: hidden;
+		}
+		.tv {
+			position: absolute;
+		}
 		canvas {
+			margin-top: 40px;
+			margin-left: 28px;
+		}
+		#volume {
+			position: absolute;
+			margin-top: 672px;
+			margin-left: 672px;
+		}
+		#volume:hover {
+			cursor: pointer;
 		}
 	</style>
 </head>
-<body>
+<body onmouseup="_Tools.inputs.volume.mousedownDisable()">
+	<img class="tv" src="images/tv.png" alt="">
+	<img id="volume" src="images/volume.png" alt="" onmousedown="_Tools.inputs.volume.mousedownEnable()" draggable="false">
 	<canvas id="map"></canvas>
-	<input id="volume" type="range" max="100" min="0" value="30" onchange="_data.change_volume(this)">
+	<script type="text/javascript" src="lib/jquery-3.1.0.min.js"></script>
+	<script type="text/javascript" src="var.js"></script>
+	<script type="text/javascript" src="src.js"></script>
+	<script type="text/javascript" src="tools.js"></script>
+	<script type="text/javascript" src="sounds.js"></script>
 	<script type="text/javascript" src="constructor.js"></script>
 	<script type="text/javascript" src="data.js"></script>
+	<script type="text/javascript" src="Effects.js"></script>
+	<script type="text/javascript" src="Char.js"></script>
 	<script type="text/javascript" src="special.js"></script>
-	<script type="text/javascript" src="elems/walls.js"></script>
-	<script type="text/javascript" src="elems/food.js"></script>
 	<script type="text/javascript" src="elems/all.js"></script>
-	<script type="text/javascript" src="elems.js"></script>
-	<script type="text/javascript" src="map.js"></script>
+	<script type="text/javascript" src="elems/blocks_pos.js"></script>
 	<script type="text/javascript" src="ai.js"></script>
 	<script type="text/javascript" src="move.js"></script>
+	<script type="text/javascript" src="Mess.js"></script>
 	<script type="text/javascript" src="controller.js"></script>
-	<script type="text/javascript" src="player.js"></script>
-	<script type="text/javascript" src="enemyes.js"></script>
 	<script type="text/javascript" src="anim.js"></script>
 	<script type="text/javascript" src="controls.js"></script>
 	<script type="text/javascript" src="collision.js"></script>
+	<script type="text/javascript" src="shop.js"></script>
 	<script type="text/javascript" src="gl.js"></script>
 	<script type="text/javascript" src="scope.js"></script>
+	<script type="text/javascript" src="map.js"></script>
 	<script type="text/javascript" src="main.js"></script>
 </body>
 </html>

@@ -4,8 +4,392 @@
 		"selected_items":
 		[
 			[
-				"margi",
+				"pla",
+				"playerGo"
+			],
+			[
+				"clea",
+				"clearInterval"
+			],
+			[
+				"get",
+				"getParams"
+			],
+			[
+				"low",
+				"lowLayer"
+			],
+			[
+				"re",
+				"rotate"
+			],
+			[
+				"change",
+				"changeVolume"
+			],
+			[
+				"ma",
+				"margin"
+			],
+			[
+				"mar",
 				"margin-top"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"di",
+				"directionAngle"
+			],
+			[
+				"dir",
+				"directionAngle"
+			],
+			[
+				"eff",
+				"effectPos"
+			],
+			[
+				"ef",
+				"effectPos"
+			],
+			[
+				"Ma",
+				"Math"
+			],
+			[
+				"pa",
+				"particle"
+			],
+			[
+				"ge",
+				"genId"
+			],
+			[
+				"str",
+				"strokeStyle"
+			],
+			[
+				"part",
+				"particle"
+			],
+			[
+				"par",
+				"particle"
+			],
+			[
+				"fil",
+				"fillStyle"
+			],
+			[
+				"partic",
+				"particle"
+			],
+			[
+				"effc",
+				"effectBuffer"
+			],
+			[
+				"e",
+				"effect"
+			],
+			[
+				"ima",
+				"imageData"
+			],
+			[
+				"pac",
+				"Particle"
+			],
+			[
+				"initC",
+				"initControls"
+			],
+			[
+				"an",
+				"animationBufferId"
+			],
+			[
+				"a",
+				"animationBufferId"
+			],
+			[
+				"cu",
+				"curAction"
+			],
+			[
+				"c",
+				"center"
+			],
+			[
+				"pad",
+				"padding"
+			],
+			[
+				"anim",
+				"animationBuffer"
+			],
+			[
+				"cha",
+				"characterInit"
+			],
+			[
+				"cur",
+				"curState"
+			],
+			[
+				"grid",
+				"gridLink"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"ene",
+				"energiser"
+			],
+			[
+				"mi",
+				"min-width"
+			],
+			[
+				"max",
+				"max-width"
+			],
+			[
+				"buf",
+				"buf_event_text"
+			],
+			[
+				"buf_event_t",
+				"buf_event_text"
+			],
+			[
+				"buf_event",
+				"buf_event_default"
+			],
+			[
+				"buf_event_ac",
+				"buf_event_active_handle"
+			],
+			[
+				"buf_ev",
+				"buf_event"
+			],
+			[
+				"buf_event_ha",
+				"buf_event_timer_handle"
+			],
+			[
+				"im",
+				"img"
+			],
+			[
+				"random",
+				"random_cell"
+			],
+			[
+				"ra",
+				"random"
+			],
+			[
+				"ran",
+				"random"
+			],
+			[
+				"bu",
+				"buf"
+			],
+			[
+				"img",
+				"img_poc"
+			],
+			[
+				"new",
+				"new_block"
+			],
+			[
+				"cl",
+				"cl	cl"
+			],
+			[
+				"set_",
+				"set_buf_event"
+			],
+			[
+				"eve",
+				"event_graph"
+			],
+			[
+				"map",
+				"map_arr"
+			],
+			[
+				"lif",
+				"lifes"
+			],
+			[
+				"set",
+				"setTimeout"
+			],
+			[
+				"tot",
+				"total_say"
+			],
+			[
+				"to",
+				"total_say"
+			],
+			[
+				"bi",
+				"bitch_check"
+			],
+			[
+				"cool",
+				"cooldown"
+			],
+			[
+				"cooldown",
+				"cooldown_handle"
+			],
+			[
+				"coo",
+				"cooldown_handle"
+			],
+			[
+				"co",
+				"cooldown_handle"
+			],
+			[
+				"w",
+				"waiting"
+			],
+			[
+				"in",
+				"in_room"
+			],
+			[
+				"enem",
+				"enemy"
+			],
+			[
+				"poi",
+				"position"
+			],
+			[
+				"retu",
+				"returnValue"
+			],
+			[
+				"dou",
+				"doublekill"
+			],
+			[
+				"da",
+				"doublekill_date"
+			],
+			[
+				"do",
+				"doublekill_date"
+			],
+			[
+				"sou",
+				"source"
+			],
+			[
+				"star",
+				"start_game"
+			],
+			[
+				"sta",
+				"status"
+			],
+			[
+				"dra",
+				"drawImage"
+			],
+			[
+				"Map",
+				"map"
+			],
+			[
+				"sp",
+				"special_check"
+			],
+			[
+				"spa",
+				"special_buf"
+			],
+			[
+				"spe",
+				"special"
+			],
+			[
+				"r",
+				"return"
+			],
+			[
+				"cor",
+				"cord_return"
+			],
+			[
+				"margin",
+				"margin"
+			],
+			[
+				"pso",
+				"position"
+			],
+			[
+				"margi",
+				"margin"
+			],
+			[
+				"dr",
+				"draw_special"
+			],
+			[
+				"v",
+				"value"
+			],
+			[
+				"on",
+				"onchange	Attr"
+			],
+			[
+				"ke",
+				"keyCode"
+			],
+			[
+				"load",
+				"loaded"
+			],
+			[
+				"ad",
+				"audio"
+			],
+			[
+				"loa",
+				"load_audio"
+			],
+			[
+				"for",
+				"forEach"
+			],
+			[
+				"rom",
+				"room_timer"
+			],
+			[
+				"room",
+				"room_timer"
+			],
+			[
+				"b",
+				"b_Controller"
 			],
 			[
 				"text",
@@ -16,24 +400,8 @@
 				"table-cell"
 			],
 			[
-				"margin",
-				"margin-right"
-			],
-			[
-				"pad",
-				"padding"
-			],
-			[
-				"ma",
-				"margin-left"
-			],
-			[
 				"borde",
 				"border-radius"
-			],
-			[
-				"c",
-				"center"
 			],
 			[
 				"border-r",
@@ -68,20 +436,12 @@
 				"border-collapse"
 			],
 			[
-				"pa",
-				"padding-left"
-			],
-			[
 				"fon",
 				"font-size"
 			],
 			[
 				"fo",
 				"font-size"
-			],
-			[
-				"mar",
-				"margin-left"
 			],
 			[
 				"lan",
@@ -100,14 +460,6 @@
 				"entry_price"
 			],
 			[
-				"di",
-				"display"
-			],
-			[
-				"max",
-				"max-width"
-			],
-			[
 				"wid",
 				"width"
 			],
@@ -122,10 +474,6 @@
 			[
 				"coll",
 				"collback_effect"
-			],
-			[
-				"pos",
-				"position"
 			],
 			[
 				"bac",
@@ -148,20 +496,8 @@
 				"function"
 			],
 			[
-				"cu",
-				"current"
-			],
-			[
-				"cur",
-				"curTable"
-			],
-			[
 				"data",
 				"dataset"
-			],
-			[
-				"get",
-				"getElementById"
 			],
 			[
 				"d",
@@ -172,87 +508,199 @@
 				"json_encode"
 			],
 			[
-				"da",
-				"date_arr"
-			],
-			[
 				"blo",
 				"blog_names"
 			],
 			[
 				"_",
 				"_GET"
-			],
-			[
-				"blog",
-				"blogpack"
-			],
-			[
-				"ar",
-				"article"
-			],
-			[
-				"s",
-				"space"
-			],
-			[
-				"res",
-				"result_name"
-			],
-			[
-				"html",
-				"html_links"
-			],
-			[
-				"str_re",
-				"str_replace"
-			],
-			[
-				"preg",
-				"preg_match"
-			],
-			[
-				"for",
-				"foreach	foreach …"
-			],
-			[
-				"json",
-				"json_decode"
-			],
-			[
-				"str",
-				"str_array_blog"
-			],
-			[
-				"arr",
-				"arr_json"
-			],
-			[
-				"print",
-				"print_r"
-			],
-			[
-				"prin",
-				"print_r"
-			],
-			[
-				"te",
-				"temp_articles"
-			],
-			[
-				"num",
-				"num_blog"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "pacman.sublime-project",
+			"file": "main.js",
 			"settings":
 			{
-				"buffer_size": 73,
-				"line_ending": "Unix"
+				"buffer_size": 6592,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "shop.js",
+			"settings":
+			{
+				"buffer_size": 2858,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data.js",
+			"settings":
+			{
+				"buffer_size": 2019,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Effects.js",
+			"settings":
+			{
+				"buffer_size": 2049,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 2166,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "controller.js",
+			"settings":
+			{
+				"buffer_size": 10594,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "controls.js",
+			"settings":
+			{
+				"buffer_size": 2458,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "var.js",
+			"settings":
+			{
+				"buffer_size": 257,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "tools.js",
+			"settings":
+			{
+				"buffer_size": 2460,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "elems/all.js",
+			"settings":
+			{
+				"buffer_size": 4370,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "gl.js",
+			"settings":
+			{
+				"buffer_size": 10955,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "anim.js",
+			"settings":
+			{
+				"buffer_size": 7410,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "constructor.js",
+			"settings":
+			{
+				"buffer_size": 12113,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "collision.js",
+			"settings":
+			{
+				"buffer_size": 7710,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scope.js",
+			"settings":
+			{
+				"buffer_size": 866,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "move.js",
+			"settings":
+			{
+				"buffer_size": 4764,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "elems/blocks_pos.js",
+			"settings":
+			{
+				"buffer_size": 2127,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src.js",
+			"settings":
+			{
+				"buffer_size": 1226,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Char.js",
+			"settings":
+			{
+				"buffer_size": 774,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "map.js",
+			"settings":
+			{
+				"buffer_size": 3606,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "special.js",
+			"settings":
+			{
+				"buffer_size": 9691,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "ai.js",
+			"settings":
+			{
+				"buffer_size": 4064,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "sounds.js",
+			"settings":
+			{
+				"buffer_size": 426,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -275,7 +723,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 400.0
+		"width": 416.0
 	},
 	"console":
 	{
@@ -303,6 +751,47 @@
 	],
 	"file_history":
 	[
+		"/Z/home/localhost/www/leden/catalog/view/theme/default/stylesheet/stylesheet.css",
+		"/G/_leden/admin/config.php",
+		"/G/_leden/mailru-domainf7c5yNFUZJ7zmVfC.html",
+		"/C/tmp/fz3temp-1/product.tpl",
+		"/C/tmp/fz3temp-1/styles.css",
+		"/C/tmp/FTP8B92.tmp/category.php",
+		"/Z/home/localhost/www/leden/catalog/view/theme/default/template/common/home.tpl",
+		"/Z/home/localhost/www/leden/catalog/view/javascript/common.js",
+		"/Z/home/localhost/www/leden/catalog/view/theme/default/template/module/featured.tpl",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/common/header.tpl",
+		"/C/server/home/localhost/www/leden/catalog/view/theme/default/stylesheet/styles.css",
+		"/Z/home/localhost/www/leden/catalog/view/theme/default/template/common/content_top.tpl",
+		"/C/tmp/FTP9FF8.tmp/bootstrap.min.css",
+		"/Z/home/localhost/www/leden/catalog/view/javascript/bootstrap/css/bootstrap.css",
+		"/C/tmp/FTPA4E5.tmp/stylesheet.css",
+		"/C/server/home/localhost/www/leden/admin/view/template/common/header.tpl",
+		"/C/tmp/FTP6133.tmp/bootstrap.css",
+		"/C/tmp/FTP1D13.tmp/exchange1c.php",
+		"/C/tmp/FTPC0A2.tmp/action.php",
+		"/C/tmp/FTP91F3.tmp/request.php",
+		"/C/tmp/FTPE2C8.tmp/exchange1c.php",
+		"/C/tmp/FTP21A9.tmp/exchange1c.php",
+		"/C/tmp/FTP53B.tmp/offers.xml",
+		"/C/tmp/FTP2E8F.tmp/import.xml",
+		"/C/tmp/FTPEE21.tmp/import.xml",
+		"/G/_leden/ОбменССайтомЛеден_1_0.epf",
+		"/C/tmp/FTP9F11.tmp/exchange1c.php",
+		"/C/tmp/FTP786E.tmp/controller.php",
+		"/C/tmp/FTP7A6C.tmp/vqmod.php",
+		"/C/tmp/FTPCE64.tmp/user.php",
+		"/C/tmp/FTP135E.tmp/db.php",
+		"/C/tmp/FTP89C4.tmp/currency.php",
+		"/C/tmp/FTPB.tmp/startup.php",
+		"/C/tmp/FTP9703.tmp/exchange1c.php",
+		"/C/tmp/FTPFAF6.tmp/featured.php",
+		"/C/tmp/FTP586F.tmp/exchange1c.php",
+		"/G/_leden/cml_import_2016-08-14-22-30-39.xml",
+		"/G/node/pacman/enemyes.js",
+		"/G/node/pacman/player.js",
+		"/C/tmp/FTPCD5C.tmp/File.php",
+		"/G/node/pacman/gl.js",
 		"/G/node/server.js",
 		"/G/node/test/index.html",
 		"/G/node/test/README.md",
@@ -316,7 +805,6 @@
 		"/C/tmp/fz3temp-1/footer.php",
 		"/C/tmp/fz3temp-1/featured.php",
 		"/C/tmp/fz3temp-1/featured.tpl",
-		"/C/tmp/fz3temp-1/product.tpl",
 		"/C/tmp/fz3temp-1/common.js",
 		"/C/tmp/fz3temp-1/special.tpl",
 		"/C/tmp/fz3temp-1/callback.css",
@@ -337,7 +825,6 @@
 		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/common/footer.tpl",
 		"/C/tmp/FTP3CAE.tmp/footer.php",
 		"/C/tmp/FTP4B9D.tmp/stylesheet.css",
-		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/common/header.tpl",
 		"/C/server/home/localhost/www/leden/catalog/controller/common/header.php",
 		"/C/server/home/localhost/www/leden/catalog/controller/common/footer.php",
 		"/C/server/home/localhost/www/leden/catalog/view/theme/default/stylesheet/stylesheet.css",
@@ -391,54 +878,15 @@
 		"/C/tmp/FTP86FB.tmp/pathReplaces.php",
 		"/C/tmp/FTP2341.tmp/config.php",
 		"/C/tmp/FTPB68B.tmp/index.php",
-		"/C/tmp/FTP9EF7.tmp/index.php",
-		"/C/server/usr/local/apache/conf/httpd.conf",
-		"/C/tmp/FTPA4F6.tmp/config.php",
-		"/C/tmp/FTP6260.tmp/index.php",
-		"/C/tmp/FTP3EA8.tmp/wp-settings.php",
-		"/C/tmp/FTPF690.tmp/wp-config.php",
-		"/C/server/home/localhost/www/leden/admin/view/template/catalog/product_form.tpl",
-		"/C/server/home/localhost/www/leden/admin/model/catalog/product.php",
-		"/C/server/home/localhost/www/leden/admin/view/template/catalog/product_list.tpl",
-		"/C/server/home/localhost/www/leden/catalog/controller/module/featured.php",
-		"/C/server/home/localhost/www/leden/catalog/language/russian/module/featured.php",
-		"/C/server/home/localhost/www/leden/catalog/language/russian/account/return.php",
-		"/C/server/home/localhost/www/leden/catalog/controller/account/return.php",
-		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/product/category.tpl",
-		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/common/search.tpl",
-		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/product/search.tpl",
-		"/C/server/home/localhost/www/leden/catalog/view/theme/default/template/product/special.tpl",
-		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
-		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/PackageResourceViewer/README.md",
-		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/PackageResourceViewer/PackageResourceViewer.sublime-settings",
-		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/User/PackageResourceViewer.sublime-settings",
-		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/User/if.sublime-snippet",
-		"/C/Users/q3spxx/AppData/Roaming/Sublime Text 3/Packages/User/cl.sublime-snippet",
-		"/C/tmp/fz3temp-1/script.js",
-		"/C/tmp/fz3temp-1/core.js",
-		"/C/tmp/fz3temp-1/sportnews.php",
-		"/C/tmp/fz3temp-1/sportnews.html",
-		"/C/tmp/fz3temp-1/index.php",
-		"/C/tmp/fz3temp-1/index.html",
-		"/C/tmp/fz3temp-1/fotorama.css",
-		"/G/_web/_shkola/sportnews.html",
-		"/C/tmp/fz3temp-1/news_css.css",
-		"/C/tmp/fz3temp-1/script 2.js",
-		"/C/tmp/fz3temp-1/index.css",
-		"/F/_web/home/localhost/www/smarty/page.html",
-		"/G/_Documents/Organizatsia_kak_sistema_Proyavlenie_sistemnykh_svoystv_organizatsiy_Vneshnyaya_i_vnutrennyaya_sreda_organizatsii.docx",
-		"//Q3SPXX/_web/server/home/localhost/www/news/_css/site_global.css",
-		"//Q3SPXX/_web/server/home/localhost/www/news/_css/master_______-a.css",
-		"//Q3SPXX/_web/server/home/localhost/www/news/_css/index.css"
+		"/C/tmp/FTP9EF7.tmp/index.php"
 	],
 	"find":
 	{
-		"height": 21.0
+		"height": 34.0
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 90.0,
 		"where_history":
 		[
 		]
@@ -448,6 +896,33 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"toFixe",
+			"changeVolume",
+			"fear",
+			"distance",
+			"imageData",
+			"96",
+			"m_pos",
+			"bob",
+			"pinky",
+			"blinky",
+			"buf",
+			"change_f",
+			"buf",
+			"ai_p",
+			"m_p",
+			"f",
+			"w",
+			"product-layout",
+			"clearFix",
+			"menu",
+			".navbar",
+			".nav-bar",
+			"Лампа Gauss LED Elementary A60 7W",
+			"()\n",
+			"skills",
+			"$this->data",
+			"hanging",
 			"footer",
 			"content",
 			"// ",
@@ -478,7 +953,7 @@
 			"content"
 		],
 		"highlight": true,
-		"in_selection": false,
+		"in_selection": true,
 		"preserve_case": false,
 		"regex": false,
 		"replace_history":
@@ -493,21 +968,160 @@
 	"groups":
 	[
 		{
-			"sheets":
-			[
-			]
-		},
-		{
 			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "pacman.sublime-project",
-					"semi_transient": true,
+					"file": "main.js",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 73,
+						"buffer_size": 6592,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1831,
+								1831
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 741.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "shop.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2858,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2168,
+								2168
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1359.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "data.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2019,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								107,
+								107
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "Effects.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2049,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								381,
+								381
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2166,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								473,
+								473
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "controller.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10594,
 						"regions":
 						{
 						},
@@ -520,25 +1134,528 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1833.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "controls.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2458,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 390.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 18,
 					"type": "text"
 				}
 			]
 		},
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 7,
+					"file": "var.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 257,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								163,
+								163
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "tools.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2460,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2221,
+								2221
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 195.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "elems/all.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4370,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1014.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "gl.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10955,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1045,
+								1045
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2262.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "anim.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7410,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4640,
+								4640
+							]
+						],
+						"settings":
+						{
+							"spell_check": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 897.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				}
 			]
 		},
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 12,
+					"file": "constructor.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12113,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4462,
+								4462
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4855.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "collision.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7710,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7410,
+								7410
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3705.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "scope.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 866,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								378,
+								378
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "move.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4764,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 468.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 22,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "elems/blocks_pos.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2127,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": -0.0,
+						"translation.y": 468.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 20,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 17,
+					"file": "src.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1226,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								461,
+								461
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": -0.0,
+						"translation.y": 117.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "Char.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 774,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "map.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3606,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1521.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 21,
+					"type": "text"
+				},
+				{
+					"buffer": 20,
+					"file": "special.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9691,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6015,
+								6015
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3328.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 21,
+					"file": "ai.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4064,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 273.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 22,
+					"file": "sounds.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 426,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								159,
+								159
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -608,6 +1725,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"pla",
+				"player.js"
+			]
 		],
 		"width": 0.0
 	},
@@ -618,7 +1739,7 @@
 		[
 			[
 				"",
-				"G:\\node\\pacman\\pacman.sublime-project"
+				"G:\\node\\leden.sublime-project"
 			]
 		],
 		"width": 380.0

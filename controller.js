@@ -1,213 +1,433 @@
 var Controller = {
 		start: function () {
-			var self = this;
+			this.handle = _Tools.setInterval.call(this, function () {
 
-			self.handle = setInterval(function () {
-
-				if (self.id != 4) {
-					if (self.behavior == 0) {
-						ai.search_path.call(self);
-					};
-					if (self.behavior == 1) {
-						ai.fear.call(self);
-					};
-					if (self.behavior == 2) {
-						ai.passive.call(self);
-					};
-					if (self.behavior == 3) {
-					};
-					if (self.behavior == 4) {
-						ai.free.call(self);
-					};
-					if (self.behavior == 5) {
-						ai.free.call(self);
-					};
-					if (self.behavior == 6) {
-					};
-					Move.ai_arrows.call(self);
+				if (this.id != 4) {
+					switch (this.behavior) {
+						case 'chase': ai.searchPath.call(this)
+						break
+						case 'fear': ai.fear.call(this)
+						break
+						case "fearPreTimeout": ai.fear.call(this)
+						break
+						case 'passive': ai.passive.call(this)
+						break
+						case 'shocked': return
+						break
+						case 'isBusted':
+						break
+						case 'free': ai.free.call(this)
+						break
+						case 'goToRoom': ai.free.call(this)
+						break
+						case "enterToRoom": ai.searchPath.call(this)
+						break
+						case "inRoom": ai.searchPath.call(this)
+						break
+						case 'exitFromRoom': ai.searchPath.call(this)
+						break
+					}
+					Move.aiDirection.call(this);
+				} else {
+					ai.playerPos.x = Math.floor((this.pos.x) / 32);
+					ai.playerPos.y = Math.floor((this.pos.y) / 32);
 				};
-				if (self.id == 4) {
-					ai.player_pos.x = Math.floor((self.pos.x) / 32);
-					ai.player_pos.y = Math.floor((self.pos.y) / 32);
-				};
 
-		 		var res = Move.set.call(self);
-		 		if (!res) {
-		 			Controller.stop.call(self);
-		 		};
-			}, self.speed/* - Math.round(_data.level * _data.game_speed / 256)*/);
+		 		Move.set.call(this);
+			}.bind(this), this.speed);
 		},
 		stop: function () {
-			clearInterval(this.handle);
-		},
-		game_pause: function () {
-			_data.status = "pause";
-			enemy_arr.forEach(function (enemy) {
-				Controller.stop.call(enemy);
-			});
-			Controller.stop.call(Player);
-		},
-		game_continue: function () {
-			_data.status = "play";
-			enemy_arr.forEach(function (enemy) {
-				Controller.start.call(enemy)
-			});
+			_Tools.clearInterval(this.handle);
 		}
 	};
 
-	var b_Controller = {
-		check_visibility: function () {
+	var behaviorController = {
+		checkVisibility: function () {
 			var pos = {
-				x: Math.floor(this.pos.x / 32),
-				y: Math.floor(this.pos.y / 32)
+				x: Math.floor((this.pos.x + 16) / 32),
+				y: Math.floor((this.pos.y + 16) / 32)
+			};
+			if (pos.x == ai.playerPos.x) {
+				var distance = Math.abs(pos.y - ai.playerPos.y)
+				if (Math.abs(pos.y + this.mPos.y - ai.playerPos.y) >= distance) {
+					return false
+				}
+				while (pos.y != ai.playerPos.y) {
+					if (_Map.grid[pos.x][pos.y].object.block) {
+						return false
+					};
+					pos.y += this.mPos.y
+				}
+				return true
+			}
+			if (pos.y == ai.playerPos.y) {
+				var distance = Math.abs(pos.x - ai.playerPos.x)
+				if (Math.abs(pos.x + this.mPos.x - ai.playerPos.x) >= distance) {
+					return false
+				}
+				while (pos.x != ai.playerPos.x) {
+					if (_Map.grid[pos.x][pos.y].object.block) {
+						return false
+					};
+					pos.x += this.mPos.x
+					if (pos.x < 0) {
+						pos.x = 20
+					} else if (pos.x > 20) {
+						pos.x = 0
+					};
+				}
+				return true
 			};
 
-			var axis = null;
-			var in_line = null;
-			if (pos.x != ai.player_pos.x) {
-				if (pos.y != ai.player_pos.y) {
-					return false;
-				} else {
-					axis = 1;
-				};
-			} else {
-				axis = 0;
-			};
-
-			if (axis == 0) {
-				if (this.m_pos.y == 1) {
-					in_line = ai.player_pos.y - pos.y;
-				} else if (this.m_pos.y == -1) {
-					in_line = pos.y - ai.player_pos.y;
-				} else {
-					return false;
-				};
-			} else if (axis == 1) {
-				if (this.m_pos.x == 1) {
-					in_line = ai.player_pos.x - pos.x;
-				} else if (this.m_pos.x == -1) {
-					in_line = pos.x - ai.player_pos.x;
-				} else {
-					return false;
-				};
-			} else {
-				return false
-			};
-
-			if (in_line < 0) {
-				return false;
-			};
-
-			while (pos.x != ai.player_pos.x && pos.y != ai.player_pos.y) {
-				if (Map.grid[pos.x][pos.y].block) {
-					return false;
-				};
-				pos.x += this.m_pos.x;
-				pos.y += this.m_pos.y;
-			};
-
-			return true;
+			return false
 		},
-		set_chase: function () {
-			this.behavior = 0;
-			this.point_pos = ai.player_pos;
+		setChase: function () {
+			this.behavior = "chase";
+			this.pointPos = ai.playerPos;
 		},
-		set_fear: function () {
-			this.behavior = 1;
+		setFear: function () {
+			this.behavior = "fear";
 		},
-		set_passive: function () {
-			this.behavior = 2;
+		setFearPreTimeout: function () {
+			this.behavior = "fearPreTimeout"
 		},
-		set_waiting: function () {
-			this.behavior = 3;
+		setPassive: function () {
+			this.behavior = "passive";
 		},
-		set_free: function (point) {
+		setWaiting: function () {
+			this.behavior = "waiting";
+		},
+		setFree: function (point) {
 			this.point_pos = point;
-			this.behavior = 4;
+			this.behavior = "free";
 		},
-		set_outroom: function (point) {
-			this.point_pos = point;
-			this.behavior = 5;
+		setGoToRoom: function () {
+			this.behavior = "goToRoom"
 		},
-		set_grab: function () {
-			this.behavior = 6;
-			this.m_pos.x = 0;
-			this.m_pos.y = 0;
-			this.path = [];
+		setEnterToRoom: function () {
+			this.behavior = "enterToRoom"
+		},
+		setInRoom: function () {
+			this.behavior = "inRoom"
+		},
+		setExitFromRoom: function () {
+			this.behavior = 'exitFromRoom';
+		},
+		setIsBusted: function () {
+			this.behavior = 'isBusted'
+		},
+		setShocked: function () {
+			this.stop()
+			this.path = []
+			this.behavior = 'shocked'
+		},
+		killEnemy: function (enemy) {
+			enemy.goToRoom()
+			var points = 100 * Math.pow(2, Kill.getGain())
+			_Data.addPoints(points)
+			Mess.setMess(points, enemy.pos)
+			Kill.activate()
+
+			/*
+
+			if (enemy.shocked) {
+				enemy.shocked = false
+			}
+			Sounds.eatghost.play()
+			if (_data.firstblood) {
+				_data.firstblood = false;
+				setTimeout(function () {
+					_data.change_sound(audio_mess)
+					Sounds.show_mess("First blood!") 
+					Sounds.firstblood.play()
+				}, 1200);
+			};
+
+			_data.kills += 1;
+
+			if (_data.kill) {
+				var say = false;
+				var mess = Sounds.mess
+
+				switch (_data.kills) {
+					case 2: say = Sounds.doublekill
+							mess = "Double kill!"
+					break
+					case 3: say = Sounds.multikill
+							mess = "Multi kill!"
+					break
+					case 4: say = Sounds.megakill
+							mess = "Mega kill!"
+					break
+				}
+				if (say != false) {						
+					setTimeout(function () {
+						_data.change_sound(audio_mess)
+						Sounds.show_mess(mess)
+						say.play()
+					}, 200);
+				};
+			};
+
+			_data.total_kills += 1
+
+			var total_say = false
+			var total_mess = Sounds.mess
+			switch(_data.total_kills) {
+				case 3: total_say = Sounds.killingspree
+						total_mess = 'Killing spree!'
+				break
+				case 6: total_say = Sounds.rampage
+						total_mess = 'Rampage!'
+				break
+				case 9: total_say = Sounds.dominating
+						total_mess = 'Dominating!'
+				break
+				case 12: total_say = Sounds.unstoppable
+						total_mess = 'Unstoppable!'
+				break
+				case 15: total_say = Sounds.godlike
+						total_mess = 'Godlike!'
+				break
+			}
+
+			if (total_say != false) {
+				setTimeout(function () {
+					_data.change_sound(audio_mess)
+					Sounds.show_mess(total_mess)
+					total_say.play()
+				}, 1000)
+			};
+
+			_data.kill_timer();
+
+			var points = Math.pow(2, _data.kills) * 100
+			if (Event.buf_event_active) {
+				points = points * Event.buf_event_action;
+			}
+
+			Anim.show_mess(points, {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
+			Scope.main += points;
+			enemy.go_to_room();*/
 		}
 	};
 
-	var Event = {
-		random_event_date: null,
+	var Events = {
+		energiser: {
+			activated: false,
+			duration: 10,
+			timeToEnd: 0,
+			handle: null,
+			timer: false,
+			timerHandle: null,
+			timerDelay: 5,
+			timeToStart: 0,
+			setTimer: function () {
+				this.timeToStart = this.timerDelay
+				this.timer = true
+				this.timerHandle = _Tools.setInterval(function () {
+					this.timeToStart--
+					if (this.timeToStart == 0) {
+						this.removeTimer()
+						this.activate()
+					}
+				}.bind(this), 1000)
+			},
+			removeTimer: function () {
+				_Tools.clearInterval(this.timerHandle)
+				this.timer = false
+			},
+			deactivate: function () {
+				_Tools.clearInterval(this.handle)
+				this.activated = false
+			},
+			activate: function () {
+
+				if (this.activated) {
+					this.deactivate()
+				}
+
+				this.activated = true
+				this.timeToEnd = this.duration
+
+				enemyArr.forEach(function (enemy) {
+					if (
+						enemy.behavior == "passive" ||
+						enemy.behavior == "chase" ||
+						enemy.behavior == "fear" ||
+						enemy.behavior == "fearPreTimeout"
+						) {
+						behaviorController.setFear.call(enemy)
+					}
+				})
+
+				this.handle = _Tools.setInterval(function () {
+					if (this.timeToEnd == 0) {
+						this.deactivate()
+						enemyArr.forEach(function (enemy) {
+							if (enemy.behavior == "fearPreTimeout") {
+								behaviorController.setPassive.call(enemy)
+							}
+						})
+					} else if (this.timeToEnd == Math.floor(this.duration * 0.3)) {
+						enemyArr.forEach(function (enemy) {
+							if (enemy.behavior == "fear") {
+								behaviorController.setFearPreTimeout.call(enemy)
+							}
+						})
+					}
+					this.timeToEnd--
+				}.bind(this), 1000)
+			}
+		},
+		status: false,
+		update: 0,
+		duration: 5000,
+		timeout: false,
+		random_event: false,
 		random_event_handle: null,
-		handle: null,
-		date: null,
-		status: 0,
-		duration: 10000,
-		set_random_event: function () {
-			var date = new Date();
-			Event.random_event_date = date.getTime();
-			Event.random_event_date += Math.random() * 300000;
-			Event.random_event_handle = setInterval(function () {
-				var new_date = new Date();
-				var time = new_date.getTime();
-				if (time > Event.random_event_date) {
-					clearInterval(Event.random_event_handle);
-					Special.yo.start();
+		buf_event: false,
+		buf_event_pos: {x:0, y:0},
+		buf_event_duration: 10,
+		buf_event_handle: null,
+		buf_event_timer_handle: null,
+		buf_events: [{name: 'x2', action: 2},{name:'x3', action: 3}],
+		buf_event_action: 1,
+		buf_event_text: '',
+		buf_event_active: false,
+		buf_event_active_handle: null,
+		buf_event_default: function () {
+			this.buf_event_active = false
+			this.buf_event_action = 1
+			this.buf_event_text = ''
+			this.buf_event = false
+			gl.buf_event = []
+		},
+		buf_event_taked: function () {
+			clearInterval(this.buf_event_timer_handle)
+			gl.buf_event = []
+			this.buf_event = false
+			this.buf_event_active = true
+
+			this.buf_event_active_handle = setTimeout(function () {
+				this.buf_event_default()
+				this.set_buf_event()
+			}.bind(this), 10000)
+
+		},
+		set_buf_event: function () {
+			this.buf_event_handle = setTimeout(function () {
+				console.log("buf_event")
+				Event.buf_event_start()
+			}, 6000)
+			this.buf_event = true
+		},
+		buf_event_start: function () {
+			console.log("event start")
+			var random = Math.round(Math.random() * (this.buf_events.length - 1))
+			Event.buf_event_duration = 10
+			var empty = _Map.event_graph.filter(function (cell) {
+				if (cell.type == 'e') {
+					return true
+				}
+				return false
+			})
+			var random_cell = Math.floor(Math.random() * (empty.length - 1))
+			this.buf_event_pos.x = (empty[random_cell].x * 32) + 16
+			this.buf_event_pos.y = (empty[random_cell].y * 32) + 16
+			Event_blocks[this.buf_events[random].name].pos.x = empty[random_cell].x * 32
+			Event_blocks[this.buf_events[random].name].pos.y = empty[random_cell].y * 32
+			this.buf_event_action = this.buf_events[random].action
+			this.buf_event_text = this.buf_events[random].name
+			gl.buf_event.push(Event_blocks[this.buf_events[random].name])
+			this.buf_event_timer_handle = setInterval(function () {
+				Event.buf_event_duration -= 1
+				if (Event.buf_event_duration == 0) {
+					Event.buf_event_stop()
 				};
-			}, 100)
+			}, 1000)
+		},
+		buf_event_stop: function () {
+			console.log("event stop")
+			clearInterval(Event.buf_event_timer_handle)
+			gl.buf_event = []
+			this.buf_event = false
+			this.set_buf_event()
+		},
+		set_random_event: function () {
+			Event.random_event_handle = setTimeout(function () {
+				if (_data.status == "play") {
+					Special.yo.start();
+				}
+			}, Math.floor(Math.random() * 180000));
 		},
 		start: function () {
-			var date = new Date();
-			Event.date = date.getTime();
-			Event.status = 1;
+			if (Event.status) {
+				Event.update += 1;
+			};
+
+			Event.status = true;
+
 			enemy_arr.forEach(function (enemy) {
-				if (enemy.behavior == 0 || enemy.behavior == 2) {
-					enemy.img = imgs[6];
+				if (enemy.behavior == "passive" || enemy.behavior == "chase" || enemy.behavior == "fear") {
+					enemy.set_fear_img();
 					b_Controller.set_fear.call(enemy);
 				};
 			});
 			Sounds.signal.pause();
 			Sounds.signal.currentTime = 0;
 
-			Sounds.fear.play()
-			console.log("start");
-			if (Event.handle != null) {
-				clearInterval(Event.handle);
+			if (!Sounds.fear.paused) {
+				Sounds.fear.pause();
+				Sounds.fear.currentTime = 0
 			};
-			Event.handle = setInterval(function () {
-				Event.check_end();
-			}, 35);
+
+			Event.timeout = false
+
+			setTimeout(function () {
+				Sounds.fear.play()
+			}, 5)
+			setTimeout(function () {
+				if (Event.update == 0) {
+					enemy_arr.forEach(function (enemy) {
+						if (enemy.behavior == "fear") {
+							Event.timeout = true;
+							enemy.set_fear_pre_timeout_img()
+						};
+					});
+				}
+			}, Event.duration * 0.7);
+			setTimeout(function () {
+				if (Event.update <= 0 && Event.status) {
+					Event.stop();
+				} else {
+					Event.update -= 1;
+				};
+			}, Event.duration)
+			console.log("start");
 		},
 		stop: function () {
-			clearInterval(Event.handle);
-			Event.handle == null;
-			Event.date = null;
-			Event.status = 0;
+			Event.status = false;
+			Event.update = 0;
 			enemy_arr.forEach(function (enemy) {
-				if (enemy.id == 0) {
-					enemy.img = imgs[2];
-				};
-				if (enemy.id == 1) {
-					enemy.img = imgs[3];
-				};
-				if (enemy.id == 2) {
-					enemy.img = imgs[4];
-				};
-				if (enemy.id == 3) {
-					enemy.img = imgs[5];
-				};
+				if (
+					enemy.behavior == "in_room" || 
+					enemy.behavior == "enterToRoom" || 
+					enemy.behavior == "exit_from_room" || 
+					enemy.behavior == "go_to_room" 
+					) {
+					return
+				}
+				enemy.set_original_img()
 				b_Controller.set_passive.call(enemy);
 			});
-			Sounds.fear.pause()
-			Sounds.fear.currentTime = 0;
-			Sounds.signal.play();
+			if (!Sounds.fear.paused) {
+				Sounds.fear.pause()
+				Sounds.fear.currentTime = 0;
+			}
+			if (_data.status == 'play') {
+				Sounds.signal.play();
+			}
 			console.log("stop");
-		},
-		check_end: function () {
-			var date = new Date();
-			if (date.getTime() - Event.date > Event.duration) {
-				Event.stop();
-			};
 		}
 	}
