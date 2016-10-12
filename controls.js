@@ -52,8 +52,6 @@ var Controls = {
 							Player.down()
 						};
 				break
-				case 'q': if (Special.cord.ready && Special.cord.level > 0) {Special.cord.start()};
-				break
 				case 32: if (_Data.status == 'shop') {
 							Shop.try_buy()
 						} else if (Special.yo.status) {
@@ -66,11 +64,13 @@ var Controls = {
 						Shop.close()
 					}
 				break
-				case 82: if (Special.bomb.ready && Special.bomb.level > 0) {Special.bomb.start()}
+				case 'q': if (Special.cord.ready && Special.cord.level > 0) {Special.cord.start()};
 				break
 				case 'w': if (Special.shot.ready && Special.shot.level > 0) {Special.shot.start()};
 				break
 				case 'e': if (Special.shock.ready && Special.shock.level > 0) {Special.shock.start()}
+				break
+				case 'r': if (Special.bomb.ready && Special.bomb.level > 0) {Special.bomb.start()}
 				break
 				case 'Escape':
 					if (_Data.status == 'pause') {
@@ -117,6 +117,9 @@ var Controls = {
 			statuses: ['isRunned']
 		},
 		e: {
+			statuses: ['isRunned']
+		},
+		r: {
 			statuses: ['isRunned']
 		}
 	}

@@ -210,7 +210,7 @@ function AnimationBuffer (context, name) {
 	this.repeat = context.anim[name].repeat;
 };
 
-function LowLayerBuffer (img, getParams, speed, ms) {
+function LowLayerBuffer (img, getParams, speed, tFrames, ms) {
 	this.__proto__.removeBuffer = function () {
 		for (var i = 0; i < gl.lowLayer.length; i++) {
 			if (this.id == gl.lowLayer[i].id) {
@@ -225,6 +225,8 @@ function LowLayerBuffer (img, getParams, speed, ms) {
 	this.img = img
 	this.picArr = []
 	this.ms = ms
+	this.tFrames = tFrames
+	this.curFrame = 0
 	this.getParams = getParams
 	this.getParams()
 	this.handle = _Tools.setInterval.call(this, function () {

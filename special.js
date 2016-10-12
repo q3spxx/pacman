@@ -47,7 +47,7 @@ var Special = {
 
 			this.status = 'runned'
 
-			var buffer = new LowLayerBuffer(Imgs.cord, this.getParams, this.speed, 10000)
+			var buffer = new LowLayerBuffer(Imgs.cord, this.getParams, this.speed, 1, 10000)
 			gl.lowLayer.push(buffer)
 			return
 		},
@@ -243,7 +243,7 @@ var Special = {
 							}
 						this.picArr = []
 						this.picArr.push(bloodLine)
-						}, Special.cord.speed, 10000)
+						}, Special.cord.speed, 1, 10000)
 						gl.lowLayer.push(lowLayer)
 						break
 					}
@@ -316,19 +316,23 @@ var Special = {
 		}
 	},
 	bomb: {
-		level: 0,
+		ready: true,
+		level: 10,
+		emitter: false,
 		handle: null,
 		cooldown_handle: null,
 		cooldown: 30,
 		radius: 0,
-		ready: true,
-		max_radius: function () {
+		getRadius: function () {
 			return 32 + 8 * this.level
 		},
 		start: function () {
-			_data.status = "special";
-			Player.mPos.x = 0;
-			Player.mPos.y = 0;
+			_Data.status = "special";
+			Special.playerStop()
+			var lowLayer = new LowLayerBuffer(Imgs.bomb, this.getParams, 40, 1, 1000)
+			gl.lowLayer.push(lowLayer)
+			this.emitter = Effects.emitter.add(Imgs.shockPartical, Player.pos.x + 16, Player.pos.y + 16, this.getRadius() / 2, 30, 100, 20, 400)
+			return
 			Special.bomb.handle = setInterval(function () {
 				if (this.radius < this.max_radius()) {
 					this.radius += 1;
@@ -365,6 +369,32 @@ var Special = {
 				break
 			}
 			this.radius = 0
+		},
+		getParams: function () {
+			Special.bomb.radius += Special.bomb.getRadius() / 10
+			if (Special.bomb.radius >= Special.bomb.getRadius()) {
+				this.removeBuffer()
+				Special.bomb.radius = 0
+				Special.bomb.emitter.remove()
+				Special.bomb.emitter = false
+				Special.playerGo()
+			}
+
+			var pic = {
+				x: 0,
+				y: 0,
+				w: 56,
+				h: 56,
+				pos: {
+					x: Player.pos.x + 16 - Special.bomb.radius,
+					y: Player.pos.y + 16 - Special.bomb.radius,
+					w: Special.bomb.radius * 2,
+					h: Special.bomb.radius * 2
+				}
+
+			}
+			this.picArr = []
+			this.picArr.push(pic)
 		}
 	},
 	shot: {
@@ -384,7 +414,7 @@ var Special = {
 			}, 100)
 
 			Sounds.shot.play()
-			var buffer = new LowLayerBuffer(Imgs.fireOfShot, this.getParams, this.speed, 100)
+			var buffer = new LowLayerBuffer(Imgs.fireOfShot, this.getParams, this.speed, 1, 100)
 			gl.lowLayer.push(buffer)
 			var enemy = Col.enemyInLine();
 
@@ -478,7 +508,7 @@ var Special = {
 		cooldown_handle: null,
 		start: function () {
 			Special.playerStop()
-			var lowLayer = new LowLayerBuffer(Imgs.shock, this.getParams, this.speed, 10000)
+			var lowLayer = new LowLayerBuffer(Imgs.shock, this.getParams, this.speed, 1, 10000)
 			gl.lowLayer.push(lowLayer)
 		},
 		getParams: function () {

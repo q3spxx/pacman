@@ -23,7 +23,8 @@ var image_src = {
 	blood: "blood.png",
 	bloodLine: 'bloodLine.png',
 	shockPartical: 'shockPartical.png',
-	shocked: 'shocked.png'
+	shocked: 'shocked.png',
+	bomb: "bomb.png"
 }
 
 var image_icons_src = {

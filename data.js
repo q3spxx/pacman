@@ -5,7 +5,7 @@ var _Data = {
 	imgsIsLoaded: false,
 	intervals: [],
 	timeouts: [],
-	volume: 0.1,
+	volume: 0.0,
 	level: 1,
 	lifes: 3,
 	gameSpeed: 5,
