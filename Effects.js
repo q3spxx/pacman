@@ -92,80 +92,51 @@ var Effects = {
 		}
 	},
 	emitter: {
-		particle: function (parent, callback) {
+		particle: function (parent) {
 			this.id = _Tools.genId()
 			this.__proto__ = Effects.emitter.particleProto
-			this.handle = null
-			this.state = 0
 			this.parent = parent
-			this.distance = Math.floor(this.parent.radius * Math.random())
-			this.size = Math.floor(Math.random() * parent.size)
-			this.img = this.parent.img
-			this.callback = callback
+			this.distance = 0
+			this.maxSize = Math.floor(Math.random() * parent.maxSize)
+			this.speed = Math.floor(Math.random() * parent.maxSpeed + 1)
+			this.size = this.maxSize
 			this.x = 0
 			this.y = 0
-
-			var angle = Math.floor(360 * Math.random())
-			this.vector = {
-				x: Math.round(Math.cos(angle) * this.parent.radius / 4),
-				y: Math.round(Math.sin(angle) * this.parent.radius / 4)
-			}
-			this.handle = _Tools.setInterval.call(this, function () {
-				if (this.state > this.distance) {
-					_Tools.clearInterval(this.handle)
-					this.removeParticle()
-					this.parent.createParticle()
-				}
-				this.x += this.vector.x
-				this.y += this.vector.y
-				this.size *= 1 - (1 / this.distance)
-				this.state++
-			}.bind(this), this.parent.speed)
-
-
+			this.angle = Math.floor(360 * Math.random())
 		},
 		particleProto: {
 			removeParticle: function () {
-				_Tools.clearInterval(this.handle)
 				for (var i = 0; i < this.parent.particles.length; i++) {
 					if (this.id == this.parent.particles[i].id) {
+						_Tools.clearInterval(this.handle)
 						this.parent.particles.splice(i, 1)
+						this.removeParticle(this.id)
 						return
 					}
 				}
 			},
-			pause: function () {
-				for (var i = 0; i < _Data.intervals.length; i++) {
-					if (_Data.intervals[i].id == this.handle) {
-						_Data.intervals[i].pause()
-						return
-					}
-				}
-			},
-			continue: function () {
-				for (var i = 0; i < _Data.intervals.length; i++) {
-					if (_Data.intervals[i].id == this.handle) {
-						_Data.intervals[i].continue()
-						return
-					}
-				}
+			update: function () {
+				this.parent.callback.call(this)
 			}
 		},
-		emitter: function (img, x, y, radius, speed, countParticles, sizeParticle, ms, callback) {
+		emitter: function (img, x, y, radius, maxSpeed, countParticles, maxSize, callback, ms) {
 			this.id = _Tools.genId()
-			this.handle = null
 			this.__proto__ = Effects.emitter.emitterProto
 			this.pos = {
 				x: x,
 				y: y
 			},
 			this.img = img
-			this.size = sizeParticle
+			this.maxSize = maxSize
 			this.radius = radius
-			this.speed = speed
+			this.maxSpeed = maxSpeed
 			this.particles = []
 			for (var i = 0; i < countParticles; i++) {
-				this.createParticle(callback)
+				this.createParticle()
+			}
+
+			if (callback != undefined) {
+				this.callback = Effects.emitter.lib[callback]
 			}
 
 			if (ms != undefined) {
@@ -174,26 +145,20 @@ var Effects = {
 				}.bind(this), ms)
 			}
 
-			if (callback != undefined) {
-			}
+			this.interval = _Tools.setInterval.call(this, function () {
+				this.particles.forEach(function (particle) {
+					particle.update()
+				})
+			}.bind(this), 1000 / Game.fps)
 		},
 		emitterProto: {
 			createParticle: function (callback) {
-				var particle = new Effects.emitter.particle(this, callback)
+				var particle = new Effects.emitter.particle(this)
 				this.particles.push(particle)
 				return
 			},
-			pause: function () {
-				this.particles.forEach(function (particle) {
-					particle.pause()
-				})
-			},
-			continue: function () {
-				this.particles.forEach(function (particle) {
-					particle.continue()
-				})
-			},
 			remove: function () {
+				_Tools.clearInterval(this.interval)
 				while (this.particles.length > 0) {
 					this.particles[0].removeParticle()
 				}
@@ -205,14 +170,22 @@ var Effects = {
 				}
 			}
 		},
-		add: function (img, x, y, radius, speed, countParticles, sizeParticle, ms, callback) {
-			var emitter = new this.emitter(img, x, y, radius, speed, countParticles, sizeParticle, ms, callback)
+		add: function (img, x, y, radius, speed, countParticles, sizeParticle, callback, ms) {
+			var emitter = new this.emitter(img, x, y, radius, speed, countParticles, sizeParticle, callback, ms)
 			gl.emitters.push(emitter)
 			return emitter
 		},
 		lib: {
 			line: function () {
-				return
+				if (this.distance > this.parent.radius) {
+					this.removeParticle()
+					this.parent.createParticle()
+					return
+				}
+				this.size -= this.maxSize / (this.parent.radius / this.speed)
+				this.x += Math.cos(this.angle) * this.speed
+				this.y += Math.sin(this.angle) * this.speed
+				this.distance += this.speed
 			}
 		}
 	}

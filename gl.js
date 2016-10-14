@@ -198,7 +198,7 @@ var gl = {
 		this.emitters.forEach(function (emitter) {
 			emitter.particles.forEach(function (particle) {
 				map.drawImage(
-					particle.img,
+					particle.parent.img,
 					0,
 					0,
 					32,

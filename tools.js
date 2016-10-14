@@ -77,7 +77,7 @@ var _Tools = {
 	},
 	genId: function () {
 		var random = "";
-		for (var i = 0; i < 8; i++) {
+		for (var i = 0; i < 16; i++) {
 			random += Math.floor(Math.random() * 9);
 		}
 		return Number(random);
@@ -92,13 +92,6 @@ var _Tools = {
 		return subscriber.id
 	},
 	clearInterval: function (id) {
-		/*for (var i = 0; i < _Data.intervals.length; i++) {
-			if (_Data.intervals[i].id == id) {
-				clearInterval(_Data.intervals[i].handle)
-				_Data.intervals.splice(i, 1)
-				return
-			};
-		}*/
 		for (var i = 0; i < TimeMap.subscribers.length; i++) {
 			if (id == TimeMap.subscribers[i].id) {
 				TimeMap.subscribers.splice(i, 1)
