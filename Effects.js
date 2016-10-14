@@ -64,8 +64,8 @@ var Effects = {
 					lowDistanceSum++
 				}
 				var angle = Number((((Math.random() * this.angle) - this.angle / 2 + directionAngle) * Math.PI / 180).toFixed(2))
-				var x = Math.floor(Math.cos(angle) * randomDistance)
-				var y = Math.floor(Math.sin(angle) * randomDistance)
+				var x = Math.cos(angle) * randomDistance
+				var y = Math.sin(angle) * randomDistance
 				var size = Math.floor(this.maxSize - (this.maxSize * (randomDistance / distance)))
 				if (size < this.maxSize * 0.2) {
 					size = Math.floor(this.maxSize * 0.2)

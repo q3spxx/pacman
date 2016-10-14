@@ -159,6 +159,7 @@ var Special = {
 				_Data.status = 'isRunned'
 			}
 
+
 			if (Special.cord.status == 'runned') {
 				for (var i = 0; i < enemyArr.length; i++) {
 					if (
@@ -167,7 +168,12 @@ var Special = {
 						pic.pos.y + pic.pos.h + 2 > enemyArr[i].pos.y &&
 						pic.pos.y + pic.pos.h + 2 < enemyArr[i].pos.y + 32
 						) {
-						if (enemyArr[i].behavior == 'goToRoom') {
+						if (
+							enemyArr[i].behavior == 'goToRoom' ||
+							enemyArr[i].behavior == 'inRoom' ||
+							enemyArr[i].behavior == 'enterToRoom' ||
+							enemyArr[i].behavior == 'exitFromRoom'
+							) {
 							continue
 						}
 						Special.cord.enemy = enemyArr[i]
