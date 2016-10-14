@@ -1,6 +1,6 @@
 var Mess = {
 	handles: [],
-	speed: 5,
+	speed: 20,
 	lib: {},
 	place: {
 		centerMessage: {

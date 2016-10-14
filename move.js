@@ -149,25 +149,11 @@ var Move = {
 		if (this.pos.x == this.path[0].x * 32 && this.pos.y == this.path[0].y * 32) {
 			this.path.splice(0, 1);
 		};
-		//фикс двери
-		/*if (this.behavior != 'enter_to_room' && this.behavior != 'exit_from_room') {
-				if (this.path[0] != undefined) {
-					if (this.path[0].x == 10 && this.path[0].y == 8) {
-						this.path = [];
-					};
-				};
-		};*/
 		//Остановка после достижения конечной точки
 		if (this.path.length == 0) {
 			this.stop();
 			return;
 		};
-
-		/*if (this.behavior == "enter_to_room" || this.behavior == "exit_from_room") {
-			if (this.path[0].x == 10 && this.path[0].y == 8) {
-				open_door();
-			}
-		}*/
 
 		if (this.pos.x == this.path[0].x * 32) {
 			if (this.pos.y > this.path[0].y * 32) {

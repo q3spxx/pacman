@@ -151,6 +151,7 @@ var Special = {
 				if (Special.cord.enemy) {
 					Sounds.bones.play()
 					behaviorController.killEnemy(Special.cord.enemy)
+					Effects.emitter.add(Imgs.blood, Special.cord.enemy.pos.x + 16, Special.cord.enemy.pos.y + 16, 64, 8, 50, 16, 'line', 300)
 					Special.cord.enemy = false
 					Special.cord.emitter.remove()
 					Special.cord.emitter = false
@@ -191,7 +192,7 @@ var Special = {
 								pic.pos.h = pic.pos.y - Special.cord.enemy.pos.y + 16
 							break
 						}
-						Special.cord.emitter = Effects.emitter.add(Imgs.blood, pic.pos.x + pic.pos.w, pic.pos.y + pic.pos.h, 20, 5, 50, 24)
+						Special.cord.emitter = Effects.emitter.add(Imgs.blood, pic.pos.x + pic.pos.w, pic.pos.y + pic.pos.h, 128, 32, 50, 16, 'line')
 						Special.cord.bloodLine.x = Special.cord.enemy.pos.x
 						Special.cord.bloodLine.y = Special.cord.enemy.pos.y
 						var lowLayer = new LowLayerBuffer(Imgs.bloodLine, function () {
@@ -331,30 +332,7 @@ var Special = {
 			Special.playerStop()
 			var lowLayer = new LowLayerBuffer(Imgs.bomb, this.getParams, 40, 1, 1000)
 			gl.lowLayer.push(lowLayer)
-			this.emitter = Effects.emitter.add(Imgs.shockPartical, Player.pos.x + 16, Player.pos.y + 16, this.getRadius() / 2, 30, 100, 20, 400)
-			return
-			Special.bomb.handle = setInterval(function () {
-				if (this.radius < this.max_radius()) {
-					this.radius += 1;
-					Col.bomb_check();
-				} else {
-					clearInterval(this.handle)
-					setTimeout(function () {
-						this.stop()
-					}.bind(this), 300)
-				}
-			}.bind(this), 6)
-
-			Special.bomb.ready = false;
-			Special.bomb.cooldown_handle = setInterval(function () {
-				if (Special.bomb.cooldown == 0) {
-					Special.bomb.ready = true
-					Special.bomb.cooldown = 30
-					clearInterval(Special.bomb.cooldown_handle)
-				} else {
-					Special.bomb.cooldown -= 1
-				}
-			}, 1000)
+			this.emitter = Effects.emitter.add(Imgs.shockPartical, Player.pos.x + 16, Player.pos.y + 16, this.getRadius(), 24, 100, 16, 'line', 400)
 		},
 		stop: function () {
 			_data.status = "play";
@@ -393,6 +371,22 @@ var Special = {
 				}
 
 			}
+
+			enemyArr.forEach(function (enemy) {
+				if (
+					enemy.behavior == "goToRoom" ||
+					enemy.behavior == "inRoom" ||
+					enemy.behavior == "enterToRoom" ||
+					enemy.behavior == "exitFromRoom"
+					) {
+					return
+				}
+				if (Col.hypotenuse(Player.pos.x + 16, Player.pos.y + 16, enemy.pos.x + 16, enemy.pos.y + 16, Special.bomb.radius)) {
+					Effects.emitter.add(Imgs.blood, enemy.pos.x + 16, enemy.pos.y + 16, 64, 8, 50, 16, 'line', 300)
+					behaviorController.killEnemy(enemy)
+				}
+			})
+
 			this.picArr = []
 			this.picArr.push(pic)
 		}
@@ -420,7 +414,7 @@ var Special = {
 
 			if (enemy != false) {
 				if (Col.missCheck()) {
-					this.emitter = Effects.emitter.add(Imgs.blood, enemy.pos.x + 16, enemy.pos.y + 16, 16, 5, 50, 16, 200)
+					this.emitter = Effects.emitter.add(Imgs.blood, enemy.pos.x + 16, enemy.pos.y + 16, 64, 8, 50, 16, 'line', 300)
 					Effects.blood.add(enemy)
 					Mess.setMess('headShot')
 					Sounds.headshot.play()
@@ -429,19 +423,6 @@ var Special = {
 					Mess.setMess('miss', enemy.pos)
 				}
 			}
-			return
-
-			Special.shot.ready = false;
-			Special.shot.cooldown_handle = setInterval(function () {
-				if (Special.shot.cooldown == 0) {
-					Special.shot.ready = true
-					Special.shot.cooldown = 7
-					clearInterval(Special.shot.cooldown_handle)
-				} else {
-					Special.shot.cooldown -= 1
-				}
-			}, 1000)
-
 		},
 		getParams: function () {
 
@@ -542,7 +523,7 @@ var Special = {
 				break
 			}
 			if (!this.emitter) {
-				this.emitter = Effects.emitter.add(Imgs.shockPartical, pic.pos.x + 16, pic.pos.y + 16, 16, 64, 50, 16)
+				this.emitter = Effects.emitter.add(Imgs.shockPartical, pic.pos.x + 16, pic.pos.y + 16, 64, 4, 50, 16, 'line')
 			} else {
 				this.emitter.pos.x = pic.pos.x + 16
 				this.emitter.pos.y = pic.pos.y + 16

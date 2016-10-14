@@ -5,7 +5,7 @@ var _Data = {
 	imgsIsLoaded: false,
 	intervals: [],
 	timeouts: [],
-	volume: 0.0,
+	volume: 0.1,
 	level: 1,
 	lifes: 3,
 	gameSpeed: 5,
@@ -122,8 +122,31 @@ var Kill = {
 			}
 			this.timeToEnd--
 		}.bind(this), 1000)
-	}
+	},
 	massKill: {
-		
+		kills: 0,
+		totalKills: 0,
+		timer: false,
+		delay: 5,
+		timeToEnd: 0,
+		handle: null,
+		activate: function () {
+			if (this.timer) {
+				_Tools.clearInterval(this.handle)
+			}
+			this.kills++
+			this.totalKills++
+			this.timer = true
+			this.timeToEnd = this.delay
+
+			this.handle = _Tools.setInterval(function () {
+				if (this.timeToEnd == 0) {
+					this.kills = 0
+					this.timer = false
+					_Tools.clearInterval(this.handle)
+				}
+				this.timeToEnd--
+			}.bind(this), 1000)
+		}
 	}
 }
