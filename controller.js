@@ -127,6 +127,7 @@ var Controller = {
 			_Data.addPoints(points)
 			Mess.setMess(points, enemy.pos)
 			Kill.activate()
+			Kill.massKill.activate()
 
 			/*
 
