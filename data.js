@@ -123,4 +123,7 @@ var Kill = {
 			this.timeToEnd--
 		}.bind(this), 1000)
 	}
+	massKill: {
+		
+	}
 }
