@@ -128,88 +128,19 @@ var Controller = {
 			Mess.setMess(points, enemy.pos)
 			Kill.activate()
 			Kill.massKill.activate()
-
-			/*
-
-			if (enemy.shocked) {
-				enemy.shocked = false
-			}
-			Sounds.eatghost.play()
-			if (_data.firstblood) {
-				_data.firstblood = false;
-				setTimeout(function () {
-					_data.change_sound(audio_mess)
-					Sounds.show_mess("First blood!") 
-					Sounds.firstblood.play()
-				}, 1200);
-			};
-
-			_data.kills += 1;
-
-			if (_data.kill) {
-				var say = false;
-				var mess = Sounds.mess
-
-				switch (_data.kills) {
-					case 2: say = Sounds.doublekill
-							mess = "Double kill!"
-					break
-					case 3: say = Sounds.multikill
-							mess = "Multi kill!"
-					break
-					case 4: say = Sounds.megakill
-							mess = "Mega kill!"
-					break
+		},
+		killPlayer: function () {
+			Game.stop()
+			Player.isDead();
+			_Data.lifes--
+			_Tools.setTimeout(function () {
+				if (_Data.lifes > 0) {
+					Game.default()
+					Game.start()
+				} else {
+					Mess.setMess('gameOver')
 				}
-				if (say != false) {						
-					setTimeout(function () {
-						_data.change_sound(audio_mess)
-						Sounds.show_mess(mess)
-						say.play()
-					}, 200);
-				};
-			};
-
-			_data.total_kills += 1
-
-			var total_say = false
-			var total_mess = Sounds.mess
-			switch(_data.total_kills) {
-				case 3: total_say = Sounds.killingspree
-						total_mess = 'Killing spree!'
-				break
-				case 6: total_say = Sounds.rampage
-						total_mess = 'Rampage!'
-				break
-				case 9: total_say = Sounds.dominating
-						total_mess = 'Dominating!'
-				break
-				case 12: total_say = Sounds.unstoppable
-						total_mess = 'Unstoppable!'
-				break
-				case 15: total_say = Sounds.godlike
-						total_mess = 'Godlike!'
-				break
-			}
-
-			if (total_say != false) {
-				setTimeout(function () {
-					_data.change_sound(audio_mess)
-					Sounds.show_mess(total_mess)
-					total_say.play()
-				}, 1000)
-			};
-
-			_data.kill_timer();
-
-			var points = Math.pow(2, _data.kills) * 100
-			if (Event.buf_event_active) {
-				points = points * Event.buf_event_action;
-			}
-
-			Anim.show_mess(points, {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
-			Scope.main += points;
-			enemy.go_to_room();*/
+			}, 900)
 		}
 	};
 

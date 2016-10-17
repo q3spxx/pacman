@@ -1,4 +1,4 @@
-var image_src = {
+var imageSrc = {
 	map:"map.png",
 	pacman: 'pacman.png',
 	blinky: 'blinky.png',
@@ -22,16 +22,18 @@ var image_src = {
 	fireOfShot: 'fireOfShot.png',
 	blood: "blood.png",
 	bloodLine: 'bloodLine.png',
-	shockPartical: 'shockPartical.png',
+	shockParticle: 'shockParticle.png',
+	cursorParticle: 'cursorParticle.png',
 	shocked: 'shocked.png',
-	bomb: "bomb.png"
+	bomb: "bomb.png",
+	cursor: 'cursor.png'
 }
 
-var image_icons_src = {
-	cord: 'cord_icon.png',
-	bomb: 'bomb_icon.png',
-	shot: 'shot_icon.png',
-	shock: 'shock_icon.png'
+var imageIconsSrc = {
+	cord: 'cordIcon.png',
+	bomb: 'bombIcon.png',
+	shot: 'shotIcon.png',
+	shock: 'shockIcon.png'
 }
 
 var audioSrc = {
@@ -47,7 +49,11 @@ var audioSrc = {
 	fear: 'fear.mp3',
 	scream: 'scream.mp3',
 	shot: 'shot.mp3',
-	shop: 'shop.mp3'
+	shop: 'shop.mp3',
+	carmaggedon: 'carmaggedon.mp3',
+	carmaggedon2: 'carmaggedon2.mp3',
+	dominion: 'dominion.mp3',
+	fon: 'fon.mp3'
 }
 
 var audioMessSrc = {

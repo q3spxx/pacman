@@ -20,7 +20,7 @@ var gl = {
 		var ms = newDate.getTime();
 		gl.fps = (1000 / (ms - gl.ms)).toFixed(1);
 		gl.ms = ms;
-		map.fillStyle = color.white;
+		map.fillStyle = 'rgba(' + color.white + ', 1)';
 		map.font = "16px Arial";
 		map.textBaseline = "middle";
 		map.textAlign = "left"
@@ -42,22 +42,8 @@ var gl = {
 			if (Outputs.on) {
 				gl.outputsRender()
 			}
-			gl.fpsTimer();
+			gl.fpsTimer()
 			gl.postRender()
-			/*gl.draw_special();
-			gl.draw_bomb()
-			gl.draw_shock()
-			gl.draw_buf_event()
-			gl.buf_event_text()
-			gl.draw_event();
-			gl.scope();
-			gl.draw_lifes()
-			gl.level();
-			gl.mess();
-			gl.draw_center_mess()
-			gl.draw_sound_mess()
-			gl.skill_icons()
-			gl.draw_shop()*/
 		}, 33);
 	},
 	map: function () {
@@ -211,28 +197,6 @@ var gl = {
 			})
 		})
 	},
-	draw_special: function () {
-		this.special.forEach(function(buf){
-			var num = {};
-			num.x = Math.floor(buf.w / buf.img.w);
-			num.y = Math.floor(buf.h / buf.img.h);
-			for (var x = 0; x != num.x; x = x + num.x / Math.abs(num.x)) {
-				for (var y = 0; y != num.y; y = y + num.y / Math.abs(num.y)) {
-					map.drawImage(	buf.img.pic,
-									buf.img.x,
-									buf.img.y,
-									buf.img.w,
-									buf.img.h,
-									buf.x + (x * buf.img.w),
-									buf.y + (y * buf.img.h),
-									buf.img.w,
-									buf.img.h
-									);
-				};
-			};
-			return
-		});
-	},
 	draw_event: function () {
 		gl.event.forEach(function (e) {
 			map.drawImage(
@@ -247,46 +211,6 @@ var gl = {
 					e.img.h
 				);
 		});
-	},
-	draw_lifes: function () {
-		var i = 0;
-		while (i != _data.lifes) {
-			map.drawImage(	Imgs.pacman,
-							64,
-							32,
-							32,
-							32,
-							300 + i * 20,
-							8,
-							16,
-							16
-							);
-			i++
-		}
-	},
-	draw_center_mess: function () {
-		if (_data.center_mess_switch) {
-			map.fillStyle = 'rgb(255,255,255)';
-			map.font = "26px Arial";
-			map.textAlign = "center";
-			map.textBaseline = "top";
-			map.fillText(_data.center_mess, 336, 352);
-		}
-	},
-	draw_bomb: function () {
-		map.beginPath()
-		map.fillStyle = 'rgba(255, 100, 0, 255)'
-		map.arc(Player.pos.x + 16, Player.pos.y + 16, Special.bomb.radius, 0, 2 * Math.PI)
-		map.fill()
-	},
-	draw_sound_mess: function () {
-		if (Sounds.on) {
-			map.fillStyle = 'rgb(255,255,255)';
-			map.font = "60px Arial";
-			map.textAlign = "center";
-			map.textBaseline = "top";
-			map.fillText(Sounds.mess, 336, 250)
-		};
 	},
 	skill_icons: function () {
 		var access
@@ -436,65 +360,81 @@ var gl = {
 			map.textBaseline = "bottom";
 			map.fillText("r", 384, 640)
 	},
-	draw_shop: function () {
+	shopRender: function () {
 		if (Shop.on) {
-			map.fillStyle = "#444"
-			map.fillRect(Shop.x, Shop.y, Shop.w, Shop.h)
+			map.fillStyle = Shop.background.color
+			map.fillRect(Shop.background.x, Shop.background.y, Shop.background.w, Shop.background.h)
 
-			map.fillStyle = color.white
-			map.font = "20px Arial";
-			map.textAlign = "center";
-			map.textBaseline = "top";
-			map.fillText("Shop", 336, 200)
+			map.fillStyle = Shop.header.color
+			map.font = Shop.header.font
+			map.textAlign = Shop.header.textAlign;
+			map.textBaseline = Shop.header.textBaseline;
+			map.fillText(Shop.header.text, Shop.header.x, Shop.header.y)
 
-			map.fillStyle = color.white
-			map.font = "16px Arial";
-			map.textAlign = "center";
-			map.textBaseline = "top";
-			map.fillText(Shop.mess, 336, 224)
+			map.fillStyle = Shop.mess.color
+			map.font = Shop.mess.font
+			map.textAlign = Shop.mess.textAlign;
+			map.textBaseline = Shop.mess.textBaseline;
+			map.fillText(Shop.mess.text, Shop.mess.x, Shop.mess.y)
 
-			Shop.data.catalog.products.forEach(function (skill, i) {
-				map.drawImage(skill.icon, 0, 0, 32, 32, Shop.x + Shop.data.catalog.x,
-														Shop.y + Shop.data.catalog.y + i * 34,
-														32, 32)
+			Shop.data.catalog.products.forEach(function (product, i) {
+				map.drawImage(	product.icon,
+								Shop.product.icon.x,
+								Shop.product.icon.y,
+								Shop.product.icon.w,
+								Shop.product.icon.h,
+								Shop.background.x + Shop.data.catalog.x,
+								Shop.background.y + Shop.data.catalog.y + i * Shop.product.h,
+								Shop.product.icon.w,
+								Shop.product.icon.h)
 
-				map.fillStyle = color.white
-				map.font = "20px Arial";
-				map.textAlign = "left";
-				map.textBaseline = "top";
-				map.fillText(skill.name, Shop.x + Shop.data.catalog.x + 60,
-										 Shop.y + Shop.data.catalog.y + i * 34 + 4)
+				map.fillStyle = Shop.product.title.color
+				map.font = Shop.product.title.font
+				map.textAlign = Shop.product.title.textAlign
+				map.textBaseline = Shop.product.title.textBaseline
+				map.fillText(product.name, Shop.background.x + Shop.data.catalog.x + Shop.product.title.x,
+										 Shop.background.y + Shop.data.catalog.y + i * Shop.product.h + Shop.product.title.y)
 
-				map.fillStyle = color.white
-				map.font = "16px Arial";
-				map.textAlign = "center";
-				map.textBaseline = "top";
-				map.fillText(skill.price, Shop.x + Shop.data.catalog.x + 160,
-										  Shop.y + Shop.data.catalog.y + i * 34 + 8)
-				if (skill.type == 'skill') {
+				map.fillStyle = Shop.product.price.color
+				map.font = Shop.product.price.font
+				map.textAlign = Shop.product.price.textAlign
+				map.textBaseline = Shop.product.price.textBaseline
+				map.fillText(product.price, Shop.background.x + Shop.data.catalog.x + Shop.product.price.x,
+										  Shop.background.y + Shop.data.catalog.y + i * Shop.product.h + Shop.product.price.y)
+				if (product.type == 'skill') {
 					for (var j = 0; j < 10; j++) {
 						var style;
-						if (j + 1 > skill.level()) {
+						if (j + 1 > product.object.level) {
 							style = 'red'
 						} else {
 							style = 'green'
 						}
 						map.fillStyle = style
-						map.fillRect(Shop.x + Shop.x + Shop.data.catalog.x + 216 + j * 30,
-											  Shop.y + Shop.data.catalog.y + i * 34 + 12,
-											  20, 10)
+						map.fillRect(	Shop.background.x + Shop.data.catalog.x + Shop.product.level.x + j * Shop.product.level.w,
+										Shop.background.y + Shop.data.catalog.y + i * Shop.product.h + Shop.product.level.y,
+										Shop.product.level.w - Shop.product.level.marginLeft,
+										Shop.product.level.h)
 					}
 				};
 			})
 
-			map.strokeStyle = '#ff0'
-			map.strokeRect(Shop.x + Shop.cursor.x, Shop.y + Shop.cursor.y, 548, 34)
+			map.drawImage(	
+							Imgs.cursor,
+							Shop.cursor.img.x,
+							Shop.cursor.img.y,
+							Shop.cursor.img.w,
+							Shop.cursor.img.h,
+							Shop.background. x + Shop.cursor.x,
+							Shop.background. y + Shop.cursor.y,
+							Shop.cursor.w,
+							Shop.cursor.h
+						)
 
 			map.fillStyle = color.white
 			map.font = "20px Arial";
 			map.textAlign = "center";
 			map.textBaseline = "bottom";
-			map.fillText("Press enter to continue, Press space to buy", 336, Shop.y + Shop.h - 10)
+			map.fillText("Press enter to continue, Press space to buy", 336, Shop.background.y + Shop.background.h - 10)
 		}
 	},
 	draw_shock: function () {

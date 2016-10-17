@@ -83,10 +83,6 @@ var _Tools = {
 		return Number(random);
 	},
 	setInterval: function (method, ms) {
-		//var id = _Tools.genId()
-		//var interval = new Interval(id, method, ms, this)
-		//_Data.intervals.push(interval)
-		//return id
 		var subscriber = new Subscriber(method, ms, this)
 		TimeMap.add(subscriber)
 		return subscriber.id
@@ -108,8 +104,8 @@ var _Tools = {
 		return id
 	},
 	clearTimeout: function (id) {
-		for (var i = 0; i < _Data.intervals.length; i++) {
-			if (_Data.intervals[i].id == id) {
+		for (var i = 0; i < _Data.timeouts.length; i++) {
+			if (_Data.timeouts[i].id == id) {
 				clearTimeout(_Data.timeouts[i].handle)
 				_Data.timeouts.splice(i, 1)
 				return

@@ -131,9 +131,14 @@ var Effects = {
 			this.radius = radius
 			this.maxSpeed = maxSpeed
 			this.particles = []
-			for (var i = 0; i < countParticles; i++) {
+			this.timer = 0
+			this.createInterval = _Tools.setInterval.call(this, function () {
+				if (this.timer == countParticles) {
+					_Tools.clearInterval(this.createInterval)
+				}
 				this.createParticle()
-			}
+				this.timer++
+			}, 2)
 
 			if (callback != undefined) {
 				this.callback = Effects.emitter.lib[callback]
@@ -149,7 +154,7 @@ var Effects = {
 				this.particles.forEach(function (particle) {
 					particle.update()
 				})
-			}.bind(this), 1000 / Game.fps)
+			}.bind(this), 1000 / Game.fps * Math.random())
 		},
 		emitterProto: {
 			createParticle: function (callback) {

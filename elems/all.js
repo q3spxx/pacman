@@ -161,5 +161,10 @@ var Room = {
 			MapObjects.doors.d0.changeState()
 		}
 		Room.reposition()
+	},
+	setDefault: function () {
+		if (MapObjects.doors.d0.curState == 1) {
+			MapObjects.doors.d0.changeState()
+		}
 	}
 };

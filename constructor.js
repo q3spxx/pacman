@@ -1,3 +1,13 @@
+function Product (name, type, price, object, icon, levelUp) {
+	this.levelUp = levelUp
+	this.id = _Tools.genId()
+	this.name = name
+	this.type = type
+	this.price = price
+	this.object = object
+	this.icon = icon
+}
+
 function Subscriber (method, ms, context) {
 	this.id = _Tools.genId()
 	this.method = method
