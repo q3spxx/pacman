@@ -24,7 +24,7 @@ var gl = {
 		map.font = "16px Arial";
 		map.textBaseline = "middle";
 		map.textAlign = "left"
-		map.fillText("fps: " + gl.fps, 544, 16);
+		map.fillText("fps: " + gl.fps, 544 + _Data.main.x, 16 + _Data.main.y);
 	}, 
 	start: function () {
 		var date = new Date();
@@ -54,8 +54,8 @@ var gl = {
 							cell.object.image.pos.y,
 							32,
 							32,
-							cell.x,
-							cell.y,
+							cell.x + _Data.main.x,
+							cell.y + _Data.main.y,
 							32,
 							32
 							);
@@ -69,8 +69,8 @@ var gl = {
 						buffer.frames[buffer.curFrame].y,
 						buffer.frames[buffer.curFrame].w,
 						buffer.frames[buffer.curFrame].h,
-						buffer.pos.x,
-						buffer.pos.y,
+						buffer.pos.x + _Data.main.x,
+						buffer.pos.y + _Data.main.y,
 						buffer.frames[buffer.curFrame].w,
 						buffer.frames[buffer.curFrame].h
 						);
@@ -197,169 +197,6 @@ var gl = {
 			})
 		})
 	},
-	draw_event: function () {
-		gl.event.forEach(function (e) {
-			map.drawImage(
-					e.img.pic,
-					e.img.x,
-					e.img.y,
-					e.img.w,
-					e.img.h,
-					e.x,
-					e.y,
-					e.img.w,
-					e.img.h
-				);
-		});
-	},
-	skill_icons: function () {
-		var access
-		if (Special.get_over_here.ready) {
-			map.globalAlpha = 1
-		} else {
-			map.globalAlpha = 0.5
-		}
-		if (Special.get_over_here.level == 0) {
-			access = 32
-		} else {
-			access = 0
-		}
-		map.drawImage(
-			Imgs.icons.cord,
-			access,
-			0,
-			32,
-			32,
-			272,
-			640,
-			32,
-			32
-			)
-			map.globalAlpha = 1
-			map.fillStyle = color.white;
-			map.font = "8px Arial";
-			map.textAlign = "center";
-			map.textBaseline = "bottom";
-			map.fillText("q", 288, 640)
-
-
-		if (!Special.get_over_here.ready) {
-			map.font = "16px Arial";
-			map.textAlign = "center";
-			map.textBaseline = "middle";
-			map.fillText(Special.get_over_here.cooldown + " s", 288, 656)
-		}
-
-		if (Special.shot.ready) {
-			map.globalAlpha = 1
-		} else {
-			map.globalAlpha = 0.5
-		}
-		if (Special.shot.level == 0) {
-			access = 32
-		} else {
-			access = 0
-		}
-
-		map.drawImage(
-			Imgs.icons.shot,
-			access,
-			0,
-			32,
-			32,
-			304,
-			640,
-			32,
-			32
-			)
-			map.globalAlpha = 1
-			map.fillStyle = color.white;
-			map.font = "8px Arial";
-			map.textAlign = "center";
-			map.textBaseline = "bottom";
-			map.fillText("w", 320, 640)
-
-		if (!Special.shot.ready) {
-			map.font = "16px Arial";
-			map.textAlign = "center";
-			map.textBaseline = "middle";
-			map.fillText(Special.shot.cooldown + " s", 320, 656)
-		}
-
-		if (Special.shock.ready) {
-			map.globalAlpha = 1
-		} else {
-			map.globalAlpha = 0.5
-		}
-		if (Special.shock.level == 0) {
-			access = 32
-		} else {
-			access = 0
-		}
-
-		map.drawImage(
-			Imgs.icons.shock,
-			access,
-			0,
-			32,
-			32,
-			336,
-			640,
-			32,
-			32
-			)
-		map.globalAlpha = 1
-		map.fillStyle = color.white;
-		map.font = "8px Arial";
-		map.textAlign = "center";
-		map.textBaseline = "bottom";
-		map.fillText("e", 352, 640)
-
-		if (!Special.shock.ready) {
-			map.font = "16px Arial";
-			map.textAlign = "center";
-			map.textBaseline = "middle";
-			map.fillText(Special.shock.cooldown + " s", 352, 656)
-		}
-
-		if (Special.bomb.ready) {
-			map.globalAlpha = 1
-		} else {
-			map.globalAlpha = 0.5
-		}
-		if (Special.bomb.level == 0) {
-			access = 32
-		} else {
-			access = 0
-		}
-
-		map.drawImage(
-			Imgs.icons.bomb,
-			access,
-			0,
-			32,
-			32,
-			368,
-			640,
-			32,
-			32
-			)
-
-			if (!Special.bomb.ready) {
-				map.globalAlpha = 1
-				map.font = "16px Arial";
-				map.textAlign = "center";
-				map.textBaseline = "middle";
-				map.fillText(Special.bomb.cooldown + " s", 384, 656)
-			}
-
-			map.globalAlpha = 1
-			map.fillStyle = color.white;
-			map.font = "8px Arial";
-			map.textAlign = "center";
-			map.textBaseline = "bottom";
-			map.fillText("r", 384, 640)
-	},
 	shopRender: function () {
 		if (Shop.on) {
 			map.fillStyle = Shop.background.color
@@ -436,42 +273,5 @@ var gl = {
 			map.textBaseline = "bottom";
 			map.fillText("Press enter to continue, Press space to buy", 336, Shop.background.y + Shop.background.h - 10)
 		}
-	},
-	draw_shock: function () {
-		this.shock.forEach(function (buf) {
-			map.drawImage(	buf.img,
-							0,
-							0,
-							buf.w,
-							buf.h,
-							buf.x,
-							buf.y,
-							buf.w,
-							buf.h
-							);
-		})
-	},
-	draw_buf_event: function () {
-		this.buf_event.forEach(function (buf) {
-			map.drawImage(buf.img.pic,
-							buf.img.pos.x + buf.w * buf.cur_frame,
-							buf.img.pos.y,
-							buf.w,
-							buf.h,
-							buf.pos.x,
-							buf.pos.y,
-							buf.w,
-							buf.h
-							)
-		})
-	},
-	buf_event_text: function () {
-		if (Event.buf_event_active) {
-			map.fillStyle = 'rgb(255,255,255)';
-			map.font = "16px Arial";
-			map.textAlign = "center";
-			map.textBaseline = "middle";
-			map.fillText(Event.buf_event_text, 500, 656);
-		};
 	}
 };

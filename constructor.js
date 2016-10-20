@@ -1,3 +1,10 @@
+function Gain (img, start, stop) {
+	this.id = _Tools.genId(),
+	this.img = img
+	this.start = start
+	this.stop = stop
+}
+
 function Product (name, type, price, object, icon, levelUp) {
 	this.levelUp = levelUp
 	this.id = _Tools.genId()

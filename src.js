@@ -17,7 +17,7 @@ var imageSrc = {
 	eyes: 'eyes.png',
 	brick: 'brick.png',
 	shock: 'shock.png',
-	event: 'event.png',
+	gainX2: 'gainX2.png',
 	elt: 'elt.png',
 	fireOfShot: 'fireOfShot.png',
 	blood: "blood.png",
@@ -26,7 +26,9 @@ var imageSrc = {
 	cursorParticle: 'cursorParticle.png',
 	shocked: 'shocked.png',
 	bomb: "bomb.png",
-	cursor: 'cursor.png'
+	cursor: 'cursor.png',
+	bombParticle: 'bombParticle.png',
+	smokeParticle: 'smokeParticle.png'
 }
 
 var imageIconsSrc = {

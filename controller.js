@@ -123,7 +123,7 @@ var Controller = {
 		},
 		killEnemy: function (enemy) {
 			enemy.goToRoom()
-			var points = 100 * Math.pow(2, Kill.getGain())
+			var points = 100 * Math.pow(2, Kill.getGain()) * Events.gain.value
 			_Data.addPoints(points)
 			Mess.setMess(points, enemy.pos)
 			Kill.activate()
@@ -212,154 +212,99 @@ var Controller = {
 				}.bind(this), 1000)
 			}
 		},
-		status: false,
-		update: 0,
-		duration: 5000,
-		timeout: false,
-		random_event: false,
-		random_event_handle: null,
-		buf_event: false,
-		buf_event_pos: {x:0, y:0},
-		buf_event_duration: 10,
-		buf_event_handle: null,
-		buf_event_timer_handle: null,
-		buf_events: [{name: 'x2', action: 2},{name:'x3', action: 3}],
-		buf_event_action: 1,
-		buf_event_text: '',
-		buf_event_active: false,
-		buf_event_active_handle: null,
-		buf_event_default: function () {
-			this.buf_event_active = false
-			this.buf_event_action = 1
-			this.buf_event_text = ''
-			this.buf_event = false
-			gl.buf_event = []
-		},
-		buf_event_taked: function () {
-			clearInterval(this.buf_event_timer_handle)
-			gl.buf_event = []
-			this.buf_event = false
-			this.buf_event_active = true
+		gain: {
+			gains: [],
+			curGain: false,
+			sustain: 10,
+			interval: null,
+			timer: null,
+			timeToStart: 0,
+			timeToEnd: 10,
+			value: 1,
+			lowLayerBuffer: null,
+			eventMap: [],
+			countDown: function () {
+				this.timeToStart = 30 + Math.floor(Math.random() * 30)
+				this.timer = _Tools.setInterval.call(this, function () {
+					console.log(this.timeToStart)
+					if (this.timeToStart == 0) {
+						_Tools.clearInterval(this.timer)
+						this.show()
+					} else {
+						this.timeToStart--
+					}
+				}, 1000)
+			},
+			show: function () {
+				var randomGain = Math.floor(Math.random() * this.gains.length)
+				this.curGain = this.gains[randomGain]
+				var randomPos = Math.floor(Math.random() * this.eventMap.length)
 
-			this.buf_event_active_handle = setTimeout(function () {
-				this.buf_event_default()
-				this.set_buf_event()
-			}.bind(this), 10000)
+				this.lowLayerBuffer = new LowLayerBuffer(this.curGain.img, function () {
+					var pic = {
+						y: 0,
+						w: 32,
+						h: 32,
+						pos: {
+							x: Events.gain.eventMap[randomPos].x * 32,
+							y: Events.gain.eventMap[randomPos].y * 32,
+							w: 32,
+							h: 32
+						}
+					}
+					switch (this.curFrame) {
+						case 0:
+							pic.x = 0
+						break
+						case 1:
+							pic.x = 32
+						break
+					}
+					this.curFrame++
+					if (this.curFrame >= this.tFrames) {
+						this.curFrame = 0
+					}
+					this.picArr = []
+					this.picArr.push(pic)
+				}, 200, 2)
+				gl.lowLayer.push(this.lowLayerBuffer)
 
-		},
-		set_buf_event: function () {
-			this.buf_event_handle = setTimeout(function () {
-				console.log("buf_event")
-				Event.buf_event_start()
-			}, 6000)
-			this.buf_event = true
-		},
-		buf_event_start: function () {
-			console.log("event start")
-			var random = Math.round(Math.random() * (this.buf_events.length - 1))
-			Event.buf_event_duration = 10
-			var empty = _Map.event_graph.filter(function (cell) {
-				if (cell.type == 'e') {
-					return true
+
+				this.timeToEnd = this.sustain
+				this.interval = _Tools.setInterval.call(this, function () {
+					console.log(this.timeToEnd)
+					if (this.timeToEnd == 0) {
+						this.curGain = false
+						this.lowLayerBuffer.removeBuffer()
+						_Tools.clearInterval(this.interval)
+						this.countDown()
+					} else {
+						this.timeToEnd--
+					}
+				}, 1000)
+			},
+			addGain: function (img, start, stop) {
+				var gain = new Gain(img, start, stop)
+				this.gains.push(gain)
+			},
+			init: function () {
+				var eventMap = BlocksPos.getEventMap()
+				eventMap = eventMap.split("")
+				var index = 0;
+				for (var y = 0; y < 21; y++) {
+					for (var x = 0; x < 21; x++) {
+						if (eventMap[index] == "e") {
+							this.eventMap.push({x: x, y: y})
+						}
+						index++
+					}
 				}
-				return false
-			})
-			var random_cell = Math.floor(Math.random() * (empty.length - 1))
-			this.buf_event_pos.x = (empty[random_cell].x * 32) + 16
-			this.buf_event_pos.y = (empty[random_cell].y * 32) + 16
-			Event_blocks[this.buf_events[random].name].pos.x = empty[random_cell].x * 32
-			Event_blocks[this.buf_events[random].name].pos.y = empty[random_cell].y * 32
-			this.buf_event_action = this.buf_events[random].action
-			this.buf_event_text = this.buf_events[random].name
-			gl.buf_event.push(Event_blocks[this.buf_events[random].name])
-			this.buf_event_timer_handle = setInterval(function () {
-				Event.buf_event_duration -= 1
-				if (Event.buf_event_duration == 0) {
-					Event.buf_event_stop()
-				};
-			}, 1000)
-		},
-		buf_event_stop: function () {
-			console.log("event stop")
-			clearInterval(Event.buf_event_timer_handle)
-			gl.buf_event = []
-			this.buf_event = false
-			this.set_buf_event()
-		},
-		set_random_event: function () {
-			Event.random_event_handle = setTimeout(function () {
-				if (_data.status == "play") {
-					Special.yo.start();
-				}
-			}, Math.floor(Math.random() * 180000));
-		},
-		start: function () {
-			if (Event.status) {
-				Event.update += 1;
-			};
 
-			Event.status = true;
-
-			enemy_arr.forEach(function (enemy) {
-				if (enemy.behavior == "passive" || enemy.behavior == "chase" || enemy.behavior == "fear") {
-					enemy.set_fear_img();
-					b_Controller.set_fear.call(enemy);
-				};
-			});
-			Sounds.signal.pause();
-			Sounds.signal.currentTime = 0;
-
-			if (!Sounds.fear.paused) {
-				Sounds.fear.pause();
-				Sounds.fear.currentTime = 0
-			};
-
-			Event.timeout = false
-
-			setTimeout(function () {
-				Sounds.fear.play()
-			}, 5)
-			setTimeout(function () {
-				if (Event.update == 0) {
-					enemy_arr.forEach(function (enemy) {
-						if (enemy.behavior == "fear") {
-							Event.timeout = true;
-							enemy.set_fear_pre_timeout_img()
-						};
-					});
-				}
-			}, Event.duration * 0.7);
-			setTimeout(function () {
-				if (Event.update <= 0 && Event.status) {
-					Event.stop();
-				} else {
-					Event.update -= 1;
-				};
-			}, Event.duration)
-			console.log("start");
-		},
-		stop: function () {
-			Event.status = false;
-			Event.update = 0;
-			enemy_arr.forEach(function (enemy) {
-				if (
-					enemy.behavior == "in_room" || 
-					enemy.behavior == "enterToRoom" || 
-					enemy.behavior == "exit_from_room" || 
-					enemy.behavior == "go_to_room" 
-					) {
-					return
-				}
-				enemy.set_original_img()
-				b_Controller.set_passive.call(enemy);
-			});
-			if (!Sounds.fear.paused) {
-				Sounds.fear.pause()
-				Sounds.fear.currentTime = 0;
+				this.addGain(Imgs.gainX2, function () {
+					Events.gain.value = 2
+				}, function () {
+					Events.gain.value = 1
+				})
 			}
-			if (_data.status == 'play') {
-				Sounds.signal.play();
-			}
-			console.log("stop");
 		}
 	}

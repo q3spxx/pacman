@@ -193,5 +193,25 @@ var Effects = {
 				this.distance += this.speed
 			}
 		}
+	},
+	earthquake: {
+		interval: null,
+		trigger: false,
+		start: function () {
+			_Data.main.y = 5
+			this.interval = _Tools.setInterval.call(this, function () {
+				if (this.trigger) {
+					_Data.main.y += 10
+					this.trigger = false
+				} else {
+					_Data.main.y -= 10
+					this.trigger = true
+				}
+			}, 100)
+		},
+		stop: function () {
+			_Data.main.y = 0
+			_Tools.clearInterval(this.interval)
+		}
 	}
 }

@@ -74,7 +74,7 @@ var Shop = {
 		enable: function () {
 			var quantityEmittersLeft = Math.floor(((this.quantityEmitters * (this.h / this.w))) / 2)
 			var quantityEmittersTop = this.quantityEmitters / 2 - quantityEmittersLeft
-			var radius = 16
+			var radius = 8
 			var speed = 1
 			var quantity = 4
 			var size = 8
@@ -142,7 +142,7 @@ var Shop = {
 		_Tools.setTimeout.call(this, function () {
 			this.cursor.emitters.forEach(function (emitter) {
 				emitter.maxSize = 8
-				emitter.radius = 16
+				emitter.radius = 8
 				emitter.speed = 1
 			})
 		}, 800)

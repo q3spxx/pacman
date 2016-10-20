@@ -11,6 +11,10 @@ var _Data = {
 	gameSpeed: 5,
 	roundPoints: 0,
 	scope: 100000,
+	main: {
+		x: 0,
+		y: 0
+	},
 	addPoints: function (points) {
 		this.scope += points
 	},

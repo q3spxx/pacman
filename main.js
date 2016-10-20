@@ -172,6 +172,7 @@ var Game = {
 		this.changeInit()
 	},
 	ready: function () {
+		Events.gain.init()
 		Shop.init()
 		Special.icons.init()
 		_Tools.setInterval.call(gl, gl.clear, Math.floor(1000 / this.fps))
@@ -210,6 +211,7 @@ var Game = {
 		Controller.start.call(Bob)
 		Controller.start.call(Paul)
 		Room.start()
+		Events.gain.countDown()
 	},
 	pause: function () {
 		Game.interval.pause()
@@ -244,7 +246,7 @@ var Game = {
 		enemyArr.forEach(function (enemy) {
 			enemy.setDefault()
 		})
-		Special.shock.setDefault()
+		Special.setAllDefault()
 		_Data.status = 'ready'
 	},
 	nextRound: function () {

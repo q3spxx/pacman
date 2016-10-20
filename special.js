@@ -16,6 +16,12 @@ function cooldownDisable () {
 }
 
 var Special = {
+	setAllDefault: function () {
+		Special.shock.setDefault()
+		Special.shot.setDefault()
+		Special.bomb.setDefault()
+		Special.cord.setDefault()
+	},
 	playerStop: function () {
 		_Data.status = 'special'
 		Player.mPos.x = 0
@@ -45,6 +51,7 @@ var Special = {
 		},
 		timer: 0,
 		level: 10,
+		lowLayerBuffer: false,
 		distance: 0,
 		status: 'notActive',
 		isFeared: false,
@@ -52,6 +59,7 @@ var Special = {
 		emitter: false,
 		speed: 5,
 		bloodLine: {
+			lowLayerBuffer: false,
 			x: 0,
 			y: 0
 		},
@@ -59,6 +67,22 @@ var Special = {
 		cooldown: 5,
 		ready: true,
 		handle: null,
+		setDefault: function () {
+			if (!this.ready) {
+				this.cooldownDisable()
+				this.lowLayerBuffer.removeBuffer()
+				this.status = 'notActive'
+				this.isFeared = false
+				this.enemy = false
+				this.distance = 0
+				if (this.emitter != false) {
+					this.emitter.remove()
+				}
+				if (this.bloodLine.lowLayerBuffer != false) {
+					this.bloodLine.lowLayerBuffer.removeBuffer()
+				}
+			}
+		},
 		maxDistance: function () {
 			return this.level * 64
 		},
@@ -70,8 +94,8 @@ var Special = {
 
 			this.status = 'runned'
 
-			var buffer = new LowLayerBuffer(Imgs.cord, this.getParams, this.speed, 1, 10000)
-			gl.lowLayer.push(buffer)
+			this.lowLayerBuffer = new LowLayerBuffer(Imgs.cord, this.getParams, this.speed, 1, 10000)
+			gl.lowLayer.push(this.lowLayerBuffer)
 
 			this.cooldownEnable()
 		},
@@ -241,7 +265,7 @@ var Special = {
 						Special.cord.emitter = Effects.emitter.add(Imgs.blood, pic.pos.x + pic.pos.w, pic.pos.y + pic.pos.h, 128, 32, 50, 16, 'line')
 						Special.cord.bloodLine.x = Special.cord.enemy.pos.x
 						Special.cord.bloodLine.y = Special.cord.enemy.pos.y
-						var lowLayer = new LowLayerBuffer(Imgs.bloodLine, function () {
+						Special.cord.bloodLine.lowLayerBuffer = new LowLayerBuffer(Imgs.bloodLine, function () {
 							if (!Special.cord.enemy) {
 								return
 							}
@@ -291,7 +315,7 @@ var Special = {
 						this.picArr = []
 						this.picArr.push(bloodLine)
 						}, Special.cord.speed, 1, 10000)
-						gl.lowLayer.push(lowLayer)
+						gl.lowLayer.push(Special.cord.bloodLine.lowLayerBuffer)
 						break
 					}
 				}
@@ -369,22 +393,34 @@ var Special = {
 		},
 		timer: 0,
 		ready: true,
-		level: 0,
+		level: 10,
 		emitter: false,
 		handle: null,
+		lowLayerBuffer: false,
 		cooldownHandle: null,
 		cooldown: 30,
 		radius: 0,
+		setDefault: function () {
+			if (!this.ready) {
+				this.cooldownDisable()
+				if (this.emitter != false) {
+					this.emitter.remove()
+				}
+				this.lowLayerBuffer.removeBuffer()
+				this.radius = 0
+			}
+		},
 		getRadius: function () {
 			return 32 + 8 * this.level
 		},
 		start: function () {
 			_Data.status = "special";
 			Special.playerStop()
-			var lowLayer = new LowLayerBuffer(Imgs.bomb, this.getParams, 40, 1, 1000)
-			gl.lowLayer.push(lowLayer)
-			this.emitter = Effects.emitter.add(Imgs.shockParticle, Player.pos.x + 16, Player.pos.y + 16, this.getRadius(), 24, 100, 16, 'line', 400)
-
+			this.lowLayerBuffer = new LowLayerBuffer(Imgs.bomb, this.getParams, 40, 1, 1000)
+			gl.lowLayer.push(this.lowLayerBuffer)
+			this.emitter = Effects.emitter.add(Imgs.bombParticle, Player.pos.x + 16, Player.pos.y + 16, this.getRadius() * 2, 12, 50, 16, 'line', 400)
+			Effects.emitter.add(Imgs.smokeParticle, Player.pos.x + 16, Player.pos.y + 16, this.getRadius() * 2, 12, 100, 24, 'line', 400)
+			Effects.earthquake.start()
 
 			this.cooldownEnable()
 		},
@@ -405,6 +441,7 @@ var Special = {
 		getParams: function () {
 			Special.bomb.radius += Special.bomb.getRadius() / 10
 			if (Special.bomb.radius >= Special.bomb.getRadius()) {
+				Effects.earthquake.stop()
 				this.removeBuffer()
 				Special.bomb.radius = 0
 				Special.bomb.emitter.remove()
@@ -415,8 +452,8 @@ var Special = {
 			var pic = {
 				x: 0,
 				y: 0,
-				w: 56,
-				h: 56,
+				w: 112,
+				h: 112,
 				pos: {
 					x: Player.pos.x + 16 - Special.bomb.radius,
 					y: Player.pos.y + 16 - Special.bomb.radius,
@@ -451,24 +488,33 @@ var Special = {
 			cooldownDisable: cooldownDisable
 		},
 		timer: 0,
-		level: 0,
+		level: 10,
 		ready: true,
 		emitter: false,
 		speed: 5,
 		cooldownHandle: null,
 		cooldown: 7,
+		handle: null,
+		lowLayerBuffer: false,
+		setDefault: function () {
+			if (!this.ready) {
+				this.cooldownDisable()
+				this.lowLayerBuffer.removeBuffer()
+				_Tools.clearTimeout(this.handle)
+			}
+		},
 		chanse: function () {
 			return 10 * this.level
 		},
 		start: function () {
 			Special.playerStop()
-			_Tools.setTimeout(function () {
+			this.handle = _Tools.setTimeout(function () {
 				Special.playerGo()
 			}, 100)
 
 			Sounds.shot.play()
-			var buffer = new LowLayerBuffer(Imgs.fireOfShot, this.getParams, this.speed, 1, 100)
-			gl.lowLayer.push(buffer)
+			this.lowLayerBuffer = new LowLayerBuffer(Imgs.fireOfShot, this.getParams, this.speed, 1, 100)
+			gl.lowLayer.push(this.lowLayerBuffer)
 			var enemy = Col.enemyInLine();
 
 			if (
@@ -562,8 +608,6 @@ var Special = {
 		setDefault: function () {
 			if (!this.ready) {
 				this.cooldownDisable()
-				this.timer = 0
-				this.ready = true
 				this.distance = 0
 				if (this.emitter != false) {
 					this.emitter.remove()
@@ -619,8 +663,12 @@ var Special = {
 				this.emitter.pos.y = pic.pos.y + 16
 			};
 
-			if (_Map.grid[Math.floor(pic.pos.x / 32)][Math.floor(pic.pos.y / 32)].object.block ||
-				_Map.grid[Math.floor((pic.pos.x + 31) / 32)][Math.floor((pic.pos.y + 31) / 32)].object.block) {
+			if (
+				pic.pos.x < 0 ||
+				pic.pos.x + pic.pos.h > 672 ||
+				_Map.grid[Math.floor(pic.pos.x / 32)][Math.floor(pic.pos.y / 32)].object.block ||
+				_Map.grid[Math.floor((pic.pos.x + 31) / 32)][Math.floor((pic.pos.y + 31) / 32)].object.block
+				) {
 				Special.playerGo()
 				Special.shock.distance = 0
 				this.removeBuffer()
