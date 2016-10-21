@@ -79,19 +79,19 @@ var Shop = {
 			var quantity = 4
 			var size = 8
 			for (var i = 0; i < quantityEmittersTop; i++) {
-				var emitterBuffer = Effects.emitter.add(Imgs.cursorParticle, Shop.background.x + Shop.cursor.x + i * (this.w / quantityEmittersTop), Shop.background.y + Shop.cursor.y, radius, speed, quantity, size, 'line')
+				var emitterBuffer = Effects.emitter.add(Imgs.cursorParticle, Shop.background.x + Shop.cursor.x + i * (this.w / quantityEmittersTop), Shop.background.y + Shop.cursor.y + 1, radius, speed, quantity, size, 'line')
 				this.emitters.push(emitterBuffer)
 			}
 			for (var i = 0; i < quantityEmittersLeft; i++) {
-				var emitterBuffer = Effects.emitter.add(Imgs.cursorParticle, Shop.background.x + Shop.cursor.x, Shop.background.y + Shop.cursor.y + i * (this.h / quantityEmittersLeft), radius, speed, quantity, size, 'line')
+				var emitterBuffer = Effects.emitter.add(Imgs.cursorParticle, Shop.background.x + Shop.cursor.x + 1, Shop.background.y + Shop.cursor.y + i * (this.h / quantityEmittersLeft), radius, speed, quantity, size, 'line')
 				this.emitters.push(emitterBuffer)
 			}
 			for (var i = 0; i < quantityEmittersTop; i++) {
-				var emitterBuffer = Effects.emitter.add(Imgs.cursorParticle, Shop.background.x + Shop.cursor.x + i * (this.w / quantityEmittersTop), Shop.background.y + Shop.cursor.y + this.h, radius, speed, quantity, size, 'line')
+				var emitterBuffer = Effects.emitter.add(Imgs.cursorParticle, Shop.background.x + Shop.cursor.x + i * (this.w / quantityEmittersTop), Shop.background.y + Shop.cursor.y + this.h - 1, radius, speed, quantity, size, 'line')
 				this.emitters.push(emitterBuffer)
 			}
 			for (var i = 0; i < quantityEmittersLeft; i++) {
-				var emitterBuffer = Effects.emitter.add(Imgs.cursorParticle, Shop.background.x + Shop.cursor.x + this.w, Shop.background.y + Shop.cursor.y + i * (this.h / quantityEmittersLeft), radius, speed, quantity, size, 'line')
+				var emitterBuffer = Effects.emitter.add(Imgs.cursorParticle, Shop.background.x + Shop.cursor.x + this.w - 1, Shop.background.y + Shop.cursor.y + i * (this.h / quantityEmittersLeft), radius, speed, quantity, size, 'line')
 				this.emitters.push(emitterBuffer)
 			}
 		},

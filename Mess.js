@@ -55,6 +55,9 @@ var Mess = {
 		this.addMessage('pressEnter', 'centerMessage', false, function () {
 			return 'press Enter'
 		})
+		this.addMessage('pressSpace', 'centerMessage', false, function () {
+			return 'press Space'
+		})
 		this.addMessage('gameOver', 'centerMessage', false, function () {
 			return 'Game Over'
 		})
@@ -87,6 +90,9 @@ var Mess = {
 		})
 		this.addMessage('headShot', 'soundMessage', 1000, function () {
 			return 'Headshot!'
+		})
+		this.addMessage('headHunter', 'soundMessage', 1000, function () {
+			return 'Headhunter!'
 		})
 		this.addMessage('firstblood', 'soundMessage', 1000, function () {
 			return 'Firstblood!'

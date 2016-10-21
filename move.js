@@ -62,6 +62,11 @@ var Move = {
 						behaviorController.killEnemy(enemy)
 					};
 				};
+				if (Events.gain.curGain != false && !Events.gain.activated) {
+					if (Col.checkGain.call(this)) {
+						Events.gain.activate()
+					}
+				}
 			};
 		return true;
 	},

@@ -491,7 +491,7 @@ var Special = {
 		level: 10,
 		ready: true,
 		emitter: false,
-		speed: 5,
+		speed: 50,
 		cooldownHandle: null,
 		cooldown: 7,
 		handle: null,
@@ -508,32 +508,52 @@ var Special = {
 		},
 		start: function () {
 			Special.playerStop()
-			this.handle = _Tools.setTimeout(function () {
-				Special.playerGo()
-			}, 100)
 
-			Sounds.shot.play()
-			this.lowLayerBuffer = new LowLayerBuffer(Imgs.fireOfShot, this.getParams, this.speed, 1, 100)
-			gl.lowLayer.push(this.lowLayerBuffer)
-			var enemy = Col.enemyInLine();
-
-			if (
-				enemy != false &&
-				enemy.behavior != 'goToRoom' &&
-				enemy.behavior != 'enterToRoom' &&
-				enemy.behavior != 'inRoom' &&
-				enemy.behavior != 'exitFromRoom'
-				) {
-				if (Col.missCheck()) {
-					this.emitter = Effects.emitter.add(Imgs.blood, enemy.pos.x + 16, enemy.pos.y + 16, 64, 8, 50, 16, 'line', 300)
-					Effects.blood.add(enemy)
-					Mess.setMess('headShot')
-					Sounds.headshot.play()
-					behaviorController.killEnemy(enemy)
-				} else {
-					Mess.setMess('miss', enemy.pos)
-				}
+			if (Events.gain.quaddamage) {
+				this.handle = _Tools.setTimeout(function () {
+					Special.playerGo()
+				}, 200)
+				Sounds.quadshot.play()
+				this.lowLayerBuffer = new LowLayerBuffer(Imgs.quadshot, this.getQuadParams, this.speed, 4, 200)
+			} else {
+				this.handle = _Tools.setTimeout(function () {
+					Special.playerGo()
+				}, 100)
+				Sounds.shot.play()
+				this.lowLayerBuffer = new LowLayerBuffer(Imgs.fireOfShot, this.getParams, this.speed, 1, 100)
 			}
+
+			gl.lowLayer.push(this.lowLayerBuffer)
+			var enemies = Col.enemyInLine();
+
+			var kills = 0
+			if (enemies != false) {
+				enemies.forEach(function (enemy) {
+					if (
+						enemy.behavior != 'goToRoom' &&
+						enemy.behavior != 'enterToRoom' &&
+						enemy.behavior != 'inRoom' &&
+						enemy.behavior != 'exitFromRoom'
+						) {
+						if (Col.missCheck()) {
+							this.emitter = Effects.emitter.add(Imgs.blood, enemy.pos.x + 16, enemy.pos.y + 16, 64, 8, 50, 16, 'line', 300)
+							Effects.blood.add(enemy)
+							kills++
+							behaviorController.killEnemy(enemy)
+						} else {
+							Mess.setMess('miss', enemy.pos)
+						}
+					}
+				})
+			}
+			if (kills > 1) {
+				Mess.setMess('headHunter')
+				Sounds.headHunter.play()
+			} else if (kills == 1) {
+				Mess.setMess('headShot')
+				Sounds.headshot.play()
+			}
+
 			this.cooldownEnable()
 		},
 		getParams: function () {
@@ -586,6 +606,87 @@ var Special = {
 				break
 			}
 			this.picArr.push(pic)
+		},
+		getQuadParams: function () {
+			this.picArr = []
+
+			var x = Math.floor(Player.pos.x / 32)
+			var y = Math.floor(Player.pos.y / 32)
+			switch (Player.curAction) {
+				case 0:
+					while (!_Map.grid[x - 1][y].object.block) {
+						x--
+					}
+					this.picArr.push({
+						x: 32 * this.curFrame,
+						y: 32,
+						w: 32,
+						h: 32,
+						pos: {
+							x: x * 32,
+							y: Player.pos.y,
+							w: Player.pos.x + 16 - x * 32,
+							h: 32
+						}
+					})
+				break
+				case 1:
+
+					while (!_Map.grid[x][y - 1].object.block) {
+						y--
+					}
+					this.picArr.push({
+						x: 32 * this.curFrame,
+						y: 0,
+						w: 32,
+						h: 32,
+						pos: {
+							x: Player.pos.x,
+							y: y * 32,
+							w: 32,
+							h: Player.pos.y + 16 - y * 32
+						}
+					})
+				break
+				case 2:
+					while (!_Map.grid[x + 1][y].object.block) {
+						x++
+					}
+					this.picArr.push({
+						x: 32 * this.curFrame,
+						y: 32,
+						w: 32,
+						h: 32,
+						pos: {
+							x: Player.pos.x + 16,
+							y: Player.pos.y,
+							w: x * 32 - Player.pos.x + 16,
+							h: 32
+						}
+					})
+				break
+				case 3:
+					while (!_Map.grid[x][y + 1].object.block) {
+						y++
+					}
+					this.picArr.push({
+						x: 32 * this.curFrame,
+						y: 0,
+						w: 32,
+						h: 32,
+						pos: {
+							x: Player.pos.x,
+							y: Player.pos.y + 16,
+							w: 32,
+							h: y * 32 - Player.pos.y + 16
+						}
+					})
+				break
+			}
+			this.curFrame++
+			if (this.curFrame >= this.tFrames) {
+				this.curFrame = 0
+			}
 		}
 	},
 	shock: {

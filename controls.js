@@ -55,8 +55,8 @@ var Controls = {
 				break
 				case 'Space': if (_Data.status == 'shop') {
 							Shop.tryBuy()
-						} else if (Special.yo.status) {
-							Event.start()
+						} else if (Events.tosty.activated) {
+							Events.energiser.activate()
 						};
 				break
 				case 'Enter': if (_Data.status == 'ready') {
@@ -125,7 +125,7 @@ var Controls = {
 			statuses: ['isRunned']
 		},
 		Space: {
-			statuses: ['isRunned', 'shop']
+			statuses: ['isRunned', 'shop', 'special']
 		}
 	},
 	getButton: function (e) {

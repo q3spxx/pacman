@@ -212,6 +212,7 @@ var Game = {
 		Controller.start.call(Paul)
 		Room.start()
 		Events.gain.countDown()
+		Events.tosty.countDown()
 	},
 	pause: function () {
 		Game.interval.pause()
@@ -230,6 +231,8 @@ var Game = {
 	stop: function () {
 		Room.stop()
 		Room.setDefault()
+		Events.gain.setDefault()
+		Events.tosty.setDefault()
 		Controller.stop.call(Player)
 		enemyArr.forEach(function (enemy) {
 			Controller.stop.call(enemy)

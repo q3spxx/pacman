@@ -5,7 +5,7 @@ var _Data = {
 	imgsIsLoaded: false,
 	intervals: [],
 	timeouts: [],
-	volume: 0.01,
+	volume: 0.1,
 	level: 1,
 	lifes: 3,
 	gameSpeed: 5,
@@ -16,7 +16,7 @@ var _Data = {
 		y: 0
 	},
 	addPoints: function (points) {
-		this.scope += points
+		this.scope += points * Events.gain.value
 	},
 	checkEndRound: function () {
 		if (this.roundPoints == MapObjects.foods.array.length) {
@@ -148,14 +148,14 @@ var Kill = {
 				_Tools.setTimeout.call(this, function () {
 					Mess.setMess(notification.mess)
 					Sounds[notification.sound].play()
-				}, 1000)
+				}, 2000)
 			}
 
 			if (totalNotification != null) {
 				_Tools.setTimeout.call(this, function () {
 					Mess.setMess(totalNotification.mess)
 					Sounds[totalNotification.sound].play()
-				}, 2000)
+				}, 3000)
 			}
 
 			if (this.timer) {

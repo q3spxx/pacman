@@ -216,17 +216,23 @@ var Controller = {
 			gains: [],
 			curGain: false,
 			sustain: 10,
+			activated: false,
 			interval: null,
+			pos: {
+				x: 0,
+				y: 0
+			},
 			timer: null,
 			timeToStart: 0,
 			timeToEnd: 10,
+			timeToDeactivate: 10,
 			value: 1,
+			quaddamage: false,
 			lowLayerBuffer: null,
 			eventMap: [],
 			countDown: function () {
-				this.timeToStart = 30 + Math.floor(Math.random() * 30)
+				this.timeToStart = 10 + Math.floor(Math.random() * 10)
 				this.timer = _Tools.setInterval.call(this, function () {
-					console.log(this.timeToStart)
 					if (this.timeToStart == 0) {
 						_Tools.clearInterval(this.timer)
 						this.show()
@@ -240,14 +246,17 @@ var Controller = {
 				this.curGain = this.gains[randomGain]
 				var randomPos = Math.floor(Math.random() * this.eventMap.length)
 
+				this.pos.x =  Events.gain.eventMap[randomPos].x * 32
+				this.pos.y =  Events.gain.eventMap[randomPos].y * 32
+
 				this.lowLayerBuffer = new LowLayerBuffer(this.curGain.img, function () {
 					var pic = {
 						y: 0,
 						w: 32,
 						h: 32,
 						pos: {
-							x: Events.gain.eventMap[randomPos].x * 32,
-							y: Events.gain.eventMap[randomPos].y * 32,
+							x: Events.gain.pos.x,
+							y: Events.gain.pos.y,
 							w: 32,
 							h: 32
 						}
@@ -272,20 +281,55 @@ var Controller = {
 
 				this.timeToEnd = this.sustain
 				this.interval = _Tools.setInterval.call(this, function () {
-					console.log(this.timeToEnd)
 					if (this.timeToEnd == 0) {
+						this.hide()
 						this.curGain = false
-						this.lowLayerBuffer.removeBuffer()
-						_Tools.clearInterval(this.interval)
 						this.countDown()
 					} else {
 						this.timeToEnd--
 					}
 				}, 1000)
 			},
+			hide: function () {
+				this.lowLayerBuffer.removeBuffer()
+				this.lowLayerBuffer = false
+				_Tools.clearInterval(this.interval)
+			},
+			activate: function () {
+				_Tools.clearInterval(this.timer)
+				this.activated = true
+				this.curGain.start()
+				this.hide()
+				this.interval = _Tools.setInterval.call(this, function () {
+					if (this.timeToDeactivate == 0) {
+						this.deactivate()
+					} else {
+						this.timeToDeactivate--
+					}
+				}, 1000)
+			},
+			deactivate: function () {
+				this.activated = false
+				_Tools.clearInterval(this.interval)
+				this.timeToDeactivate = 10
+				this.curGain.stop()
+				this.curGain = false
+				this.countDown()
+			},
 			addGain: function (img, start, stop) {
 				var gain = new Gain(img, start, stop)
 				this.gains.push(gain)
+			},
+			setDefault: function () {
+				_Tools.clearInterval(this.interval)
+				_Tools.clearInterval(this.timer)
+				this.quaddamage = false
+				this.activated = false
+				this.curGain = false
+				this.value = 1
+				if (this.lowLayerBuffer != false) {
+					this.lowLayerBuffer.removeBuffer()
+				}
 			},
 			init: function () {
 				var eventMap = BlocksPos.getEventMap()
@@ -305,6 +349,84 @@ var Controller = {
 				}, function () {
 					Events.gain.value = 1
 				})
+				this.addGain(Imgs.gainX3, function () {
+					Events.gain.value = 3
+				}, function () {
+					Events.gain.value = 1
+				})
+				this.addGain(Imgs.star, function () {
+					Sounds.quaddamage.play()
+					Events.gain.quaddamage = true
+				}, function () {
+					Events.gain.quaddamage = false
+				})
+			}
+		},
+		tosty: {
+			timer: null,
+			sustain: 30,
+			timeToStart: 0,
+			x: 672,
+			y: 672,
+			highLayerBuffer: false,
+			activated: false,
+			timeout: null,
+			countDown: function () {
+				this.timeToStart = this.sustain + Math.floor(Math.random() * 30)
+				this.timer = _Tools.setInterval.call(this, function () {
+					if (this.timeToStart == 0) {
+						_Tools.clearInterval(this.timer)
+						this.activate()
+					} else {
+						this.timeToStart--
+					}
+				}, 1000)
+			},
+			activate: function () {
+				this.activated = true
+				Sounds.tosty.play()
+				Mess.setMess('pressSpace')
+				this.highLayerBuffer = new HighLayerBuffer(Imgs.tosty, function () {
+					this.picArr = []
+					this.picArr.push({
+						x: 0,
+						y: 0,
+						w: 110,
+						h: 110,
+						pos: {
+							x: Events.tosty.x,
+							y: Events.tosty.y,
+							w: 110,
+							h: 110
+						}
+					})
+					if (Events.tosty.x > 562 || Events.tosty.y > 562) {
+						Events.tosty.x -= 20
+						Events.tosty.y -= 20
+					}
+				}, 1000 / Game.fps, 1)
+				gl.highLayer.push(this.highLayerBuffer)
+
+				this.timeout = _Tools.setTimeout.call(this, function () {
+					Mess.hideMess('pressSpace')
+					this.highLayerBuffer.removeBuffer()
+					this.highLayerBuffer = false
+					this.activated = false
+					this.x = 672
+					this.y = 672
+					this.countDown()
+				}, 1000)
+			},
+			setDefault: function () {
+				_Tools.clearInterval(this.timer)
+				_Tools.clearTimeout(this.timeout)
+				this.x = 672
+				this.y = 672
+				this.activated = false
+				if (this.highLayerBuffer != false) {
+					this.highLayerBuffer.removeBuffer()
+					this.highLayerBuffer = false
+				}
 			}
 		}
 	}
