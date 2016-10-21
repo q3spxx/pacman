@@ -10,7 +10,8 @@ enemyArr = [],
 color = {
 	white: '255,255,255',
 	black: '0,0,0',
-	red: '217,0,0'
+	red: '217,0,0',
+	yellow: '245, 219, 0'
 },
 room_t = null,
 Imgs = {

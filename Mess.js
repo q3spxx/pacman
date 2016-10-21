@@ -55,6 +55,9 @@ var Mess = {
 		this.addMessage('pressEnter', 'centerMessage', false, function () {
 			return 'press Enter'
 		})
+		this.addMessage('pressSpace', 'centerMessage', false, function () {
+			return 'press Space'
+		})
 		this.addMessage('gameOver', 'centerMessage', false, function () {
 			return 'Game Over'
 		})
@@ -67,8 +70,32 @@ var Mess = {
 		this.addMessage('multikill', 'soundMessage', 1000, function () {
 			return 'Multi kill!'
 		})
+		this.addMessage('megakill', 'soundMessage', 1000, function () {
+			return 'Mega kill!'
+		})
+		this.addMessage('killingspree', 'soundMessage', 1000, function () {
+			return 'Killing spree!'
+		})
+		this.addMessage('rampage', 'soundMessage', 1000, function () {
+			return 'Rampage!'
+		})
+		this.addMessage('dominating', 'soundMessage', 1000, function () {
+			return 'Dominating!'
+		})
+		this.addMessage('unstoppable', 'soundMessage', 1000, function () {
+			return 'Unstoppable!'
+		})
+		this.addMessage('godlike', 'soundMessage', 1000, function () {
+			return 'Godlike!'
+		})
 		this.addMessage('headShot', 'soundMessage', 1000, function () {
 			return 'Headshot!'
+		})
+		this.addMessage('headHunter', 'soundMessage', 1000, function () {
+			return 'Headhunter!'
+		})
+		this.addMessage('firstblood', 'soundMessage', 1000, function () {
+			return 'Firstblood!'
 		})
 		this.addMessage('level', 'centerMessage', 4000, function () {
 			return 'Level: ' + _Data.level
