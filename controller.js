@@ -115,100 +115,42 @@ var Controller = {
 		},
 		setIsBusted: function () {
 			this.behavior = 'isBusted'
+			this.path = []
+			this.mPos.x = 0
+			this.mPos.y = 0
 		},
 		setShocked: function () {
-			this.stop()
-			this.path = []
 			this.behavior = 'shocked'
+			this.path = []
+			this.stop()
 		},
 		killEnemy: function (enemy) {
+			if (enemy.behavior == 'shocked') {
+				Special.shock.reset(1)
+				Special.shock.reset(2)
+			}
 			enemy.goToRoom()
-			var points = 100 * Math.pow(2, Kill.getGain())
+			var points = 100 * Math.pow(2, Kill.getGain()) * Events.gain.value
 			_Data.addPoints(points)
 			Mess.setMess(points, enemy.pos)
 			Kill.activate()
-
-			/*
-
-			if (enemy.shocked) {
-				enemy.shocked = false
-			}
-			Sounds.eatghost.play()
-			if (_data.firstblood) {
-				_data.firstblood = false;
-				setTimeout(function () {
-					_data.change_sound(audio_mess)
-					Sounds.show_mess("First blood!") 
-					Sounds.firstblood.play()
-				}, 1200);
-			};
-
-			_data.kills += 1;
-
-			if (_data.kill) {
-				var say = false;
-				var mess = Sounds.mess
-
-				switch (_data.kills) {
-					case 2: say = Sounds.doublekill
-							mess = "Double kill!"
-					break
-					case 3: say = Sounds.multikill
-							mess = "Multi kill!"
-					break
-					case 4: say = Sounds.megakill
-							mess = "Mega kill!"
-					break
+			Kill.massKill.activate()
+		},
+		killPlayer: function () {
+			Game.stop()
+			Sounds.fon.pause()
+			Sounds.dead.play()
+			Player.isDead();
+			_Data.lifes--
+			Kill.massKill.reset()
+			_Tools.setTimeout(function () {
+				if (_Data.lifes > 0) {
+					Game.default()
+					Game.start()
+				} else {
+					Mess.setMess('gameOver')
 				}
-				if (say != false) {						
-					setTimeout(function () {
-						_data.change_sound(audio_mess)
-						Sounds.show_mess(mess)
-						say.play()
-					}, 200);
-				};
-			};
-
-			_data.total_kills += 1
-
-			var total_say = false
-			var total_mess = Sounds.mess
-			switch(_data.total_kills) {
-				case 3: total_say = Sounds.killingspree
-						total_mess = 'Killing spree!'
-				break
-				case 6: total_say = Sounds.rampage
-						total_mess = 'Rampage!'
-				break
-				case 9: total_say = Sounds.dominating
-						total_mess = 'Dominating!'
-				break
-				case 12: total_say = Sounds.unstoppable
-						total_mess = 'Unstoppable!'
-				break
-				case 15: total_say = Sounds.godlike
-						total_mess = 'Godlike!'
-				break
-			}
-
-			if (total_say != false) {
-				setTimeout(function () {
-					_data.change_sound(audio_mess)
-					Sounds.show_mess(total_mess)
-					total_say.play()
-				}, 1000)
-			};
-
-			_data.kill_timer();
-
-			var points = Math.pow(2, _data.kills) * 100
-			if (Event.buf_event_active) {
-				points = points * Event.buf_event_action;
-			}
-
-			Anim.show_mess(points, {x: enemy.pos.x, y: enemy.pos.y}, 18, color['white'], 0);
-			Scope.main += points;
-			enemy.go_to_room();*/
+			}, 1800)
 		}
 	};
 
@@ -258,6 +200,9 @@ var Controller = {
 						enemy.behavior == "fearPreTimeout"
 						) {
 						behaviorController.setFear.call(enemy)
+					} else if (enemy.behavior == "shocked") {
+						Special.shock.isFeared = true
+						enemy.changeAnimation('fearLeft')
 					}
 				})
 
@@ -280,154 +225,423 @@ var Controller = {
 				}.bind(this), 1000)
 			}
 		},
-		status: false,
-		update: 0,
-		duration: 5000,
-		timeout: false,
-		random_event: false,
-		random_event_handle: null,
-		buf_event: false,
-		buf_event_pos: {x:0, y:0},
-		buf_event_duration: 10,
-		buf_event_handle: null,
-		buf_event_timer_handle: null,
-		buf_events: [{name: 'x2', action: 2},{name:'x3', action: 3}],
-		buf_event_action: 1,
-		buf_event_text: '',
-		buf_event_active: false,
-		buf_event_active_handle: null,
-		buf_event_default: function () {
-			this.buf_event_active = false
-			this.buf_event_action = 1
-			this.buf_event_text = ''
-			this.buf_event = false
-			gl.buf_event = []
-		},
-		buf_event_taked: function () {
-			clearInterval(this.buf_event_timer_handle)
-			gl.buf_event = []
-			this.buf_event = false
-			this.buf_event_active = true
+		gain: {
+			gains: [],
+			curGain: false,
+			sustain: 10,
+			activated: false,
+			interval: null,
+			pos: {
+				x: 0,
+				y: 0
+			},
+			timer: null,
+			timeToStart: 0,
+			timeToEnd: 10,
+			timeToDeactivate: 10,
+			value: 1,
+			quaddamage: false,
+			lowLayerBuffer: false,
+			eventMap: [],
+			quaddamageReady: false,
+			countDown: function () {
+				this.timeToStart = 10 + Math.floor(Math.random() * 10)
+				this.timer = _Tools.setInterval.call(this, function () {
+					if (this.timeToStart == 0) {
+						_Tools.clearInterval(this.timer)
+						this.show()
+					} else {
+						this.timeToStart--
+					}
+				}, 1000)
+			},
+			show: function () {
+				var randomGain = Math.floor(Math.random() * this.gains.length)
+				this.curGain = this.gains[randomGain]
+				var randomPos = Math.floor(Math.random() * this.eventMap.length)
 
-			this.buf_event_active_handle = setTimeout(function () {
-				this.buf_event_default()
-				this.set_buf_event()
-			}.bind(this), 10000)
+				this.pos.x =  Events.gain.eventMap[randomPos].x * 32
+				this.pos.y =  Events.gain.eventMap[randomPos].y * 32
 
+				this.lowLayerBuffer = new LowLayerBuffer(this.curGain.img, function () {
+					var pic = {
+						y: 0,
+						w: 32,
+						h: 32,
+						pos: {
+							x: Events.gain.pos.x,
+							y: Events.gain.pos.y,
+							w: 32,
+							h: 32
+						}
+					}
+					switch (this.curFrame) {
+						case 0:
+							pic.x = 0
+						break
+						case 1:
+							pic.x = 32
+						break
+					}
+					this.curFrame++
+					if (this.curFrame >= this.tFrames) {
+						this.curFrame = 0
+					}
+					this.picArr = []
+					this.picArr.push(pic)
+				}, 200, 2)
+				gl.lowLayer.push(this.lowLayerBuffer)
+
+
+				this.timeToEnd = this.sustain
+				this.interval = _Tools.setInterval.call(this, function () {
+					if (this.timeToEnd == 0) {
+						this.hide()
+						this.curGain = false
+						this.countDown()
+					} else {
+						this.timeToEnd--
+					}
+				}, 1000)
+			},
+			hide: function () {
+				this.lowLayerBuffer.removeBuffer()
+				this.lowLayerBuffer = false
+				_Tools.clearInterval(this.interval)
+			},
+			activate: function () {
+				_Tools.clearInterval(this.timer)
+				this.activated = true
+				this.curGain.start()
+				this.hide()
+				this.interval = _Tools.setInterval.call(this, function () {
+					if (this.timeToDeactivate == 0) {
+						this.deactivate()
+					} else {
+						this.timeToDeactivate--
+					}
+				}, 1000)
+			},
+			deactivate: function () {
+				this.activated = false
+				_Tools.clearInterval(this.interval)
+				this.timeToDeactivate = 10
+				this.curGain.stop()
+				this.curGain = false
+				this.countDown()
+			},
+			addGain: function (img, start, stop) {
+				var gain = new Gain(img, start, stop)
+				this.gains.push(gain)
+			},
+			setDefault: function () {
+				_Tools.clearInterval(this.interval)
+				_Tools.clearInterval(this.timer)
+				this.quaddamage = false
+				this.activated = false
+				this.curGain = false
+				this.value = 1
+				if (this.lowLayerBuffer != false) {
+					this.lowLayerBuffer.removeBuffer()
+				}
+			},
+			init: function () {
+				var eventMap = BlocksPos.getEventMap()
+				eventMap = eventMap.split("")
+				var index = 0;
+				for (var y = 0; y < 21; y++) {
+					for (var x = 0; x < 21; x++) {
+						if (eventMap[index] == "e") {
+							this.eventMap.push({x: x, y: y})
+						}
+						index++
+					}
+				}
+
+				this.addGain(Imgs.gainX2, function () {
+					Events.gain.value = 2
+				}, function () {
+					Events.gain.value = 1
+				})
+				this.addGain(Imgs.gainX3, function () {
+					Events.gain.value = 3
+				}, function () {
+					Events.gain.value = 1
+				})
+			}
 		},
-		set_buf_event: function () {
-			this.buf_event_handle = setTimeout(function () {
-				console.log("buf_event")
-				Event.buf_event_start()
-			}, 6000)
-			this.buf_event = true
+		tosty: {
+			ready: false,
+			timer: null,
+			sustain: 30,
+			timeToStart: 0,
+			x: 672,
+			y: 672,
+			highLayerBuffer: false,
+			activated: false,
+			timeout: null,
+			countDown: function () {
+				this.timeToStart = this.sustain + Math.floor(Math.random() * 30)
+				this.timer = _Tools.setInterval.call(this, function () {
+					if (this.timeToStart == 0) {
+						_Tools.clearInterval(this.timer)
+						this.activate()
+					} else {
+						this.timeToStart--
+					}
+				}, 1000)
+			},
+			activate: function () {
+				this.activated = true
+				Sounds.tosty.play()
+				Mess.setMess('pressSpace')
+				this.highLayerBuffer = new HighLayerBuffer(Imgs.tosty, function () {
+					this.picArr = []
+					this.picArr.push({
+						x: 0,
+						y: 0,
+						w: 110,
+						h: 110,
+						pos: {
+							x: Events.tosty.x,
+							y: Events.tosty.y,
+							w: 110,
+							h: 110
+						}
+					})
+					if (Events.tosty.x > 562 || Events.tosty.y > 562) {
+						Events.tosty.x -= 20
+						Events.tosty.y -= 20
+					}
+				}, 1000 / Game.fps, 1)
+				gl.highLayer.push(this.highLayerBuffer)
+
+				this.timeout = _Tools.setTimeout.call(this, function () {
+					Mess.hideMess('pressSpace')
+					this.highLayerBuffer.removeBuffer()
+					this.highLayerBuffer = false
+					this.activated = false
+					this.x = 672
+					this.y = 672
+					this.countDown()
+				}, 1000)
+			},
+			setDefault: function () {
+				_Tools.clearInterval(this.timer)
+				_Tools.clearTimeout(this.timeout)
+				this.x = 672
+				this.y = 672
+				this.activated = false
+				if (this.highLayerBuffer != false) {
+					this.highLayerBuffer.removeBuffer()
+					this.highLayerBuffer = false
+				}
+			}
 		},
-		buf_event_start: function () {
-			console.log("event start")
-			var random = Math.round(Math.random() * (this.buf_events.length - 1))
-			Event.buf_event_duration = 10
-			var empty = _Map.event_graph.filter(function (cell) {
-				if (cell.type == 'e') {
-					return true
+		finishHim: {
+			lowLayerBuffer: null,
+			highLayerBuffer: null,
+			ready: false,
+			activated: false,
+			execution: false,
+			enemy: false,
+			word: '',
+			cursor: false,
+			openedWords: ['boom'],
+			activate: function (enemy) {
+				this.enemy = enemy
+				this.cursor = new LowLayerBuffer(Imgs.fhcursor, function () {
+					if (this.picArr.length == 0) {
+						var pic = new Pic(0, 0, 32, 32, Events.finishHim.enemy.pos.x, Events.finishHim.enemy.pos.y, 32, 32)
+						this.picArr.push(pic)
+					}
+				}, 33, 1)
+				gl.lowLayer.push(this.cursor)
+
+				this.activated = true
+				_Data.status = 'finishHimKeyword'
+				Sounds.finishHim.play()
+				Sounds.finishHimFx.play()
+				_Tools.setTimeout.call(this, function () {
+					Sounds.finishHimFon.play()
+				}, 500)
+				Mess.setMess('enterKeyword')
+				Mess.setMess('keyword')
+				this.lowLayerBuffer = new LowLayerBuffer(Imgs.gray, function () {
+					this.picArr = []
+					for (var x = 0; x < 21; x++) {
+						for (var y = 0; y < 21; y++) {
+							this.picArr.push({
+								x: 32 * this.curFrame,
+								y: 0,
+								w: 32,
+								h: 32,
+								pos: {
+									x: x * 32,
+									y: y * 32,
+									w: 32,
+									h: 32
+								}
+							})
+						}
+					}
+					this.curFrame++
+					if (this.curFrame > this.tFrames) {
+						this.curFrame = this.tFrames
+					}
+				}, 200, 4)
+				gl.lowLayer.push(this.lowLayerBuffer)
+
+				this.highLayerBuffer = new HighLayerBuffer(Imgs.finishHim, function () {
+					this.picArr = []
+					this.picArr.push({
+						x: 308 * this.curFrame,
+						y: 0,
+						w: 308,
+						h: 178,
+						pos: {
+							x: 182,
+							y: 64,
+							w: 308,
+							h: 178
+						}
+					})
+					this.curFrame++
+					if (this.curFrame > 9 &&  !Events.finishHim.execution) {
+						this.curFrame = 8
+					} else {
+						if (this.curFrame > this.tFrames) {
+							this.removeBuffer()
+						}
+					}
+				}, 1000 / Game.fps * 2, 15)
+				gl.highLayer.push(this.highLayerBuffer)
+			},
+			addChar: function (char) {
+				this.word = this.word + char
+				if (this.checkAccess()) {
+					_Data.status = 'finishHimExecution'
+					Mess.hideMess('enterKeyword')
+					Mess.hideMess('keyword')
+					Sounds.finishHimFon.pause()
+					Sounds.finishHimFon.currentTime = 0
+					Sounds.finishHimFx2.play()
+					this.execution = true
+					console.log("access")
+					this.cursor.removeBuffer()
+					this.lib[this.word].method()
+				}
+			},
+			deleteChar: function () {
+				var word = this.word.split("")
+				word.splice(word.length - 1, 1)
+				this.word = word.join('')
+			},
+			checkAccess: function () {
+				for (var i = 0; i < this.openedWords.length; i++) {
+					if (this.word == this.openedWords[i]) {
+						return true
+					}
 				}
 				return false
-			})
-			var random_cell = Math.floor(Math.random() * (empty.length - 1))
-			this.buf_event_pos.x = (empty[random_cell].x * 32) + 16
-			this.buf_event_pos.y = (empty[random_cell].y * 32) + 16
-			Event_blocks[this.buf_events[random].name].pos.x = empty[random_cell].x * 32
-			Event_blocks[this.buf_events[random].name].pos.y = empty[random_cell].y * 32
-			this.buf_event_action = this.buf_events[random].action
-			this.buf_event_text = this.buf_events[random].name
-			gl.buf_event.push(Event_blocks[this.buf_events[random].name])
-			this.buf_event_timer_handle = setInterval(function () {
-				Event.buf_event_duration -= 1
-				if (Event.buf_event_duration == 0) {
-					Event.buf_event_stop()
-				};
-			}, 1000)
-		},
-		buf_event_stop: function () {
-			console.log("event stop")
-			clearInterval(Event.buf_event_timer_handle)
-			gl.buf_event = []
-			this.buf_event = false
-			this.set_buf_event()
-		},
-		set_random_event: function () {
-			Event.random_event_handle = setTimeout(function () {
-				if (_data.status == "play") {
-					Special.yo.start();
+			},
+			fatality: function () {
+				Sounds.fatality.play()
+				var highLayerBuffer = new HighLayerBuffer(Imgs.fatality, function () {
+					this.picArr = []
+					this.picArr.push({
+						x: 0,
+						y: 0,
+						w: 512,
+						h: 177,
+						pos: {
+							x: 80,
+							y: 80,
+							w: 512,
+							h: 177
+						}
+					})
+				}, 1000 / Game.fps, 1, 2000)
+				gl.highLayer.push(highLayerBuffer)
+
+			},
+			lib: {
+				boom: {
+					width: 0,
+					emitter: false,
+					highLayerBuffer: false,
+					method: function () {
+						var enemy = Events.finishHim.enemy
+						var boom = Events.finishHim.lib.boom
+
+						Sounds.boomdeath.play()
+
+						_Tools.setTimeout.call(this, function () {
+							this.emitter = Effects.emitter.add(Imgs.blood, enemy.pos.x + 16, enemy.pos.y + 16, 64, 8, 50, 32, 'line', function() {}, 200)
+							this.highLayerBuffer = new HighLayerBuffer(Imgs.boomblood, function () {
+								if (this.picArr.length == 0) {
+									var pic = new Pic(	0, 
+														0, 
+														96, 
+														96, 
+														enemy.pos.x + 16 + (boom.width / 2 * -1),
+														enemy.pos.y + 16 + (boom.width / 2 * -1),
+														boom.width,
+														boom.width
+														)
+									this.picArr.push(pic)
+								}
+
+								this.picArr[0].pos.x = enemy.pos.x + 16 + (boom.width / 2 * -1)
+								this.picArr[0].pos.y = enemy.pos.y + 16 + (boom.width / 2 * -1)
+								this.picArr[0].pos.w = boom.width
+								this.picArr[0].pos.h = boom.width
+
+								boom.width += 8
+								if (boom.width > 128) {
+									boom.width = 128
+								}
+							}, 10, 1)
+							gl.highLayer.push(this.highLayerBuffer)
+						}, 330)
+
+						var distance = Math.sqrt(Math.pow(enemy.pos.x - 672, 2) + Math.pow(enemy.pos.y - 672, 2))
+						var speed = distance / 24
+						var vec = {
+							x: (672 - enemy.pos.x) / distance,
+							y: (672 - enemy.pos.y) / distance
+						}
+						var highLayerBuffer = new HighLayerBuffer(Imgs.ball, function () {
+							if (this.picArr.length == 0) {
+								var pic = new Pic(0, 0, 128, 128, 672, 672, 128, 128)
+								this.size = 1
+								this.picArr.push(pic)
+							}
+							this.picArr[0].pos.x -= vec.x * speed
+							this.picArr[0].pos.y -= vec.y * speed
+							if (this.picArr[0].pos.w == 32 || this.picArr[0].pos.h == 32) {
+								this.size = -1
+							}
+							this.picArr[0].pos.w -= 4 * this.size
+							this.picArr[0].pos.h -= 4 * this.size
+						}, 16, 1, 1584)
+						gl.highLayer.push(highLayerBuffer)
+
+
+						_Tools.setTimeout.call(this, function () {
+							Events.finishHim.fatality()
+						}, 1000)
+						_Tools.setTimeout.call(this, function () {
+							this.highLayerBuffer.removeBuffer()
+							Events.finishHim.lowLayerBuffer.removeBuffer()
+							Events.finishHim.word = ""
+							Events.finishHim.enemy = false
+							Events.finishHim.execution = false
+							Events.finishHim.activated = false
+							Shop.open()
+						}, 3000)
+					}
 				}
-			}, Math.floor(Math.random() * 180000));
-		},
-		start: function () {
-			if (Event.status) {
-				Event.update += 1;
-			};
-
-			Event.status = true;
-
-			enemy_arr.forEach(function (enemy) {
-				if (enemy.behavior == "passive" || enemy.behavior == "chase" || enemy.behavior == "fear") {
-					enemy.set_fear_img();
-					b_Controller.set_fear.call(enemy);
-				};
-			});
-			Sounds.signal.pause();
-			Sounds.signal.currentTime = 0;
-
-			if (!Sounds.fear.paused) {
-				Sounds.fear.pause();
-				Sounds.fear.currentTime = 0
-			};
-
-			Event.timeout = false
-
-			setTimeout(function () {
-				Sounds.fear.play()
-			}, 5)
-			setTimeout(function () {
-				if (Event.update == 0) {
-					enemy_arr.forEach(function (enemy) {
-						if (enemy.behavior == "fear") {
-							Event.timeout = true;
-							enemy.set_fear_pre_timeout_img()
-						};
-					});
-				}
-			}, Event.duration * 0.7);
-			setTimeout(function () {
-				if (Event.update <= 0 && Event.status) {
-					Event.stop();
-				} else {
-					Event.update -= 1;
-				};
-			}, Event.duration)
-			console.log("start");
-		},
-		stop: function () {
-			Event.status = false;
-			Event.update = 0;
-			enemy_arr.forEach(function (enemy) {
-				if (
-					enemy.behavior == "in_room" || 
-					enemy.behavior == "enterToRoom" || 
-					enemy.behavior == "exit_from_room" || 
-					enemy.behavior == "go_to_room" 
-					) {
-					return
-				}
-				enemy.set_original_img()
-				b_Controller.set_passive.call(enemy);
-			});
-			if (!Sounds.fear.paused) {
-				Sounds.fear.pause()
-				Sounds.fear.currentTime = 0;
 			}
-			if (_data.status == 'play') {
-				Sounds.signal.play();
-			}
-			console.log("stop");
 		}
 	}

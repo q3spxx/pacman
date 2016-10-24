@@ -76,29 +76,6 @@ var Col = {
 		} else {
 			return false
 		}
-		/*if (id != 0) {
-			if (id == 2) {
-				Sounds.step.play()
-				_Map.grid[x][y].make_empty();
-				Scope.points += 1;
-				if (Event.buf_event_active) {
-					Scope.main += 20 * Event.buf_event_action;
-				} else {
-					Scope.main += 20
-				};
-				Scope.check_end_game();
-			};
-			if (id == 4) {
-				_Map.grid[x][y].make_empty();
-				if (Event.buf_event_active) {
-					Scope.main += 50 * Event.buf_event_action;
-				} else {
-					Scope.main += 50
-				};
-				Col.bitch_check()
-				Event.start();
-			};
-		};*/
 	},
 	checkEnemy: function () {
 		for (var i = 0; i < enemyArr.length; i++) {
@@ -177,8 +154,8 @@ var Col = {
 			}
 		});
 	},
-	hypotenuse: function (x, y, r_x, r_y, radius) {
-		var hypotenuse = Math.sqrt(Math.pow(r_x - x, 2) + Math.pow(r_y - y, 2))
+	hypotenuse: function (x, y, rX, rY, radius) {
+		var hypotenuse = Math.sqrt(Math.pow(rX - x, 2) + Math.pow(rY - y, 2))
 		if (hypotenuse < radius) {
 			return true
 		} else {
@@ -188,10 +165,11 @@ var Col = {
 	enemyInLine: function () {
 		var x = Math.floor(Player.pos.x / 32)
 		var y = Math.floor(Player.pos.y / 32)
+		var arr = []
 
 		var direction;
 
-		switch (Player.curAction) {
+		switch (Special.shot.direction) {
 			case 0: direction = {x: -1, y: 0}
 			break 
 			case 1: direction = {x: 0, y: -1}
@@ -215,7 +193,12 @@ var Col = {
 
 			for (var i = 0; i < enemyPos.length; i++) {
 				if (enemyPos[i].x == x && enemyPos[i].y == y && enemyArr[enemyPos[i].id].behavior != 'grab' && enemyArr[enemyPos[i].id].behavior != 'goToRoom') {
-					return enemyArr[enemyPos[i].id]
+					if (Events.gain.quaddamage) {
+						arr.push(enemyArr[enemyPos[i].id])
+					} else {
+						arr.push(enemyArr[enemyPos[i].id])
+						return arr
+					}
 				};
 			}
 			x += direction.x
@@ -225,6 +208,9 @@ var Col = {
 			}
 		}
 		while (!_Map.grid[x][y].object.block)
+		if (arr.length > 0) {
+			return arr
+		}
 		return false
 	},
 	missCheck: function () {
@@ -265,18 +251,19 @@ var Col = {
 		}
 		return false
 	},
-	check_event: function () {
+	checkGain: function () {
 		var x = this.pos.x
 		var y = this.pos.y
 		var w = this.pos.x + 31
 		var h = this.pos.y + 31
 		if (
-			Event.buf_event_pos.x > x &&
-			Event.buf_event_pos.x < w &&
-			Event.buf_event_pos.y > y &&
-			Event.buf_event_pos.y < h 
+			Events.gain.pos.x + 16 > x &&
+			Events.gain.pos.x + 16 < w &&
+			Events.gain.pos.y + 16 > y &&
+			Events.gain.pos.y + 16 < h 
 			) {
-			Event.buf_event_taked()
+			return true
 		};
+		return false
 	}
 };

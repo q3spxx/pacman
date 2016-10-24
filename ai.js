@@ -61,6 +61,7 @@ var Astar = {
 			};
 			n.arr = 1;
 		};
+		return []
 	},
 	getMinF: function () {
 		var sort = this.open.sort(function (a, b) {
@@ -114,22 +115,17 @@ var ai = {
 		return sort[0];
 	},
 	searchPath: function () {
-		var self = this;
-		/*if (((self.pos.x / 32) - (Math.floor(self.pos.x / 32))) != 0 ||
-			((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
-			return;
-		};*/
 		var currentPos = {
-			x: Math.floor(self.pos.x / 32),
-			y: Math.floor(self.pos.y / 32)
+			x: Math.floor(this.pos.x / 32),
+			y: Math.floor(this.pos.y / 32)
 		};
-		if (currentPos.x == self.pointPos.x && currentPos.y == self.pointPos.y) {
+		if (currentPos.x == this.pointPos.x && currentPos.y == this.pointPos.y) {
 			return;
 		};
-		self.path = [];
+		this.path = [];
 		Astar.s = Astar.defineNum(currentPos);
-		Astar.e = Astar.defineNum(self.pointPos);
-		self.path = Astar.func();
+		Astar.e = Astar.defineNum(this.pointPos);
+		this.path = Astar.func();
 		_Map.graphClear();
 		Astar.clear();
 	},
@@ -139,6 +135,9 @@ var ai = {
 			((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
 			return;
 		};
+		// if (this.path.length != 0) {
+		// 	return
+		// }
 		var currentPos = {
 			x: Math.floor(self.pos.x / 32),
 			y: Math.floor(self.pos.y / 32)
@@ -154,10 +153,6 @@ var ai = {
 	},
 	passive: function () {
 		var self = this;
-		/*if (((self.pos.x / 32) - (Math.floor(self.pos.x / 32))) != 0 ||
-				((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
-			return;
-		};*/
 
 		if (this.path.length != 0) {
 			return

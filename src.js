@@ -1,4 +1,4 @@
-var image_src = {
+var imageSrc = {
 	map:"map.png",
 	pacman: 'pacman.png',
 	blinky: 'blinky.png',
@@ -13,32 +13,46 @@ var image_src = {
 	fearPreTimeout: 'fearPreTimeout.png',
 	dead: 'dead.png',
 	cord: 'cord.png',
-	yo: 'yo.png',
+	tosty: 'tosty.png',
 	eyes: 'eyes.png',
 	brick: 'brick.png',
 	shock: 'shock.png',
-	event: 'event.png',
+	gainX2: 'gainX2.png',
+	gainX3: 'gainX3.png',
 	elt: 'elt.png',
 	fireOfShot: 'fireOfShot.png',
 	blood: "blood.png",
 	bloodLine: 'bloodLine.png',
-	shockPartical: 'shockPartical.png',
+	shockParticle: 'shockParticle.png',
+	cursorParticle: 'cursorParticle.png',
 	shocked: 'shocked.png',
-	bomb: "bomb.png"
+	bomb: "bomb.png",
+	cursor: 'cursor.png',
+	bombParticle: 'bombParticle.png',
+	smokeParticle: 'smokeParticle.png',
+	star: "star.png",
+	quadshot: "quadshot.png",
+	gray: "gray.png",
+	finishHim: "finishHim.png",
+	boomblood: 'boomblood.png',
+	fatality: 'fatality.png',
+	ball: "ball.png",
+	fhcursor: 'fhcursor.png'
 }
 
-var image_icons_src = {
-	cord: 'cord_icon.png',
-	bomb: 'bomb_icon.png',
-	shot: 'shot_icon.png',
-	shock: 'shock_icon.png'
+var imageIconsSrc = {
+	cord: 'cordIcon.png',
+	bomb: 'bombIcon.png',
+	shot: 'shotIcon.png',
+	shock: 'shockIcon.png',
+	fatality: 'fatalityIcon.png'
 }
 
 var audioSrc = {
 	bitch: 'bitch.mp3',
 	getOverHere: 'goh.mp3',
 	bones: 'bones.mp3',
-	yo: 'yo.mp3',
+	tosty: 'tosty.mp3',
 	dead: 'dead.mp3',
 	begin: 'begin.mp3',
 	step: 'step.mp3',
@@ -47,7 +61,19 @@ var audioSrc = {
 	fear: 'fear.mp3',
 	scream: 'scream.mp3',
 	shot: 'shot.mp3',
-	shop: 'shop.mp3'
+	shop: 'shop.mp3',
+	quadshot: "quadshot.mp3",
+	carmaggedon: 'carmaggedon.mp3',
+	carmaggedon2: 'carmaggedon2.mp3',
+	dominion: 'dominion.mp3',
+	fon: 'fon.mp3',
+	quaddamage: "quaddamage.mp3",
+	finishHimFx: 'finishHimFx.mp3',
+	finishHimFx2: 'finishHimFx2.mp3',
+	finishHimFon: 'finishHimFon.mp3',
+	boomdeath: 'boomdeath.mp3',
+	fatality: 'fatality.mp3',
+	haha: 'haha.mp3'
 }
 
 var audioMessSrc = {
@@ -60,5 +86,7 @@ var audioMessSrc = {
 	dominating: 'dominating.mp3',
 	headshot: 'headshot.mp3',
 	killingspree: 'killingspree.mp3',
-	godlike: 'godlike.mp3'
+	godlike: 'godlike.mp3',
+	headHunter: 'headHunter.mp3',
+	finishHim: 'finishHim.mp3'
 }

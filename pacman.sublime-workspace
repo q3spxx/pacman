@@ -4,16 +4,184 @@
 		"selected_items":
 		[
 			[
+				"Ma",
+				"MapObjects"
+			],
+			[
+				"set",
+				"setDefault"
+			],
+			[
+				"timeou",
+				"timeouts"
+			],
+			[
 				"remo",
 				"removeBuffer"
 			],
 			[
-				"cu",
-				"curFrame"
+				"cool",
+				"cooldownDisable"
+			],
+			[
+				"hi",
+				"highLayer"
+			],
+			[
+				"is",
+				"isFeared"
+			],
+			[
+				"beh",
+				"behaviorController"
+			],
+			[
+				"out",
+				"outputTextBuffer"
+			],
+			[
+				"add",
+				"addIcon"
+			],
+			[
+				"hig",
+				"HighLayerBuffer"
+			],
+			[
+				"get",
+				"getParams"
+			],
+			[
+				"col",
+				"cooldownEnable"
+			],
+			[
+				"coo",
+				"cooldownEnable"
+			],
+			[
+				"cre",
+				"createInterval"
+			],
+			[
+				"time",
+				"timer"
+			],
+			[
+				"_",
+				"_Tools"
+			],
+			[
+				"emitt",
+				"emitters"
+			],
+			[
+				"qu",
+				"quantity"
+			],
+			[
+				"emi",
+				"emitter"
+			],
+			[
+				"eme",
+				"emitter"
+			],
+			[
+				"emit",
+				"emitters"
+			],
+			[
+				"q",
+				"quantityEmittersTop"
+			],
+			[
+				"qua",
+				"quantityEmitters"
+			],
+			[
+				"but",
+				"button"
+			],
+			[
+				"E",
+				"Enter"
+			],
+			[
+				"S",
+				"Space"
+			],
+			[
+				"A",
+				"ArrowLeft"
 			],
 			[
 				"re",
-				"ready"
+				"return"
+			],
+			[
+				"text",
+				"textAlign"
+			],
+			[
+				"pr",
+				"product"
+			],
+			[
+				"pro",
+				"product"
+			],
+			[
+				"tex",
+				"textBaseline"
+			],
+			[
+				"produc",
+				"productProto"
+			],
+			[
+				"leve",
+				"levelUp"
+			],
+			[
+				"de",
+				"default"
+			],
+			[
+				"to",
+				"totalNotification"
+			],
+			[
+				"max",
+				"maxSize"
+			],
+			[
+				"m",
+				"maxSpeed"
+			],
+			[
+				"ran",
+				"random"
+			],
+			[
+				"pa",
+				"particle"
+			],
+			[
+				"particl",
+				"particle"
+			],
+			[
+				"call",
+				"callback"
+			],
+			[
+				"ene",
+				"enemy"
+			],
+			[
+				"cu",
+				"curFrame"
 			],
 			[
 				"ra",
@@ -34,10 +202,6 @@
 			[
 				"Tim",
 				"TimeMap"
-			],
-			[
-				"time",
-				"timeMap"
 			],
 			[
 				"tim",
@@ -76,14 +240,6 @@
 				"method"
 			],
 			[
-				"set",
-				"setInterval"
-			],
-			[
-				"_",
-				"_Tools"
-			],
-			[
 				"be",
 				"behaviorController"
 			],
@@ -98,10 +254,6 @@
 			[
 				"pic",
 				"picArr"
-			],
-			[
-				"pa",
-				"particles"
 			],
 			[
 				"eff",
@@ -120,20 +272,12 @@
 				"distance"
 			],
 			[
-				"ran",
-				"randomDistance"
-			],
-			[
 				"effe",
 				"effectBuffer"
 			],
 			[
 				"clea",
 				"clearInterval"
-			],
-			[
-				"get",
-				"getParams"
 			],
 			[
 				"low",
@@ -158,10 +302,6 @@
 			[
 				"ef",
 				"effectPos"
-			],
-			[
-				"Ma",
-				"Math"
 			],
 			[
 				"ge",
@@ -240,16 +380,8 @@
 				"length"
 			],
 			[
-				"ene",
-				"energiser"
-			],
-			[
 				"mi",
 				"min-width"
-			],
-			[
-				"max",
-				"max-width"
 			],
 			[
 				"buf",
@@ -320,23 +452,11 @@
 				"total_say"
 			],
 			[
-				"to",
-				"total_say"
-			],
-			[
 				"bi",
 				"bitch_check"
 			],
 			[
-				"cool",
-				"cooldown"
-			],
-			[
 				"cooldown",
-				"cooldown_handle"
-			],
-			[
-				"coo",
 				"cooldown_handle"
 			],
 			[
@@ -394,126 +514,6 @@
 			[
 				"Map",
 				"map"
-			],
-			[
-				"sp",
-				"special_check"
-			],
-			[
-				"spa",
-				"special_buf"
-			],
-			[
-				"spe",
-				"special"
-			],
-			[
-				"r",
-				"return"
-			],
-			[
-				"cor",
-				"cord_return"
-			],
-			[
-				"margin",
-				"margin"
-			],
-			[
-				"pso",
-				"position"
-			],
-			[
-				"margi",
-				"margin"
-			],
-			[
-				"dr",
-				"draw_special"
-			],
-			[
-				"v",
-				"value"
-			],
-			[
-				"on",
-				"onchange	Attr"
-			],
-			[
-				"ke",
-				"keyCode"
-			],
-			[
-				"load",
-				"loaded"
-			],
-			[
-				"ad",
-				"audio"
-			],
-			[
-				"loa",
-				"load_audio"
-			],
-			[
-				"for",
-				"forEach"
-			],
-			[
-				"rom",
-				"room_timer"
-			],
-			[
-				"room",
-				"room_timer"
-			],
-			[
-				"b",
-				"b_Controller"
-			],
-			[
-				"text",
-				"text-align"
-			],
-			[
-				"ta",
-				"table-cell"
-			],
-			[
-				"borde",
-				"border-radius"
-			],
-			[
-				"border-r",
-				"border-radius"
-			],
-			[
-				"padd",
-				"padding-top"
-			],
-			[
-				"marg",
-				"margin-left"
-			],
-			[
-				"lis",
-				"list_view"
-			],
-			[
-				"list",
-				"list-view"
-			],
-			[
-				"border-b",
-				"border-box"
-			],
-			[
-				"border-s",
-				"border-spacing"
-			],
-			[
-				"border",
-				"border-collapse"
 			]
 		]
 	},
@@ -523,15 +523,7 @@
 			"file": "main.js",
 			"settings":
 			{
-				"buffer_size": 8541,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "shop.js",
-			"settings":
-			{
-				"buffer_size": 2858,
+				"buffer_size": 7357,
 				"line_ending": "Windows"
 			}
 		},
@@ -539,47 +531,7 @@
 			"file": "data.js",
 			"settings":
 			{
-				"buffer_size": 2019,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Effects.js",
-			"settings":
-			{
-				"buffer_size": 5749,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "index.html",
-			"settings":
-			{
-				"buffer_size": 2166,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "controller.js",
-			"settings":
-			{
-				"buffer_size": 10588,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "controls.js",
-			"settings":
-			{
-				"buffer_size": 2634,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "var.js",
-			"settings":
-			{
-				"buffer_size": 257,
+				"buffer_size": 3212,
 				"line_ending": "Windows"
 			}
 		},
@@ -587,39 +539,15 @@
 			"file": "tools.js",
 			"settings":
 			{
-				"buffer_size": 3339,
+				"buffer_size": 3013,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "Mess.js",
+			"file": "controller.js",
 			"settings":
 			{
-				"buffer_size": 5110,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "elems/all.js",
-			"settings":
-			{
-				"buffer_size": 4381,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "gl.js",
-			"settings":
-			{
-				"buffer_size": 11405,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "anim.js",
-			"settings":
-			{
-				"buffer_size": 7410,
+				"buffer_size": 9036,
 				"line_ending": "Windows"
 			}
 		},
@@ -627,63 +555,7 @@
 			"file": "constructor.js",
 			"settings":
 			{
-				"buffer_size": 13332,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "collision.js",
-			"settings":
-			{
-				"buffer_size": 6814,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "scope.js",
-			"settings":
-			{
-				"buffer_size": 866,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "move.js",
-			"settings":
-			{
-				"buffer_size": 4956,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "elems/blocks_pos.js",
-			"settings":
-			{
-				"buffer_size": 2127,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src.js",
-			"settings":
-			{
-				"buffer_size": 1333,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Char.js",
-			"settings":
-			{
-				"buffer_size": 774,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "map.js",
-			"settings":
-			{
-				"buffer_size": 3606,
+				"buffer_size": 13595,
 				"line_ending": "Windows"
 			}
 		},
@@ -691,23 +563,23 @@
 			"file": "special.js",
 			"settings":
 			{
-				"buffer_size": 14001,
+				"buffer_size": 19144,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "ai.js",
+			"file": "move.js",
 			"settings":
 			{
-				"buffer_size": 4114,
+				"buffer_size": 3863,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "sounds.js",
+			"file": "elems/all.js",
 			"settings":
 			{
-				"buffer_size": 426,
+				"buffer_size": 4496,
 				"line_ending": "Windows"
 			}
 		}
@@ -755,10 +627,31 @@
 	},
 	"expanded_folders":
 	[
-		"/G/node/pacman"
+		"/G/node/pacman",
+		"/G/node/pacman/elems"
 	],
 	"file_history":
 	[
+		"/G/node/pacman/ai.js",
+		"/G/node/pacman/controls.js",
+		"/G/node/pacman/move.js",
+		"/G/node/pacman/Mess.js",
+		"/G/node/pacman/gl.js",
+		"/G/node/pacman/var.js",
+		"/G/node/pacman/sounds.js",
+		"/G/node/pacman/map.js",
+		"/G/node/pacman/Char.js",
+		"/G/node/pacman/src.js",
+		"/G/node/pacman/index.html",
+		"/G/node/pacman/elems/blocksPos.js",
+		"/G/node/pacman/scope.js",
+		"/G/node/pacman/collision.js",
+		"/G/node/pacman/anim.js",
+		"/G/node/pacman/elems/all.js",
+		"/G/node/pacman/tools.js",
+		"/G/node/pacman/Effects.js",
+		"/G/node/pacman/shop.js",
+		"/G/node/pacman/controller.js",
 		"/Z/home/localhost/www/leden/catalog/view/theme/default/stylesheet/stylesheet.css",
 		"/G/_leden/admin/config.php",
 		"/G/_leden/mailru-domainf7c5yNFUZJ7zmVfC.html",
@@ -799,7 +692,6 @@
 		"/G/node/pacman/enemyes.js",
 		"/G/node/pacman/player.js",
 		"/C/tmp/FTPCD5C.tmp/File.php",
-		"/G/node/pacman/gl.js",
 		"/G/node/server.js",
 		"/G/node/test/index.html",
 		"/G/node/test/README.md",
@@ -867,26 +759,7 @@
 		"/C/tmp/FTP94A4.tmp/stylesheet.css",
 		"/C/tmp/FTP37F3.tmp/config.php",
 		"/C/tmp/FTP52F.tmp/config.php",
-		"/C/tmp/FTP1FE5.tmp/header.tpl",
-		"/C/tmp/FTPFDF5.tmp/index.php",
-		"/C/tmp/FTP8FCE.tmp/index.php",
-		"/C/tmp/FTPF7E2.tmp/config.php",
-		"/C/tmp/FTP20ED.tmp/vqmod.php",
-		"/C/tmp/FTPFF8F.tmp/session.php",
-		"/C/tmp/FTP352B.tmp/startup.php",
-		"/C/tmp/FTP577D.tmp/action.php",
-		"/C/tmp/FTP3108.tmp/controller.php",
-		"/C/tmp/FTPE613.tmp/registry.php",
-		"/C/tmp/FTPAED9.tmp/index.php",
-		"/C/tmp/FTP6843.tmp/config.php",
-		"/C/tmp/FTPFAB9.tmp/startup.php",
-		"/C/tmp/FTP84FA.tmp/crossdomain.xml",
-		"/C/server/home/localhost/www/leden/vqmod/pathReplaces.php",
-		"/C/server/home/localhost/www/leden/vqmod/vqmod.php",
-		"/C/tmp/FTP86FB.tmp/pathReplaces.php",
-		"/C/tmp/FTP2341.tmp/config.php",
-		"/C/tmp/FTPB68B.tmp/index.php",
-		"/C/tmp/FTP9EF7.tmp/index.php"
+		"/C/tmp/FTP1FE5.tmp/header.tpl"
 	],
 	"find":
 	{
@@ -904,6 +777,54 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"intervals",
+			"fearPreTimeout",
+			"false",
+			"black",
+			"yellow",
+			"red",
+			"cord",
+			"cooldownEnable",
+			"self",
+			"dominion",
+			"carmaggedon2",
+			"dominion",
+			"carmaggedon2",
+			"Space",
+			"Escap",
+			"skill",
+			"background",
+			"skill",
+			"background",
+			"left",
+			"background",
+			"header",
+			"data",
+			"background",
+			"image_src",
+			"skill",
+			"object",
+			"level_up",
+			"shopRender",
+			"_data",
+			"Headshot",
+			"headShot",
+			"rampage",
+			"Unstoppable",
+			"unstoppable",
+			"rampage",
+			"Dominating",
+			"dominating",
+			"rampage",
+			"Rampage",
+			"rampage",
+			"dominating",
+			"killingspree",
+			"rampage",
+			"killingspree",
+			"megakill",
+			"doublekill",
+			"16",
 			"curFrame",
 			"shockPartical",
 			"shocked",
@@ -1003,15 +924,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8541,
+						"buffer_size": 7357,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4604,
-								4604
+								5732,
+								5732
 							]
 						],
 						"settings":
@@ -1020,56 +941,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2104.0,
+						"translation.y": 2730.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "shop.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2858,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2168,
-								2168
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1359.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 16,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
 					"file": "data.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2019,
+						"buffer_size": 3212,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								365,
-								365
+								445,
+								445
 							]
 						],
 						"settings":
@@ -1078,205 +970,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": -0.0,
-						"translation.y": 117.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 17,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "Effects.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5749,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3133,
-								3133
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1209.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "index.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2166,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								473,
-								473
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
 						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 21,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "controller.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 10588,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								758,
-								786
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "controls.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2634,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1546,
-								1546
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 624.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 4,
-			"sheets":
-			[
-				{
-					"buffer": 7,
-					"file": "var.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 257,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								163,
-								163
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 20,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "tools.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3339,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3031,
-								3031
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1209.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
-					"file": "Mess.js",
+					"buffer": 2,
+					"file": "tools.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5110,
+						"buffer_size": 3013,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								325,
-								325
+								2289,
+								2289
 							]
 						],
 						"settings":
@@ -1284,28 +998,28 @@
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.x": -0.0,
+						"translation.y": 780.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
-					"file": "elems/all.js",
+					"buffer": 3,
+					"file": "controller.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4381,
+						"buffer_size": 9036,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3685,
-								3685
+								3130,
+								3130
 							]
 						],
 						"settings":
@@ -1314,93 +1028,33 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1794.0,
+						"translation.y": 1209.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 18,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "gl.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11405,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3678,
-								3678
-							]
-						],
-						"settings":
-						{
-							"history_list_is_closing": true,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2087.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "anim.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7410,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4640,
-								4640
-							]
-						],
-						"settings":
-						{
-							"spell_check": false,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 19,
+					"stack_index": 7,
 					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
-					"buffer": 13,
+					"buffer": 4,
 					"file": "constructor.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13332,
+						"buffer_size": 13595,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5754,
-								5754
+								7149,
+								7149
 							]
 						],
 						"settings":
@@ -1409,27 +1063,85 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 3042.0,
+						"translation.y": 3783.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
-					"file": "collision.js",
+					"buffer": 5,
+					"file": "special.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6814,
+						"buffer_size": 19144,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2176,
-								2176
+								12106,
+								12106
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 5800.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "move.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3863,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1526,
+								1526
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 273.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "elems/all.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4496,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4486,
+								4486
 							]
 						],
 						"settings":
@@ -1441,274 +1153,7 @@
 						"translation.y": 1248.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 15,
-					"file": "scope.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 866,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								378,
-								378
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 15,
-					"type": "text"
-				},
-				{
-					"buffer": 16,
-					"file": "move.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4956,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4326,
-								4326
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1638.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 17,
-					"file": "elems/blocks_pos.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2127,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": -0.0,
-						"translation.y": 468.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 23,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 3,
-			"sheets":
-			[
-				{
-					"buffer": 18,
-					"file": "src.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1333,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								600,
-								600
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 78.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 19,
-					"file": "Char.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 774,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"auto_name": "",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 156.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 13,
-					"type": "text"
-				},
-				{
-					"buffer": 20,
-					"file": "map.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3606,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2765,
-								2765
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1131.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 14,
-					"type": "text"
-				},
-				{
-					"buffer": 21,
-					"file": "special.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 14001,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								13450,
-								13450
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 7033.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 22,
-					"file": "ai.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4114,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3546,
-								3546
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1989.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 23,
-					"file": "sounds.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 426,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								159,
-								159
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 22,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -1737,30 +1182,17 @@
 				0,
 				2,
 				1
-			],
-			[
-				0,
-				1,
-				1,
-				2
-			],
-			[
-				1,
-				1,
-				2,
-				2
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.5,
+			0.473591549296,
 			1.0
 		],
 		"rows":
 		[
 			0.0,
-			0.5,
 			1.0
 		]
 	},
@@ -1810,6 +1242,21 @@
 	"selected_group": 1,
 	"settings":
 	{
+		"last_automatic_layout":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		]
 	},
 	"show_minimap": false,
 	"show_open_files": true,
@@ -1819,5 +1266,6 @@
 	"status_bar_visible": true,
 	"template_settings":
 	{
+		"max_columns": 2
 	}
 }

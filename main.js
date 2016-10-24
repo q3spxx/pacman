@@ -91,20 +91,14 @@ var Game = {
 		this.changeInit()
 	},
 	loadImages: function () {
-		for (key in image_src) {
-			Imgs[key] = _Tools.img.load("images/" + image_src[key])
+		for (key in imageSrc) {
+			Imgs[key] = _Tools.img.load("images/" + imageSrc[key])
 			imgs.push(Imgs[key])
 		}
-		for (key in image_icons_src) {
-			Imgs.icons[key] = _Tools.img.load("images/" + image_icons_src[key])
+		for (key in imageIconsSrc) {
+			Imgs.icons[key] = _Tools.img.load("images/" + imageIconsSrc[key])
 			imgs.push(Imgs.icons[key])
 		}
-		//Инициализация картинок для магазина
-		/*Shop.data.catalog.products[0].icon = Imgs.icons.cord
-		Shop.data.catalog.products[1].icon = Imgs.icons.shot
-		Shop.data.catalog.products[2].icon = Imgs.icons.shock
-		Shop.data.catalog.products[3].icon = Imgs.icons.bomb
-		Shop.data.catalog.products[4].icon = Imgs.pacman*/
 		_Tools.img.handle = setInterval(
 			function () {
 				if (_Tools.img.count == _Tools.img.loaded) {
@@ -139,7 +133,6 @@ var Game = {
 	},
 	initBlocks: function () {
 		Blocks.setDefault()
-		EventBlocks.setDefault()
 		MapObjects.init()
 		this.status = 4
 		this.changeInit()
@@ -178,16 +171,19 @@ var Game = {
 		this.changeInit()
 	},
 	ready: function () {
-		//gl.start();
+		Events.gain.init()
+		Shop.init()
+		Special.icons.init()
 		_Tools.setInterval.call(gl, gl.clear, Math.floor(1000 / this.fps))
 		_Tools.setInterval.call(gl, gl.map, Math.floor(1000 / this.fps))
 		_Tools.setInterval.call(gl, gl.lowLayerRender, Math.floor(1000 / this.fps))
 		_Tools.setInterval.call(gl, gl.effectsRender, Math.floor(1000 / this.fps))
 		_Tools.setInterval.call(gl, gl.animationRender, Math.floor(1000 / this.fps))
 		_Tools.setInterval.call(gl, gl.highLayerRender, Math.floor(1000 / this.fps))
-		_Tools.setInterval.call(gl, gl.emittersRender, Math.floor(1000 / this.fps))
 		_Tools.setInterval.call(gl, gl.messageRender, Math.floor(1000 / this.fps))
 		_Tools.setInterval.call(gl, gl.outputsRender, Math.floor(1000 / this.fps))
+		_Tools.setInterval.call(gl, gl.shopRender, Math.floor(1000 / this.fps))
+		_Tools.setInterval.call(gl, gl.emittersRender, Math.floor(1000 / this.fps))
 		_Tools.setInterval.call(gl, gl.fpsTimer, Math.floor(1000 / this.fps))
 		_Tools.setInterval.call(gl, gl.postRender, Math.floor(1000 / this.fps))
 		Game.loop()
@@ -207,14 +203,18 @@ var Game = {
 	},
 	start: function () {
 		_Data.status = "isRunned";
+		Sounds.fon.play()
 		Controller.start.call(Player)
 		Controller.start.call(Blinky)
 		Controller.start.call(Pinky)
 		Controller.start.call(Bob)
 		Controller.start.call(Paul)
 		Room.start()
+		Events.gain.countDown()
+		Events.tosty.countDown()
 	},
 	pause: function () {
+		Sounds.fon.pause()
 		Game.interval.pause()
 		_Data.timeouts.forEach(function (timeout) {
 			timeout.pause()
@@ -222,6 +222,7 @@ var Game = {
 		_Data.status = 'pause'
 	},
 	continue: function () {
+		Sounds.fon.play()
 		Game.interval.continue()
 		_Data.timeouts.forEach(function (timeout) {
 			timeout.continue()
@@ -230,6 +231,9 @@ var Game = {
 	},
 	stop: function () {
 		Room.stop()
+		Room.setDefault()
+		Events.gain.setDefault()
+		Events.tosty.setDefault()
 		Controller.stop.call(Player)
 		enemyArr.forEach(function (enemy) {
 			Controller.stop.call(enemy)
@@ -246,18 +250,24 @@ var Game = {
 		enemyArr.forEach(function (enemy) {
 			enemy.setDefault()
 		})
+		Special.setAllDefault()
 		_Data.status = 'ready'
 	},
 	nextRound: function () {
+		_Data.level++
+		_Data.roundDefault()
 
+		Game.default()
+		_Map.default()
+		Game.begin()
 	},
 	loop: function () {
 		this.interval = new Interval(function () {
 			TimeMap.formation()
-			this.timeMap.forEach(function (timeMapBuffer) {
-				timeMapBuffer.method.call(timeMapBuffer.context)
-			})
-			this.timeMap = []
+			while (this.timeMap.length > 0) {
+				this.timeMap[0].method.call(this.timeMap[0].context)
+				this.timeMap.splice(0, 1)
+			}
 		}.bind(this), this.speed)
 	},
 	addRenderBuffer: function (name, method) {
@@ -296,79 +306,5 @@ var Game = {
 		return false
 	}
 }
-
-
-function initEnemyPosition () {
-	Room.list = []
-	Blinky.pos = {
-		x: 320,
-		y: 224
-	}
-	Blinky.point_pos = {
-		x: 10,
-		y: 7
-	}
-	Blinky.path = []
-	Blinky.img = Imgs.blinky
-	Blinky.curAction = 0
-	b_Controller.setPassive.call(Blinky)
-	Pinky.pos = {
-		x: 320,
-		y: 288
-	}
-	Pinky.point_pos = {
-		x: 10,
-		y: 9
-	}
-	Pinky.path = []
-	Pinky.img = Imgs.pinky
-	Pinky.curAction = 0
-	Room.enter.call(Pinky);
-	Bob.pos = {
-		x: 288,
-		y: 288
-	}
-	Bob.point_pos = {
-		x: 9,
-		y: 9
-	}
-	Bob.path = []
-	Bob.img = Imgs.bob
-	Bob.curAction = 0
-	Room.enter.call(Bob);
-	Paul.pos = {
-		x: 352,
-		y: 288
-	}
-	Paul.point_pos = {
-		x: 11,
-		y: 9
-	}
-	Paul.path = []
-	Paul.img = Imgs.paul
-	Paul.curAction = 0
-	Room.enter.call(Paul);
-}
-
-
-function start_game () {
-	_data.center_mess_switch = false;
-	Sounds.signal.play()
-	if (!Event.random_event) {
-		Event.set_random_event();
-	};
-	if (!Event.buf_event) {
-		Event.set_buf_event()
-	};
-	Room.handle = setInterval(function () {
-		if (_data.status == "play") {
-			if (Room.list[0]) {
-				Room.list[0].exit_from_room();
-			};
-		};
-	}, 5000);
-	console.log("start game")
-	Controller.game_continue();
-};
 
 window.onload = Game.init();

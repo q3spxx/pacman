@@ -1,6 +1,37 @@
+function Pic (x, y, w, h, pX, pY, pW, pH) {
+	this.x = x
+	this.y = y
+	this.w = w
+	this.h = h
+	this.pos = {
+		x: pX,
+		y: pY,
+		w: pW,
+		h: pH
+	}
+}
+
+function Gain (img, start, stop) {
+	this.id = _Tools.genId(),
+	this.img = img
+	this.start = start
+	this.stop = stop
+}
+
+function Product (name, type, price, object, icon, levelUp) {
+	this.levelUp = levelUp
+	this.id = _Tools.genId()
+	this.name = name
+	this.type = type
+	this.price = price
+	this.object = object
+	this.icon = icon
+}
+
 function Subscriber (method, ms, context) {
 	this.id = _Tools.genId()
 	this.method = method
+	this.timeMapBufferId = false
 	this.ms = ms
 	this.context = context
 	this.time = 0
@@ -99,21 +130,6 @@ function EventCell (x, y, type) {
 	this.x = x
 	this.y = y
 	this.type = type
-}
-function Buf_event (name, pic, pos) {
-	this.id = _Tools.genId()
-	this.name = name
-	this.img = {}
-	this.img.pic = pic
-	this.img.pos = pos
-	this.pos = {
-		x: 0,
-		y: 0
-	}
-	this.w = 32
-	this.h = 32
-	this.cur_frame = 0
-	this.t_frames = 2
 }
 
 function Block (name, pic, pos) {
@@ -220,7 +236,6 @@ function LowLayerBuffer (img, getParams, speed, tFrames, ms) {
 			}
 		}
 	}
-	this.start = new Date().getTime()
 	this.id = _Tools.genId()
 	this.img = img
 	this.picArr = []
@@ -228,10 +243,11 @@ function LowLayerBuffer (img, getParams, speed, tFrames, ms) {
 	this.tFrames = tFrames
 	this.curFrame = 0
 	this.getParams = getParams
-	this.getParams()
+	this.speed = speed
+	this.timeToEnd = 0
 	this.handle = _Tools.setInterval.call(this, function () {
-		var date = new Date().getTime()
-		if (date - this.start >= this.ms) {
+		this.timeToEnd += this.speed
+		if (this.ms != undefined && this.timeToEnd >= this.ms) {
 			this.removeBuffer()
 			return
 		}
@@ -249,7 +265,6 @@ function HighLayerBuffer (img, getParams, speed, tFrames, ms) {
 			}
 		}
 	}
-	this.start = new Date().getTime()
 	this.id = _Tools.genId()
 	this.img = img
 	this.picArr = []
@@ -257,10 +272,11 @@ function HighLayerBuffer (img, getParams, speed, tFrames, ms) {
 	this.tFrames = tFrames
 	this.curFrame = 0
 	this.getParams = getParams
-	this.getParams()
+	this.speed = speed
+	this.timeToEnd = 0
 	this.handle = _Tools.setInterval.call(this, function () {
-		var date = new Date().getTime()
-		if (date - this.start >= this.ms) {
+		this.timeToEnd += this.speed
+		if (this.ms != undefined && this.timeToEnd >= this.ms) {
 			this.removeBuffer()
 			return
 		}
@@ -542,30 +558,4 @@ function AIPrototype () {
 			Room.exit.call(this)
 		}
 	};
-};
-
-function tBuf (text, pos, size, color, type) {
-	this.text = text;
-	this.pos = pos;
-	this.size = size;
-	this.color = color;
-	this.type = type;
-	this.cur_frame = 0;
-	this.t_frame = Anim.type[type].length - 1;
-};
-
-function Special_buf (img, w, h) {
-	this.id = _data.gen_id();
-	this.img = img;
-	this.x = Player.pos.x + 14;
-	this.y = Player.pos.y + 14;
-	this.w = w;
-	this.h = h;
-};
-
-function Event_buf (img, x, y) {
-	this.id = _data.gen_id();
-	this.img = img;
-	this.x = x;
-	this.y = y;
 };

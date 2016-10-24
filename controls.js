@@ -16,26 +16,76 @@ var Controls = {
 			window.removeEventListener("keyup", Controls.handler);
 		}
 	},
-	checkButtonStatus: function (e) {
-		for (var i = 0; i < Controls.buttons[e.key].statuses.length; i++) {
-			if (Controls.buttons[e.key].statuses[i] == _Data.status) {
+	checkButtonStatus: function (button) {
+		for (var i = 0; i < Controls.buttons[button].statuses.length; i++) {
+			if (Controls.buttons[button].statuses[i] == _Data.status) {
 				return false
 			}
 		}
 		return true
 	},
 	handler: function (e) {
-		if (!(e.key in Controls.buttons)) {
+		if (_Data.status == 'finishHimKeyword') {
+			if (e.type == "keyup") {
+				return
+			}
+			if (
+				e.keyCode == 18 ||
+				e.keyCode == 17 ||
+				e.keyCode == 16 ||
+				e.keyCode == 20 ||
+				e.keyCode == 9 ||
+				e.keyCode == 27 ||
+				e.keyCode == 112 ||
+				e.keyCode == 113 ||
+				e.keyCode == 114 ||
+				e.keyCode == 115 ||
+				e.keyCode == 116 ||
+				e.keyCode == 117 ||
+				e.keyCode == 118 ||
+				e.keyCode == 119 ||
+				e.keyCode == 120 ||
+				e.keyCode == 121 ||
+				e.keyCode == 122 ||
+				e.keyCode == 123 ||
+				e.keyCode == 13 ||
+				e.keyCode == 144 ||
+				e.keyCode == 44 ||
+				e.keyCode == 145 ||
+				e.keyCode == 19 ||
+				e.keyCode == 45 ||
+				e.keyCode == 36 ||
+				e.keyCode == 33 ||
+				e.keyCode == 46 ||
+				e.keyCode == 46 ||
+				e.keyCode == 35 ||
+				e.keyCode == 34 ||
+				e.keyCode == 37 ||
+				e.keyCode == 38 ||
+				e.keyCode == 39 ||
+				e.keyCode == 40
+				) {
+				return
+			}
+			if (e.keyCode == 8) {
+				Events.finishHim.deleteChar()
+				return
+			}
+			Events.finishHim.addChar(e.key)
+			return
+		}
+		var button = Controls.getButton(e)
+		if (!(button in Controls.buttons)) {
 			return
 		}
 
-		if (Controls.checkButtonStatus(e)) {
+		if (Controls.checkButtonStatus(button)) {
 			return
 		}
 
 		if (e.type == "keydown") {
 			e.preventDefault();
-			switch (e.key) {
+			switch (button) {
 				case 'ArrowLeft': Player.left()
 				break
 				case 'ArrowUp': if (_Data.status == 'shop') {
@@ -52,16 +102,17 @@ var Controls = {
 							Player.down()
 						};
 				break
-				case 32: if (_Data.status == 'shop') {
-							Shop.try_buy()
-						} else if (Special.yo.status) {
-							Event.start()
+				case 'Space': if (_Data.status == 'shop') {
+							Shop.tryBuy()
+						} else if (Events.tosty.activated) {
+							Events.energiser.activate()
 						};
 				break
 				case 'Enter': if (_Data.status == 'ready') {
 						Game.begin()
 					} else if (_Data.status == 'shop') {
 						Shop.close()
+						Game.nextRound()
 					}
 				break
 				case 'q': if (Special.cord.ready && Special.cord.level > 0) {Special.cord.start()};
@@ -96,16 +147,16 @@ var Controls = {
 			statuses: ['isRunned']
 		},
 		ArrowUp: {
-			statuses: ['isRunned']
+			statuses: ['isRunned', 'shop']
 		},
 		ArrowRight: {
 			statuses: ['isRunned']
 		},
 		ArrowDown: {
-			statuses: ['isRunned']
+			statuses: ['isRunned', 'shop']
 		},
 		Enter: {
-			statuses: ['ready']
+			statuses: ['ready', 'shop']
 		},
 		Escape: {
 			statuses: ['isRunned', 'pause', 'playerIsDead', 'special']
@@ -121,6 +172,25 @@ var Controls = {
 		},
 		r: {
 			statuses: ['isRunned']
+		},
+		Space: {
+			statuses: ['isRunned', 'shop', 'special']
 		}
+	},
+	getButton: function (e) {
+		switch(e.keyCode) {
+			case 37: return "ArrowLeft"
+			case 38: return "ArrowUp"
+			case 39: return "ArrowRight"
+			case 40: return "ArrowDown"
+			case 81: return "q"
+			case 87: return "w"
+			case 69: return "e"
+			case 82: return "r"
+			case 27: return "Escape"
+			case 32: return "Space"
+			case 13: return "Enter"
+			default: return 'unknown'
+		} 
 	}
 };

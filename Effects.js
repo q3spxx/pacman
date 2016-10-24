@@ -42,7 +42,9 @@ var Effects = {
 			}
 
 			while (distance != this.maxDistance) {
-				if (_Map.grid[Math.floor((effectPos.x + distance * direction.x) / 32)][Math.floor((effectPos.y + distance * direction.y) / 32)].object.block) {
+				if (Math.floor((effectPos.x + distance * direction.x) / 32) >= 0 ||
+					Math.floor((effectPos.x + distance * direction.x) / 32) < 21 ||
+					_Map.grid[Math.floor((effectPos.x + distance * direction.x) / 32)][Math.floor((effectPos.y + distance * direction.y) / 32)].object.block) {
 					distance--
 					break
 				}
@@ -64,8 +66,8 @@ var Effects = {
 					lowDistanceSum++
 				}
 				var angle = Number((((Math.random() * this.angle) - this.angle / 2 + directionAngle) * Math.PI / 180).toFixed(2))
-				var x = Math.floor(Math.cos(angle) * randomDistance)
-				var y = Math.floor(Math.sin(angle) * randomDistance)
+				var x = Math.cos(angle) * randomDistance
+				var y = Math.sin(angle) * randomDistance
 				var size = Math.floor(this.maxSize - (this.maxSize * (randomDistance / distance)))
 				if (size < this.maxSize * 0.2) {
 					size = Math.floor(this.maxSize * 0.2)
@@ -98,11 +100,11 @@ var Effects = {
 			this.parent = parent
 			this.distance = 0
 			this.maxSize = Math.floor(Math.random() * parent.maxSize)
-			this.speed = Math.floor(Math.random() * parent.maxSpeed + 1)
+			this.speed = Math.random() * parent.maxSpeed + 1
 			this.size = this.maxSize
 			this.x = 0
 			this.y = 0
-			this.angle = Math.floor(360 * Math.random())
+			this.angle = 2 * Math.PI * Math.random()
 		},
 		particleProto: {
 			removeParticle: function () {
@@ -119,7 +121,7 @@ var Effects = {
 				this.parent.callback.call(this)
 			}
 		},
-		emitter: function (img, x, y, radius, maxSpeed, countParticles, maxSize, callback, ms) {
+		emitter: function (img, x, y, radius, maxSpeed, countParticles, maxSize, callback, getParams, ms) {
 			this.id = _Tools.genId()
 			this.__proto__ = Effects.emitter.emitterProto
 			this.pos = {
@@ -131,9 +133,14 @@ var Effects = {
 			this.radius = radius
 			this.maxSpeed = maxSpeed
 			this.particles = []
-			for (var i = 0; i < countParticles; i++) {
+			this.timer = 0
+			this.createInterval = _Tools.setInterval.call(this, function () {
+				if (this.timer == countParticles) {
+					_Tools.clearInterval(this.createInterval)
+				}
 				this.createParticle()
-			}
+				this.timer++
+			}, 2)
 
 			if (callback != undefined) {
 				this.callback = Effects.emitter.lib[callback]
@@ -145,7 +152,14 @@ var Effects = {
 				}.bind(this), ms)
 			}
 
+			if (getParams != undefined) {
+				this.getParams = getParams
+			}
+
 			this.interval = _Tools.setInterval.call(this, function () {
+				if ('getParams' in this) {
+					this.getParams()
+				}
 				this.particles.forEach(function (particle) {
 					particle.update()
 				})
@@ -170,8 +184,8 @@ var Effects = {
 				}
 			}
 		},
-		add: function (img, x, y, radius, speed, countParticles, sizeParticle, callback, ms) {
-			var emitter = new this.emitter(img, x, y, radius, speed, countParticles, sizeParticle, callback, ms)
+		add: function (img, x, y, radius, speed, countParticles, sizeParticle, callback, getParams, ms) {
+			var emitter = new this.emitter(img, x, y, radius, speed, countParticles, sizeParticle, callback, getParams, ms)
 			gl.emitters.push(emitter)
 			return emitter
 		},
@@ -187,6 +201,30 @@ var Effects = {
 				this.y += Math.sin(this.angle) * this.speed
 				this.distance += this.speed
 			}
+		}
+	},
+	earthquake: {
+		interval: false,
+		trigger: false,
+		start: function () {
+			_Data.main.y = 5
+			this.interval = _Tools.setInterval.call(this, function () {
+				if (this.trigger) {
+					_Data.main.y += 10
+					this.trigger = false
+				} else {
+					_Data.main.y -= 10
+					this.trigger = true
+				}
+			}, 100)
+		},
+		stop: function () {
+			if (this.interval) {
+				_Tools.clearInterval(this.interval)
+				this.interval = false
+				this.trigger = false
+			}
+			_Data.main.y = 0
 		}
 	}
 }

@@ -1,7 +1,5 @@
 var Move = {
 	set: function () {
-		//for (var i = 0; i < this.speed; i++) {
-
 			if (Col.check.call(this)) {
 				var offsetCheck = Col.offsetCheck.call(this);
 				if (offsetCheck != false) {
@@ -25,37 +23,7 @@ var Move = {
 				if (res) {
 					if (this.behavior == 'chase' ||
 						this.behavior == 'passive') {
-						if (!Events.energiser.activated) {
-							Game.stop()
-							Player.isDead();
-							_Data.lifes--
-							_Tools.setTimeout(function () {
-								if (_Data.lifes > 0) {
-									Game.default()
-									Game.start()
-								} else {
-									Mess.setMess('gameOver')
-								}
-							}, 900)
-						}
-						return
-						Sounds.dead.play()
-						_data.total_kills = 0
-						Sounds.signal.pause();
-						Sounds.signal.currentTime = 0;
-						if (_data.lifes == 0) {
-							_data.set_center_mess('Game over')
-							clearTimeout(Event.random_event_handle)
-							_data.center_mess_switch = true;
-							clearTimeout(Event.buf_event_handle)
-							clearTimeout(Event.buf_event_active_handle)
-							clearInterval(Event.buf_event_timer_handle)
-							Event.buf_event_default()
-							
-							console.log("Game over");
-						} else {
-							_data.reinit_level();
-						};
+						behaviorController.killPlayer()
 					};
 				};
 			};
@@ -78,20 +46,25 @@ var Move = {
 						break
 					}
 				}
-				/*if (Event.buf_event) {
-					Col.check_event.call(this)
-				};*/
 				if (Events.energiser.activated) {
 					var enemy = Col.checkEnemy.call(this);
 					if (
 						enemy != false && enemy.behavior == "fear" ||
 						enemy != false && enemy.behavior == "fearPreTimeout"
 						) {
+						Sounds.eatghost.play()
+						behaviorController.killEnemy(enemy)
+					} else if (enemy != false && enemy.behavior == "shocked" && Special.shock.isFeared) {
+						Sounds.eatghost.play()
 						behaviorController.killEnemy(enemy)
 					};
 				};
+				if (Events.gain.curGain != false && !Events.gain.activated) {
+					if (Col.checkGain.call(this)) {
+						Events.gain.activate()
+					}
+				}
 			};
-		//}
 		return true;
 	},
 	aiDirection: function () {
@@ -128,20 +101,9 @@ var Move = {
 						MapObjects.doors.d0.changeState()
 					}
 				}
-				if (Event.status == 1) {
-					if (Event.timeout) {
-						this.set_fear_pre_timeout_img()
-					} else {
-						this.set_fear_img();
-					}
-					b_Controller.set_fear.call(this)
-				} else {
-					behaviorController.setPassive.call(this);
-				};
+				behaviorController.setPassive.call(this);
 			} else if (this.behavior == 'goToRoom') {
 				this.enterToRoom()
-			} else if (this.behavior == 'shocked') {
-				return
 			}
 			return;
 		};
@@ -161,13 +123,15 @@ var Move = {
 			} else {
 				this.down()
 			};
-		};
-		if (this.pos.y == this.path[0].y * 32) {
+		} else if (this.pos.y == this.path[0].y * 32) {
 			if (this.pos.x > this.path[0].x * 32) {
 				this.left();
 			} else {
 				this.right();
 			};
+		} else if (this.path.length != 0) {
+			this.path.splice(0, 0, {x: Math.floor(this.pos.x / 32), y: Math.floor(this.pos.y / 32)})
+			Move.aiDirection.call(this)
 		}
 		//portal
 		if (this.pos.x / 32 == 0 && this.path[0].x == 20) {

@@ -54,50 +54,6 @@ var MapObjects = {
 	}
 }
 
-var EventBlocks = {
-	array: [],
-	addBlock: function (name, pic, pos) {
-		var new_block = new Buf_event(name, pic, pos)
-		this[name] = new_block
-		this.array.push(new_block)
-	},
-	getBlock: function (name) {
-		return this[name]
-	},
-	setDefault: function () {
-		this.array.forEach(function (block) {
-			delete Dynamic_blocks[block.name]
-		})
-		this.addBlock('x2', Imgs.event, {x: 0, y: 0})
-		this.addBlock('x3', Imgs.event, {x: 0, y: 32})
-	}
-
-}
-
-function open_door () {
-	Dynamic_blocks.door[0].block = false;
-	Dynamic_blocks.door[0].img.pos = {x: 0, y: 0};
-};
-function close_door () {
-	for (var i = 0; i < enemy_arr.length; i++) {
-		if (
-			enemy_arr[i].pos.x >= 320 &&
-			enemy_arr[i].pos.x < 352 && 
-			enemy_arr[i].pos.y < 288 && 
-			enemy_arr[i].pos.y >= 256 ||
-			enemy_arr[i].pos.x >= 320 &&
-			enemy_arr[i].pos.x < 352 && 
-			enemy_arr[i].pos.y + 31 < 288 && 
-			enemy_arr[i].pos.y + 31 >= 256
-			) {
-			return false
-		}
-	}
-
-	Dynamic_blocks.door[0].block = true;
-	Dynamic_blocks.door[0].img.pos = {x: 96, y: 0};
-};
-
 var Room = {
 	handle: null,
 	list: [],
@@ -161,5 +117,10 @@ var Room = {
 			MapObjects.doors.d0.changeState()
 		}
 		Room.reposition()
+	},
+	setDefault: function () {
+		if (MapObjects.doors.d0.curState == 1) {
+			MapObjects.doors.d0.changeState()
+		}
 	}
 };
