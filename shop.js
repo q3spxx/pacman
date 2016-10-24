@@ -4,7 +4,7 @@ var Shop = {
 		x: 32,
 		y: 192,
 		w: 608,
-		h: 300,
+		h: 352,
 		color: 'rgba(64, 64, 64, 1)'
 	},
 	header: {
@@ -191,6 +191,31 @@ var Shop = {
 			Shop.mess.text = 'You get an extra life'
 			_Data.scope -= this.price
 			this.object.lifes++
+		})
+		this.addProduct('Fatality', 'item', 10000, Events.finishHim, Imgs.icons.fatality, function () {
+			if (this.object.ready) {
+				Shop.mess.text = "You are already have fatality"
+			} else {
+				_Data.scope -= this.price
+				this.object.ready = true
+				Sounds.haha.play()
+				Shop.mess.text = "Ha ha ha"
+			}
+		})
+		this.addProduct('Quad', 'item', 5000, Events.gain, Imgs.star, function () {
+			if (this.object.quaddamageReady) {
+				Shop.mess.text = "You are already have Quaddamage"
+			} else {
+				_Data.scope -= this.price
+				this.object.quaddamageReady = true
+				this.object.addGain(Imgs.star, function () {
+					Sounds.quaddamage.play()
+					Events.gain.quaddamage = true
+				}, function () {
+					Events.gain.quaddamage = false
+				})
+				Shop.mess.text = "Kill they!"
+			}
 		})
 	}
 }

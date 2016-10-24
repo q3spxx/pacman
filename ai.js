@@ -61,6 +61,7 @@ var Astar = {
 			};
 			n.arr = 1;
 		};
+		return []
 	},
 	getMinF: function () {
 		var sort = this.open.sort(function (a, b) {
@@ -134,6 +135,9 @@ var ai = {
 			((self.pos.y / 32) - (Math.floor(self.pos.y / 32))) != 0) {
 			return;
 		};
+		// if (this.path.length != 0) {
+		// 	return
+		// }
 		var currentPos = {
 			x: Math.floor(self.pos.x / 32),
 			y: Math.floor(self.pos.y / 32)

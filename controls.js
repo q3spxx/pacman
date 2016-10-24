@@ -25,6 +25,55 @@ var Controls = {
 		return true
 	},
 	handler: function (e) {
+		if (_Data.status == 'finishHimKeyword') {
+			if (e.type == "keyup") {
+				return
+			}
+			if (
+				e.keyCode == 18 ||
+				e.keyCode == 17 ||
+				e.keyCode == 16 ||
+				e.keyCode == 20 ||
+				e.keyCode == 9 ||
+				e.keyCode == 27 ||
+				e.keyCode == 112 ||
+				e.keyCode == 113 ||
+				e.keyCode == 114 ||
+				e.keyCode == 115 ||
+				e.keyCode == 116 ||
+				e.keyCode == 117 ||
+				e.keyCode == 118 ||
+				e.keyCode == 119 ||
+				e.keyCode == 120 ||
+				e.keyCode == 121 ||
+				e.keyCode == 122 ||
+				e.keyCode == 123 ||
+				e.keyCode == 13 ||
+				e.keyCode == 144 ||
+				e.keyCode == 44 ||
+				e.keyCode == 145 ||
+				e.keyCode == 19 ||
+				e.keyCode == 45 ||
+				e.keyCode == 36 ||
+				e.keyCode == 33 ||
+				e.keyCode == 46 ||
+				e.keyCode == 46 ||
+				e.keyCode == 35 ||
+				e.keyCode == 34 ||
+				e.keyCode == 37 ||
+				e.keyCode == 38 ||
+				e.keyCode == 39 ||
+				e.keyCode == 40
+				) {
+				return
+			}
+			if (e.keyCode == 8) {
+				Events.finishHim.deleteChar()
+				return
+			}
+			Events.finishHim.addChar(e.key)
+			return
+		}
 		var button = Controls.getButton(e)
 		if (!(button in Controls.buttons)) {
 			return

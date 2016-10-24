@@ -31,14 +31,21 @@ var imageSrc = {
 	bombParticle: 'bombParticle.png',
 	smokeParticle: 'smokeParticle.png',
 	star: "star.png",
-	quadshot: "quadshot.png"
+	quadshot: "quadshot.png",
+	gray: "gray.png",
+	finishHim: "finishHim.png",
+	boomblood: 'boomblood.png',
+	fatality: 'fatality.png',
+	ball: "ball.png",
+	fhcursor: 'fhcursor.png'
 }
 
 var imageIconsSrc = {
 	cord: 'cordIcon.png',
 	bomb: 'bombIcon.png',
 	shot: 'shotIcon.png',
-	shock: 'shockIcon.png'
+	shock: 'shockIcon.png',
+	fatality: 'fatalityIcon.png'
 }
 
 var audioSrc = {
@@ -60,7 +67,13 @@ var audioSrc = {
 	carmaggedon2: 'carmaggedon2.mp3',
 	dominion: 'dominion.mp3',
 	fon: 'fon.mp3',
-	quaddamage: "quaddamage.mp3"
+	quaddamage: "quaddamage.mp3",
+	finishHimFx: 'finishHimFx.mp3',
+	finishHimFx2: 'finishHimFx2.mp3',
+	finishHimFon: 'finishHimFon.mp3',
+	boomdeath: 'boomdeath.mp3',
+	fatality: 'fatality.mp3',
+	haha: 'haha.mp3'
 }
 
 var audioMessSrc = {
@@ -74,5 +87,6 @@ var audioMessSrc = {
 	headshot: 'headshot.mp3',
 	killingspree: 'killingspree.mp3',
 	godlike: 'godlike.mp3',
-	headHunter: 'headHunter.mp3'
+	headHunter: 'headHunter.mp3',
+	finishHim: 'finishHim.mp3'
 }

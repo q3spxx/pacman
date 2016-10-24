@@ -5,12 +5,12 @@ var _Data = {
 	imgsIsLoaded: false,
 	intervals: [],
 	timeouts: [],
-	volume: 0.1,
+	volume: 0.05,
 	level: 1,
 	lifes: 3,
 	gameSpeed: 5,
 	roundPoints: 0,
-	scope: 100000,
+	scope: 0,
 	main: {
 		x: 0,
 		y: 0
@@ -24,7 +24,13 @@ var _Data = {
 			Sounds.fon.pause()
 			Sounds.fon.currentTime = 0
 			Game.stop()
-			Shop.open()
+			Kill.massKill.reset()
+			if (Events.finishHim.ready) {
+				var random = Math.floor(Math.random() * 4)
+				Events.finishHim.activate(enemyArr[random])
+			} else {
+				Shop.open()
+			}
 		}
 	},
 	roundDefault: function () {
@@ -145,9 +151,14 @@ var Kill = {
 			}
 
 			if (notification != null) {
-				_Tools.setTimeout.call(this, function () {
+				if (this.timeout) {
+					_Tools.clearTimeout(this.timeout)
+				}
+				this.timeout = true
+				this.timeout = _Tools.setTimeout.call(this, function () {
 					Mess.setMess(notification.mess)
 					Sounds[notification.sound].play()
+					this.timeout = false
 				}, 2000)
 			}
 

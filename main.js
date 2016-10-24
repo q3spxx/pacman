@@ -133,7 +133,6 @@ var Game = {
 	},
 	initBlocks: function () {
 		Blocks.setDefault()
-		EventBlocks.setDefault()
 		MapObjects.init()
 		this.status = 4
 		this.changeInit()
@@ -215,6 +214,7 @@ var Game = {
 		Events.tosty.countDown()
 	},
 	pause: function () {
+		Sounds.fon.pause()
 		Game.interval.pause()
 		_Data.timeouts.forEach(function (timeout) {
 			timeout.pause()
@@ -222,6 +222,7 @@ var Game = {
 		_Data.status = 'pause'
 	},
 	continue: function () {
+		Sounds.fon.play()
 		Game.interval.continue()
 		_Data.timeouts.forEach(function (timeout) {
 			timeout.continue()
@@ -263,10 +264,10 @@ var Game = {
 	loop: function () {
 		this.interval = new Interval(function () {
 			TimeMap.formation()
-			this.timeMap.forEach(function (timeMapBuffer) {
-				timeMapBuffer.method.call(timeMapBuffer.context)
-			})
-			this.timeMap = []
+			while (this.timeMap.length > 0) {
+				this.timeMap[0].method.call(this.timeMap[0].context)
+				this.timeMap.splice(0, 1)
+			}
 		}.bind(this), this.speed)
 	},
 	addRenderBuffer: function (name, method) {

@@ -54,10 +54,7 @@ var Move = {
 						) {
 						Sounds.eatghost.play()
 						behaviorController.killEnemy(enemy)
-					} else if (enemy != false && enemy.behavior == "shocked") {
-						_Tools.clearTimeout(Special.shock.handle)
-						Special.shock.highLayer.removeBuffer()
-						Special.shock.enemy = false
+					} else if (enemy != false && enemy.behavior == "shocked" && Special.shock.isFeared) {
 						Sounds.eatghost.play()
 						behaviorController.killEnemy(enemy)
 					};
@@ -107,8 +104,6 @@ var Move = {
 				behaviorController.setPassive.call(this);
 			} else if (this.behavior == 'goToRoom') {
 				this.enterToRoom()
-			} else if (this.behavior == 'shocked') {
-				return
 			}
 			return;
 		};

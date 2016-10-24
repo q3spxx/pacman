@@ -90,6 +90,14 @@ var _Tools = {
 	clearInterval: function (id) {
 		for (var i = 0; i < TimeMap.subscribers.length; i++) {
 			if (id == TimeMap.subscribers[i].id) {
+				if (TimeMap.subscribers[i].timeMapBufferId) {
+					for (var j = 0; j < Game.timeMap.length; j++) {
+						if (TimeMap.subscribers[i].timeMapBufferId == Game.timeMap[j].id) {
+							Game.timeMap.splice(j, 1)
+							break
+						}
+					}
+				}
 				TimeMap.subscribers.splice(i, 1)
 				_Tools.clearInterval(id)
 				return true
@@ -130,6 +138,7 @@ var TimeMap = {
 			if (subscriber.time >= subscriber.ms) {
 				if (subscriber.time >= subscriber.ms) {
 				var timeMapBuffer = new TimeMapBuffer(subscriber)
+					subscriber.timeMapBufferId = timeMapBuffer.id
 					Game.timeMap.push(timeMapBuffer)
 					subscriber.time -= subscriber.ms
 				}

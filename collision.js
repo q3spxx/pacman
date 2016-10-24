@@ -76,29 +76,6 @@ var Col = {
 		} else {
 			return false
 		}
-		/*if (id != 0) {
-			if (id == 2) {
-				Sounds.step.play()
-				_Map.grid[x][y].make_empty();
-				Scope.points += 1;
-				if (Event.buf_event_active) {
-					Scope.main += 20 * Event.buf_event_action;
-				} else {
-					Scope.main += 20
-				};
-				Scope.check_end_game();
-			};
-			if (id == 4) {
-				_Map.grid[x][y].make_empty();
-				if (Event.buf_event_active) {
-					Scope.main += 50 * Event.buf_event_action;
-				} else {
-					Scope.main += 50
-				};
-				Col.bitch_check()
-				Event.start();
-			};
-		};*/
 	},
 	checkEnemy: function () {
 		for (var i = 0; i < enemyArr.length; i++) {
@@ -177,8 +154,8 @@ var Col = {
 			}
 		});
 	},
-	hypotenuse: function (x, y, r_x, r_y, radius) {
-		var hypotenuse = Math.sqrt(Math.pow(r_x - x, 2) + Math.pow(r_y - y, 2))
+	hypotenuse: function (x, y, rX, rY, radius) {
+		var hypotenuse = Math.sqrt(Math.pow(rX - x, 2) + Math.pow(rY - y, 2))
 		if (hypotenuse < radius) {
 			return true
 		} else {
@@ -192,7 +169,7 @@ var Col = {
 
 		var direction;
 
-		switch (Player.curAction) {
+		switch (Special.shot.direction) {
 			case 0: direction = {x: -1, y: 0}
 			break 
 			case 1: direction = {x: 0, y: -1}

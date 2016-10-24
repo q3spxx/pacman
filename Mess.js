@@ -64,6 +64,12 @@ var Mess = {
 		this.addMessage('pause', 'centerMessage', false, function () {
 			return 'pause'
 		})
+		this.addMessage('enterKeyword', 'centerMessage', false, function () {
+			return 'enter Keyword!'
+		})
+		this.addMessage('keyword', 'soundMessage', false, function () {
+			return Events.finishHim.word
+		})
 		this.addMessage('doublekill', 'soundMessage', 1000, function () {
 			return 'Double kill!'
 		})

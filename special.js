@@ -50,9 +50,12 @@ var Special = {
 			cooldownDisable: cooldownDisable
 		},
 		timer: 0,
-		level: 10,
-		lowLayerBuffer: false,
+		level: 0,
+		lLB: false,
+		state: 0,
 		distance: 0,
+		direction: 0,
+		interval: false,
 		status: 'notActive',
 		isFeared: false,
 		enemy: false,
@@ -66,324 +69,209 @@ var Special = {
 		cooldownHandle: null,
 		cooldown: 5,
 		ready: true,
-		handle: null,
+		x: 0,
+		y: 0,
+		vec: {
+			x: 1,
+			y: 1
+		},
 		setDefault: function () {
-			if (!this.ready) {
-				this.cooldownDisable()
-				this.lowLayerBuffer.removeBuffer()
-				this.status = 'notActive'
-				this.isFeared = false
-				this.enemy = false
-				this.distance = 0
-				if (this.emitter != false) {
-					this.emitter.remove()
-				}
-				if (this.bloodLine.lowLayerBuffer != false) {
-					this.bloodLine.lowLayerBuffer.removeBuffer()
-				}
-			}
+			this.cooldownDisable()
+			this.reset(0)
+			this.reset(1)
 		},
 		maxDistance: function () {
 			return this.level * 64
 		},
-		start: function () {
-			_Data.status = "special";
-			Player.mPos.x = 0;
-			Player.mPos.y = 0;
-			Sounds.getOverHere.play();
-
-			this.status = 'runned'
-
-			this.lowLayerBuffer = new LowLayerBuffer(Imgs.cord, this.getParams, this.speed, 1, 10000)
-			gl.lowLayer.push(this.lowLayerBuffer)
-
-			this.cooldownEnable()
-		},
-		getParams: function () {
-
-			var pic = {
-				x: 0,
-				y: 0,
-				pos: {
-					x: Player.pos.x + 14,
-					y: Player.pos.y + 14
-				}
-			}
-
-			if (Special.cord.status == 'runned') {
-				Special.cord.distance += 4
-			} else if (Special.cord.status == 'return') {
-				Special.cord.distance -= 4
-			}
-
-			switch (Player.curAction) {
+		reset: function (state) {
+			switch (state) {
 				case 0:
-					pic.w = Special.cord.distance
-					pic.h = 4
-					pic.pos.w = Special.cord.distance * -1
-					pic.pos.h = 4
+					if (this.lLB) {
+						this.lLB.removeBuffer()
+						this.lLB = false
+					}
+					if (this.interval) {
+						_Tools.clearInterval(this.interval)
+						this.interval = false
+					}
+					this.distance = 0
+					this.state = 0
 				break
 				case 1:
-					pic.w = 4
-					pic.h = Special.cord.distance
-					pic.pos.w = 4
-					pic.pos.h = Special.cord.distance * -1
+					this.enemy = false
+					this.isFeared = false
 				break
 				case 2:
-					pic.w = Special.cord.distance
-					pic.h = 4
-					pic.pos.w = Special.cord.distance
-					pic.pos.h = 4
+					if (this.emitter) {
+						this.emitter.remove()
+						this.emitter = false
+					}
+				break
+			}
+		},
+		start: function () {
+			//init
+			Special.playerStop()
+			Sounds.getOverHere.play();
+			this.direction = Player.curAction
+			switch (this.direction) {
+				case 0:
+					this.vec.x = -1
+					this.vec.y = 0
+				break
+				case 1:
+					this.vec.x = 0
+					this.vec.y = -1
+				break
+				case 2:
+					this.vec.x = 1
+					this.vec.y = 0
 				break
 				case 3:
-					pic.w = 4
-					pic.h = Special.cord.distance
-					pic.pos.w = 4
-					pic.pos.h = Special.cord.distance
+					this.vec.x = 0
+					this.vec.y = 1
 				break
 			}
-			if (Math.abs(pic.pos.w) > Special.cord.maxDistance() ||
-				Math.abs(pic.pos.h) > Special.cord.maxDistance()) {
-				Special.cord.status = 'return'
-				return
-			}
-			if (pic.pos.x + pic.pos.w >= 672 ||
-				pic.pos.x + pic.pos.w < 0 ||
-				_Map.grid[Math.floor((pic.pos.x + pic.pos.w) / 32)]
-						 [Math.floor((pic.pos.y + pic.pos.h) / 32)].object.block) {
-				Special.cord.status = 'return'
-				switch (Player.curAction) {
+			this.x = Player.pos.x + 16
+			this.y = Player.pos.y + 16
+			//set interval
+			this.interval = _Tools.setInterval.call(this, function () {
+				//set distance
+				switch (this.state) {
 					case 0:
-						pic.pos.w = (Math.floor((pic.pos.x + pic.pos.w)  / 32) * 32) - pic.pos.x + 32
+						this.distance += 4
 					break
 					case 1:
-						pic.pos.h = (Math.floor((pic.pos.y + pic.pos.h)  / 32) * 32) - pic.pos.y + 32
-					break
-					case 2:
-						pic.pos.w = (Math.floor((pic.pos.x + pic.pos.w)  / 32) * 32) - pic.pos.x
-					break
-					case 3:
-						pic.pos.h = (Math.floor((pic.pos.y + pic.pos.h)  / 32) * 32) - pic.pos.y
+						this.distance -= 4
 					break
 				}
-			}
-
-			if (Special.cord.enemy) {
-				Special.cord.emitter.pos.x = pic.pos.x + pic.pos.w
-				Special.cord.emitter.pos.y = pic.pos.y + pic.pos.h
-				switch (Player.curAction) {
-					case 0:
-						Special.cord.enemy.pos.x = pic.pos.x + pic.pos.w - 	16				
-						Special.cord.enemy.pos.y = pic.pos.y -  14				
-					break
-					case 1:
-						Special.cord.enemy.pos.x = pic.pos.x -  14				
-						Special.cord.enemy.pos.y = pic.pos.y + pic.pos.h - 	16				
-					break
-					case 2:
-						Special.cord.enemy.pos.x = pic.pos.x + pic.pos.w + 	16				
-						Special.cord.enemy.pos.y = pic.pos.y -  14				
-					break
-					case 3:
-						Special.cord.enemy.pos.x = pic.pos.x -  14				
-						Special.cord.enemy.pos.y = pic.pos.y + pic.pos.h + 	16				
-					break
+				//move enemy
+				if (this.enemy) {
+					this.enemy.pos.x = this.x + this.distance * this.vec.x - 16
+					this.enemy.pos.y = this.y + this.distance * this.vec.y - 16
 				}
-
-			}
-
-			if (Special.cord.distance <= 0) {
-				Special.cord.distance = 0
-				Special.cord.status = "notActive"
-				this.removeBuffer()
-				if (Special.cord.enemy) {
-					Special.cord.emitter.remove()
-					Special.cord.emitter = false
-					if (Special.cord.isFeared) {
-						Sounds.bones.play()
-						behaviorController.killEnemy(Special.cord.enemy)
-						Effects.emitter.add(Imgs.blood, Special.cord.enemy.pos.x + 16, Special.cord.enemy.pos.y + 16, 64, 8, 50, 16, 'line', 300)
-						Special.cord.enemy = false
-						Special.cord.isFeared = false
-					} else {
-						Special.cord.enemy = false
-						Special.cord.isFeared = false
-						behaviorController.killPlayer()
-						return
-					}
+				//return if more max distance
+				if (Math.abs(this.distance) > Special.cord.maxDistance()) {
+					this.state = 1
+					return
 				}
-				Special.playerGo()
-				_Data.status = 'isRunned'
-			}
-
-
-			if (Special.cord.status == 'runned') {
-				for (var i = 0; i < enemyArr.length; i++) {
-					if (
-						pic.pos.x + pic.pos.w + 2 > enemyArr[i].pos.x &&
-						pic.pos.x + pic.pos.w + 2 < enemyArr[i].pos.x + 32 &&
-						pic.pos.y + pic.pos.h + 2 > enemyArr[i].pos.y &&
-						pic.pos.y + pic.pos.h + 2 < enemyArr[i].pos.y + 32
-						) {
+				//check collision
+				if (this.x + this.distance * this.vec.x >= 672 ||
+					this.x + this.distance * this.vec.x < 0 ||
+					_Map.grid[Math.floor((this.x + this.distance * this.vec.x) / 32)]
+							 [Math.floor((this.y + this.distance * this.vec.y) / 32)].object.block) {
+					this.state = 1
+					return
+				}
+				//check enemy
+				if (this.state == 0) {
+					for (var i = 0; i < enemyArr.length; i++) {
 						if (
-							enemyArr[i].behavior == 'goToRoom' ||
-							enemyArr[i].behavior == 'inRoom' ||
-							enemyArr[i].behavior == 'enterToRoom' ||
-							enemyArr[i].behavior == 'exitFromRoom'
+							this.x + this.distance * this.vec.x > enemyArr[i].pos.x &&
+							this.x + this.distance * this.vec.x < enemyArr[i].pos.x + 32 &&
+							this.y + this.distance * this.vec.y > enemyArr[i].pos.y &&
+							this.y + this.distance * this.vec.y < enemyArr[i].pos.y + 32
 							) {
-							continue
-						}
-						Special.cord.enemy = enemyArr[i]
-						Special.cord.enemy.path = []
-						Special.cord.enemy.mPos.x = 0
-						Special.cord.enemy.mPos.y = 0
-
-						if (Special.cord.enemy.behavior == 'fear' || Special.cord.enemy.behavior == 'fearPreTimeout') {
-							Special.cord.isFeared = true
-						} else {
-							Special.cord.isFeared = false
-						}
-
-						behaviorController.setIsBusted.call(Special.cord.enemy)
-						Special.cord.status = 'return'
-
-
-						switch (Player.curAction) {
-							case 0:
-								pic.pos.w = Special.cord.enemy.pos.x - pic.pos.x + 16
-							break
-							case 1:
-								pic.pos.h = Special.cord.enemy.pos.y - pic.pos.y + 16
-							break
-							case 2:
-								pic.pos.w = pic.pos.x - Special.cord.enemy.pos.x + 16
-							break
-							case 3:
-								pic.pos.h = pic.pos.y - Special.cord.enemy.pos.y + 16
-							break
-						}
-						Special.cord.emitter = Effects.emitter.add(Imgs.blood, pic.pos.x + pic.pos.w, pic.pos.y + pic.pos.h, 128, 32, 50, 16, 'line')
-						Special.cord.bloodLine.x = Special.cord.enemy.pos.x
-						Special.cord.bloodLine.y = Special.cord.enemy.pos.y
-						Special.cord.bloodLine.lowLayerBuffer = new LowLayerBuffer(Imgs.bloodLine, function () {
-							if (!Special.cord.enemy) {
-								return
+							if (
+								enemyArr[i].behavior == 'goToRoom' ||
+								enemyArr[i].behavior == 'inRoom' ||
+								enemyArr[i].behavior == 'enterToRoom' ||
+								enemyArr[i].behavior == 'exitFromRoom'
+								) {
+								continue
 							}
-							var bloodLine = {
-								pos: {}
+							this.enemy = enemyArr[i]
+
+							if (this.enemy.behavior == 'fear' || this.enemy.behavior == 'fearPreTimeout') {
+								this.isFeared = true
+							} else if (this.enemy.behavior == 'shocked' && Special.shock.isFeared) {
+								this.isFeared = true
+								Special.shock.reset(1)
+								Special.shock.reset(2)
+							} else {
+								this.isFeared = false
 							}
-							bloodLine.y = 0
-							switch (Player.curAction) {
+
+							behaviorController.setIsBusted.call(this.enemy)
+							this.state = 1
+
+							this.emitter = Effects.emitter.add(Imgs.blood, this.enemy.pos.x + 16, this.enemy.pos.y + 16, 128, 32, 50, 16, 'line', function () {
+								this.pos.x = Special.cord.enemy.pos.x + 16
+								this.pos.y = Special.cord.enemy.pos.y + 16
+							})
+							//bloodline
+							this.bloodLine.x = this.enemy.pos.x
+							this.bloodLine.y = this.enemy.pos.y
+							this.bloodLine.lLB = new LowLayerBuffer(Imgs.bloodLine, function () {
+								if (!Special.cord.enemy) {
+									return
+								}
+								switch (Special.cord.direction) {
+									case 0:
+										this.picArr[0].pos.w = Special.cord.enemy.pos.x - Special.cord.bloodLine.x
+									break
+									case 1:
+										this.picArr[0].pos.h = Special.cord.enemy.pos.y - Special.cord.bloodLine.y
+									break
+									case 2:
+										this.picArr[0].pos.w = Special.cord.enemy.pos.x - Special.cord.bloodLine.x + 32
+									break
+									case 3:
+										this.picArr[0].pos.h = Special.cord.enemy.pos.y - Special.cord.bloodLine.y + 32
+									break
+								}
+							}, 1000 / Game.fps, 1, 10000)
+							switch (this.direction) {
 								case 0:
-									bloodLine.pos.x = Special.cord.bloodLine.x
-									bloodLine.pos.y = Special.cord.bloodLine.y
-									bloodLine.pos.w = Special.cord.enemy.pos.x - Special.cord.bloodLine.x
-									bloodLine.pos.h = 32
-									bloodLine.x = 0
-									bloodLine.w = 96
-									bloodLine.h = 32
-
+									pic = new Pic(0, 0, 96, 32, this.bloodLine.x, this.bloodLine.y, this.enemy.pos.x - this.bloodLine.x, 32)
 								break
 								case 1:
-									bloodLine.pos.x = Special.cord.bloodLine.x
-									bloodLine.pos.y = Special.cord.bloodLine.y
-									bloodLine.pos.w = 32
-									bloodLine.pos.h = Special.cord.enemy.pos.y - Special.cord.bloodLine.y
-									bloodLine.x = 96
-									bloodLine.w = 32
-									bloodLine.h = 96
+									pic = new Pic(96, 0, 32, 96, this.bloodLine.x, this.bloodLine.y, 32, this.enemy.pos.y - this.bloodLine.y)
 								break
 								case 2:
-									bloodLine.pos.x = Special.cord.bloodLine.x + 32
-									bloodLine.pos.y = Special.cord.bloodLine.y
-									bloodLine.pos.w = Special.cord.enemy.pos.x - Special.cord.bloodLine.x - 32
-									bloodLine.pos.h = 32
-									bloodLine.x = 128
-									bloodLine.w = 96
-									bloodLine.h = 32
+									pic = new Pic(128, 0, 96, 32, this.bloodLine.x, this.bloodLine.y, this.enemy.pos.x - this.bloodLine.x, 32)
 								break
 								case 3:
-									bloodLine.pos.x = Special.cord.bloodLine.x
-									bloodLine.pos.y = Special.cord.bloodLine.y + 32
-									bloodLine.pos.w = 32
-									bloodLine.pos.h = Special.cord.enemy.pos.y - Special.cord.bloodLine.y - 32
-									bloodLine.x = 224
-									bloodLine.w = 32
-									bloodLine.h = 96
+									pic = new Pic(224, 0, 32, 96, this.bloodLine.x, this.bloodLine.y, 32, this.enemy.pos.y - this.bloodLine.y)
 								break
 							}
-						this.picArr = []
-						this.picArr.push(bloodLine)
-						}, Special.cord.speed, 1, 10000)
-						gl.lowLayer.push(Special.cord.bloodLine.lowLayerBuffer)
-						break
+							this.bloodLine.lLB.picArr.push(pic)
+							gl.lowLayer.push(this.bloodLine.lLB)
+							break
+						}
 					}
 				}
-			}
+				//check end
+				if (this.distance <= 0) {
+					this.reset(0)
+					if (this.enemy) {
+						this.reset(2)
+						if (this.isFeared) {
+							Sounds.bones.play()
+							behaviorController.killEnemy(this.enemy)
+							Effects.emitter.add(Imgs.blood, this.enemy.pos.x + 16, this.enemy.pos.y + 16, 64, 8, 50, 16, 'line', function(){}, 300)
+							this.reset(1)
+						} else {
+							this.reset(1)
+							behaviorController.killPlayer()
+							return
+						}
+					}
+					Special.playerGo()
+				}
+			}, this.speed)
+			//cord
+			this.lLB = new LowLayerBuffer(Imgs.cord, function () {
+				this.picArr[0].w = Special.cord.distance * Math.abs(Special.cord.vec.x) + 4
+				this.picArr[0].h = Special.cord.distance * Math.abs(Special.cord.vec.y) + 4
+				this.picArr[0].pos.w = Special.cord.distance * Special.cord.vec.x + 4
+				this.picArr[0].pos.h = Special.cord.distance * Special.cord.vec.y + 4
+			}, 1000 / Game.fps, 1)
+			var pic = new Pic(0, 0, 4, 4, this.x, this.y, 4, 4)
+			this.lLB.picArr.push(pic)
+			gl.lowLayer.push(this.lLB)
 
-			this.picArr = []
-			this.picArr.push(pic)
-		}
-
-	},
-	yo: {
-		handle: null,
-		date: null,
-		status: false,
-		start: function () {
-			if (_data.status == 'ready' || _data.status == 'end game' || _data.status == 'shop') {
-				return
-			}
-			Special.yo.status = true;
-			var img = {
-				pic: Imgs.yo,
-				x: 0,
-				y: 0,
-				w: 110,
-				h: 110
-			}
-			var event_buf = new Event_buf(img, 672, 672);
-			gl.event.push(event_buf);
-
-			Sounds.yo.play();
-
-			Special.yo.handle = setInterval(function () {
-				this.x -= 11;
-				this.y -= 11;
-				if (this.x == 562 && this.y == 562) {
-					Special.yo.stop()
-					Special.yo.waiting.call(this);
-				};
-			}.bind(event_buf), 10);
-		},
-		waiting: function () {
-			_data.set_center_mess('press space')
-			_data.center_mess_switch = true
-			setTimeout(function () {
-				_data.center_mess_switch = false
-				Special.yo.stop()
-				Special.yo.clean_up.call(this);
-			}.bind(this), 600)
-		},
-		clean_up: function () {
-			Special.yo.handle = setInterval(function () {
-				this.x += 11;
-				this.y += 11;
-				if (this.x == 672 && this.y == 672) {
-					Special.yo.stop()
-					for (var i = 0; i < gl.event.length; i++) {
-						if (this.id == gl.event[i].id) {
-							gl.event.splice(i, 1);
-							break
-						};
-					};
-					Special.yo.status = false
-					Event.set_random_event();
-				};
-			}.bind(this), 10);
-		},
-		stop: function () {
-			clearInterval(Special.yo.handle);
+			this.cooldownEnable()
 		}
 	},
 	bomb: {
@@ -393,93 +281,93 @@ var Special = {
 		},
 		timer: 0,
 		ready: true,
-		level: 10,
+		level: 0,
 		emitter: false,
-		handle: null,
-		lowLayerBuffer: false,
+		emitter2: false,
+		interval: false,
 		cooldownHandle: null,
 		cooldown: 30,
 		radius: 0,
+		speed: 51,
+		lLB: false,
 		setDefault: function () {
-			if (!this.ready) {
-				this.cooldownDisable()
-				if (this.emitter != false) {
-					this.emitter.remove()
-				}
-				this.lowLayerBuffer.removeBuffer()
-				this.radius = 0
-			}
+			this.cooldownDisable()
+			this.reset(0)
 		},
 		getRadius: function () {
 			return 32 + 8 * this.level
 		},
+		reset: function (state) {
+			switch (state) {
+				case 0:
+					if (this.lLB) {
+						this.lLB.removeBuffer()
+						this.lLB = false
+					}
+					if (this.emitter) {
+						this.emitter.remove()
+						this.emitter = false
+					}
+					if (this.emitter2) {
+						this.emitter2.remove()
+						this.emitter2 = false
+					}
+					if (this.interval) {
+						_Tools.clearInterval(this.interval)
+						this.interval = false
+					}
+					Effects.earthquake.stop()
+					this.radius = 0
+				break
+			}
+		},
 		start: function () {
-			_Data.status = "special";
+			//init
 			Special.playerStop()
-			this.lowLayerBuffer = new LowLayerBuffer(Imgs.bomb, this.getParams, 40, 1, 1000)
-			gl.lowLayer.push(this.lowLayerBuffer)
-			this.emitter = Effects.emitter.add(Imgs.bombParticle, Player.pos.x + 16, Player.pos.y + 16, this.getRadius() * 2, 12, 50, 16, 'line', 400)
-			Effects.emitter.add(Imgs.smokeParticle, Player.pos.x + 16, Player.pos.y + 16, this.getRadius() * 2, 12, 100, 24, 'line', 400)
-			Effects.earthquake.start()
-
-			this.cooldownEnable()
-		},
-		stop: function () {
-			_data.status = "play";
-			switch (Player.curAction) {
-				case 0: Player.left();
-				break
-				case 1: Player.up();
-				break
-				case 2: Player.right();
-				break
-				case 3: Player.down();
-				break
-			}
-			this.radius = 0
-		},
-		getParams: function () {
-			Special.bomb.radius += Special.bomb.getRadius() / 10
-			if (Special.bomb.radius >= Special.bomb.getRadius()) {
-				Effects.earthquake.stop()
-				this.removeBuffer()
-				Special.bomb.radius = 0
-				Special.bomb.emitter.remove()
-				Special.bomb.emitter = false
-				Special.playerGo()
-			}
-
-			var pic = {
-				x: 0,
-				y: 0,
-				w: 112,
-				h: 112,
-				pos: {
-					x: Player.pos.x + 16 - Special.bomb.radius,
-					y: Player.pos.y + 16 - Special.bomb.radius,
-					w: Special.bomb.radius * 2,
-					h: Special.bomb.radius * 2
-				}
-
-			}
-
-			enemyArr.forEach(function (enemy) {
-				if (
-					enemy.behavior == "goToRoom" ||
-					enemy.behavior == "inRoom" ||
-					enemy.behavior == "enterToRoom" ||
-					enemy.behavior == "exitFromRoom"
-					) {
+			//skill interval
+			this.interval = _Tools.setInterval.call(this, function () {
+				//increase radius
+				this.radius += this.getRadius() / 10
+				//check end
+				if (this.radius >= this.getRadius()) {
+					this.reset(0)
+					Special.playerGo()
 					return
 				}
-				if (Col.hypotenuse(Player.pos.x + 16, Player.pos.y + 16, enemy.pos.x + 16, enemy.pos.y + 16, Special.bomb.radius)) {
-					Effects.emitter.add(Imgs.blood, enemy.pos.x + 16, enemy.pos.y + 16, 64, 8, 50, 16, 'line', 300)
-					behaviorController.killEnemy(enemy)
-				}
-			})
-
-			this.picArr = []
-			this.picArr.push(pic)
+				//check enemy
+				enemyArr.forEach(function (enemy) {
+					if (
+						enemy.behavior == "goToRoom" ||
+						enemy.behavior == "inRoom" ||
+						enemy.behavior == "enterToRoom" ||
+						enemy.behavior == "exitFromRoom"
+						) {
+						return
+					}
+					if (Col.hypotenuse(Player.pos.x + 16, Player.pos.y + 16, enemy.pos.x + 16, enemy.pos.y + 16, Special.bomb.radius)) {
+						Effects.emitter.add(Imgs.blood, enemy.pos.x + 16, enemy.pos.y + 16, 64, 8, 50, 16, 'line', function () {}, 300)
+						behaviorController.killEnemy(enemy)
+					}
+				})
+			}, this.speed)
+			//boom
+			this.lLB = new LowLayerBuffer(Imgs.bomb, function () {
+				this.picArr[0].pos.x = Player.pos.x + 16 - Special.bomb.radius
+				this.picArr[0].pos.y = Player.pos.y + 16 - Special.bomb.radius
+				this.picArr[0].pos.w = Special.bomb.radius * 2
+				this.picArr[0].pos.h = Special.bomb.radius * 2
+			}, 1000 / Game.fps, 1)
+			var pic = new Pic(0, 0, 112, 112, Player.pos.x + 16 - this.radius, Player.pos.y + 16 - this.radius, this.radius * 2, this.radius * 2)
+			this.lLB.picArr.push(pic)
+			gl.lowLayer.push(this.lLB)
+			//fire
+			this.emitter = Effects.emitter.add(Imgs.bombParticle, Player.pos.x + 16, Player.pos.y + 16, this.getRadius() * 2, 12, 50, 16, 'line', function () {}, 400)
+			//smoke
+			this.emitter2 = Effects.emitter.add(Imgs.smokeParticle, Player.pos.x + 16, Player.pos.y + 16, this.getRadius() * 2, 12, 100, 24, 'line', function () {}, 400)
+			//earthquake
+			Effects.earthquake.start()
+			//cooldown
+			this.cooldownEnable()
 		}
 	},
 	shot: {
@@ -488,42 +376,99 @@ var Special = {
 			cooldownDisable: cooldownDisable
 		},
 		timer: 0,
-		level: 10,
+		level: 0,
 		ready: true,
-		emitter: false,
 		speed: 50,
 		cooldownHandle: null,
 		cooldown: 7,
 		handle: null,
-		lowLayerBuffer: false,
+		lLB: false,
+		direction: 0,
 		setDefault: function () {
-			if (!this.ready) {
-				this.cooldownDisable()
-				this.lowLayerBuffer.removeBuffer()
-				_Tools.clearTimeout(this.handle)
+			this.cooldownDisable()
+			if (this.lLB) {
+				this.lLB.removeBuffer()
 			}
+			_Tools.clearTimeout(this.handle)
 		},
 		chanse: function () {
 			return 10 * this.level
 		},
 		start: function () {
+			//init
+			_Data.status = "special";
 			Special.playerStop()
-
+			this.direction = Player.curAction
+			//select type
+			var pic
 			if (Events.gain.quaddamage) {
 				this.handle = _Tools.setTimeout(function () {
 					Special.playerGo()
 				}, 200)
+				//sound
 				Sounds.quadshot.play()
-				this.lowLayerBuffer = new LowLayerBuffer(Imgs.quadshot, this.getQuadParams, this.speed, 4, 200)
+				//fire animation
+				this.lLB = new LowLayerBuffer(Imgs.quadshot, function (){
+					this.curFrame++
+					if (this.curFrame >= this.tFrames) {
+						this.curFrame = 0
+					}
+					this.picArr[0].x = this.curFrame * 32
+				}, this.speed, 4, 200)
+				var x = Math.floor(Player.pos.x / 32)
+				var y = Math.floor(Player.pos.y / 32)
+				switch (this.direction) {
+					case 0:
+						while (x > 0 && !_Map.grid[x - 1][y].object.block) {
+							x--
+						}
+						pic = new Pic(0, 32, 32, 32, x * 32, y * 32, Player.pos.x + 16 - x * 32, 32)
+					break
+					case 1:
+						while (!_Map.grid[x][y - 1].object.block) {
+							y--
+						}
+						pic = new Pic(0, 0, 32, 32, Player.pos.x, y * 32, 32, Player.pos.y + 16 - y * 32)
+					break
+					case 2:
+						while (x < 20 && !_Map.grid[x + 1][y].object.block) {
+							x++
+						}
+						pic = new Pic(0, 32, 32, 32, Player.pos.x + 16, Player.pos.y, x * 32 - Player.pos.x + 16, 32)
+					break
+					case 3:
+						while (!_Map.grid[x][y + 1].object.block) {
+							y++
+						}
+						pic = new Pic(0, 0, 32, 32, Player.pos.x, Player.pos.y + 16, 32, y * 32 - Player.pos.y + 16)
+					break
+				}
 			} else {
 				this.handle = _Tools.setTimeout(function () {
 					Special.playerGo()
 				}, 100)
+				//sound
 				Sounds.shot.play()
-				this.lowLayerBuffer = new LowLayerBuffer(Imgs.fireOfShot, this.getParams, this.speed, 1, 100)
+				//fire animation
+				this.lLB = new LowLayerBuffer(Imgs.fireOfShot, function(){}, this.speed, 1, 100)
+				switch (Player.curAction) {
+					case 0:
+						pic = new Pic(0, 0, 96, 32, Player.pos.x - 68, Player.pos.y, 96, 32)
+					break
+					case 1:
+						pic = new Pic(96, 0, 32, 96, Player.pos.x, Player.pos.y - 68, 32, 96)
+					break
+					case 2:
+						pic = new Pic(128, 0, 96, 32, Player.pos.x + 4, Player.pos.y, 96, 32)
+					break
+					case 3:
+						pic = new Pic(224, 0, 32, 96, Player.pos.x, Player.pos.y + 4, 32, 96)
+					break
+				}
 			}
-
-			gl.lowLayer.push(this.lowLayerBuffer)
+			this.lLB.picArr.push(pic)
+			gl.lowLayer.push(this.lLB)
+			//check enemies
 			var enemies = Col.enemyInLine();
 
 			var kills = 0
@@ -536,7 +481,7 @@ var Special = {
 						enemy.behavior != 'exitFromRoom'
 						) {
 						if (Col.missCheck()) {
-							this.emitter = Effects.emitter.add(Imgs.blood, enemy.pos.x + 16, enemy.pos.y + 16, 64, 8, 50, 16, 'line', 300)
+							Effects.emitter.add(Imgs.blood, enemy.pos.x + 16, enemy.pos.y + 16, 64, 8, 50, 16, 'line', function() {}, 300)
 							Effects.blood.add(enemy)
 							kills++
 							behaviorController.killEnemy(enemy)
@@ -546,6 +491,7 @@ var Special = {
 					}
 				})
 			}
+			//sound of kill
 			if (kills > 1) {
 				Mess.setMess('headHunter')
 				Sounds.headHunter.play()
@@ -555,138 +501,6 @@ var Special = {
 			}
 
 			this.cooldownEnable()
-		},
-		getParams: function () {
-
-			this.picArr = []
-			var pic = {
-				pos: {}
-			}
-
-			switch (Player.curAction) {
-				case 0:
-					pic.x = 0
-					pic.y = 0
-					pic.w = 96
-					pic.h = 32
-					pic.pos.x = Player.pos.x - 68
-					pic.pos.y = Player.pos.y
-					pic.pos.w = 96
-					pic.pos.h = 32
-				break
-				case 1:
-					pic.x = 96
-					pic.y = 0
-					pic.w = 32
-					pic.h = 96
-					pic.pos.x = Player.pos.x
-					pic.pos.y = Player.pos.y - 68
-					pic.pos.w = 32
-					pic.pos.h = 96
-				break
-				case 2:
-					pic.x = 128
-					pic.y = 0
-					pic.w = 96
-					pic.h = 32
-					pic.pos.x = Player.pos.x + 4
-					pic.pos.y = Player.pos.y
-					pic.pos.w = 96
-					pic.pos.h = 32
-				break
-				case 3:
-					pic.x = 224
-					pic.y = 0
-					pic.w = 32
-					pic.h = 96
-					pic.pos.x = Player.pos.x
-					pic.pos.y = Player.pos.y + 4
-					pic.pos.w = 32
-					pic.pos.h = 96
-				break
-			}
-			this.picArr.push(pic)
-		},
-		getQuadParams: function () {
-			this.picArr = []
-
-			var x = Math.floor(Player.pos.x / 32)
-			var y = Math.floor(Player.pos.y / 32)
-			switch (Player.curAction) {
-				case 0:
-					while (!_Map.grid[x - 1][y].object.block) {
-						x--
-					}
-					this.picArr.push({
-						x: 32 * this.curFrame,
-						y: 32,
-						w: 32,
-						h: 32,
-						pos: {
-							x: x * 32,
-							y: Player.pos.y,
-							w: Player.pos.x + 16 - x * 32,
-							h: 32
-						}
-					})
-				break
-				case 1:
-
-					while (!_Map.grid[x][y - 1].object.block) {
-						y--
-					}
-					this.picArr.push({
-						x: 32 * this.curFrame,
-						y: 0,
-						w: 32,
-						h: 32,
-						pos: {
-							x: Player.pos.x,
-							y: y * 32,
-							w: 32,
-							h: Player.pos.y + 16 - y * 32
-						}
-					})
-				break
-				case 2:
-					while (!_Map.grid[x + 1][y].object.block) {
-						x++
-					}
-					this.picArr.push({
-						x: 32 * this.curFrame,
-						y: 32,
-						w: 32,
-						h: 32,
-						pos: {
-							x: Player.pos.x + 16,
-							y: Player.pos.y,
-							w: x * 32 - Player.pos.x + 16,
-							h: 32
-						}
-					})
-				break
-				case 3:
-					while (!_Map.grid[x][y + 1].object.block) {
-						y++
-					}
-					this.picArr.push({
-						x: 32 * this.curFrame,
-						y: 0,
-						w: 32,
-						h: 32,
-						pos: {
-							x: Player.pos.x,
-							y: Player.pos.y + 16,
-							w: 32,
-							h: y * 32 - Player.pos.y + 16
-						}
-					})
-				break
-			}
-			this.curFrame++
-			if (this.curFrame >= this.tFrames) {
-				this.curFrame = 0
-			}
 		}
 	},
 	shock: {
@@ -695,135 +509,182 @@ var Special = {
 			cooldownDisable: cooldownDisable
 		},
 		timer: 0,
+		interval: false,
 		ready: true,
-		level: 10,
+		level: 0,
 		distance: 0,
 		duration: 5000,
-		emitter: false,
 		speed: 7,
 		enemy: false,
-		handle: null,
-		highLayer: false,
+		isFeared: false,
+		behavior: '',
+		emitter: false,
+		hLB: false,
+		lLB: false,
 		cooldown: 5,
 		cooldownHandle: null,
+		pos: {
+			x: 0,
+			y: 0
+		},
+		direction: 0,
+		state: 0,
+		timeToEnd: 0,
 		setDefault: function () {
-			if (!this.ready) {
-				this.cooldownDisable()
-				this.distance = 0
-				if (this.emitter != false) {
-					this.emitter.remove()
-				}
-			}
-			_Tools.clearTimeout(this.handle)
-			this.enemy = false
-			if (this.highLayer != false) {
-				this.highLayer.removeBuffer()
+			this.cooldownDisable()
+			this.reset(0)
+			this.reset(1)
+			this.reset(2)
+		},
+		reset: function (state) {
+			switch (state) {
+				case 0:
+					if (this.emitter) {
+						this.emitter.remove()
+						this.emitter = false
+					}
+					if (this.lLB) {
+						this.lLB.removeBuffer()
+						this.lLB = false
+					}
+				break
+				case 1:
+					if (this.hLB) {
+						this.hLB.removeBuffer()
+						this.hLB = false
+					}
+					this.isFeared = false
+					this.behavior = ''
+				break
+				case 2:
+					if (this.interval) {
+						_Tools.clearInterval(this.interval)
+						this.interval = false
+						this.enemy = false
+						this.timeToEnd = 0
+						this.distance = 0
+						this.state = 0
+					}
+				break
 			}
 		},
 		start: function () {
-			Special.playerStop()
-			var lowLayer = new LowLayerBuffer(Imgs.shock, this.getParams, this.speed, 1, 10000)
-			gl.lowLayer.push(lowLayer)
+			//init
+			this.direction = Player.curAction
+			this.pos.x = Player.pos.x
+			this.pos.y = Player.pos.y
+			//skill interval
+			this.interval = _Tools.setInterval.call(this, function () {
+				switch (this.state) {
+					case 0:
+							//set position
+						switch (this.direction) {
+							case 0:
+								this.pos.x = Player.pos.x - this.distance
+								this.pos.y = Player.pos.y
+							break
+							case 1:
+								this.pos.x = Player.pos.x
+								this.pos.y = Player.pos.y - this.distance
+							break
+							case 2:
+								this.pos.x = Player.pos.x + this.distance + 32
+								this.pos.y = Player.pos.y
+							break
+							case 3:
+								this.pos.x = Player.pos.x
+								this.pos.y = Player.pos.y + this.distance + 32
+							break
 
-			this.cooldownEnable()
-		},
-		getParams: function () {
-			var pic = {
-				x: 0,
-				y: 0,
-				w: 32,
-				h: 32,
-				pos: {
-					w: 32,
-					h: 32
-				}
-			}
-
-			switch (Player.curAction) {
-				case 0:
-					pic.pos.x = Player.pos.x - Special.shock.distance
-					pic.pos.y = Player.pos.y
-				break
-				case 1:
-					pic.pos.x = Player.pos.x
-					pic.pos.y = Player.pos.y - Special.shock.distance
-				break
-				case 2:
-					pic.pos.x = Player.pos.x + Special.shock.distance + 32
-					pic.pos.y = Player.pos.y
-				break
-				case 3:
-					pic.pos.x = Player.pos.x
-					pic.pos.y = Player.pos.y + Special.shock.distance + 32
-				break
-			}
-			if (!this.emitter) {
-				this.emitter = Effects.emitter.add(Imgs.shockParticle, pic.pos.x + 16, pic.pos.y + 16, 64, 4, 50, 16, 'line')
-			} else {
-				this.emitter.pos.x = pic.pos.x + 16
-				this.emitter.pos.y = pic.pos.y + 16
-			};
-
-			if (
-				pic.pos.x < 0 ||
-				pic.pos.x + pic.pos.h > 672 ||
-				_Map.grid[Math.floor(pic.pos.x / 32)][Math.floor(pic.pos.y / 32)].object.block ||
-				_Map.grid[Math.floor((pic.pos.x + 31) / 32)][Math.floor((pic.pos.y + 31) / 32)].object.block
-				) {
-				Special.playerGo()
-				Special.shock.distance = 0
-				this.removeBuffer()
-				this.emitter.remove()
-				Special.shock.emitter = false
-			}
-			var enemy = Col.checkEnemy.call(pic)
-			if (enemy) {
-
-				Special.playerGo()
-				Special.shock.distance = 0
-				this.removeBuffer()
-				this.emitter.remove()
-				Special.shock.emitter = false
-
-				if (Special.shock.enemy) {
-					return
-				}
-				Special.shock.enemy = true
-
-				behaviorController.setShocked.call(enemy)
-				Special.shock.highLayer = new HighLayerBuffer(Imgs.shocked, function () {
-					var pic = {
-						y: 0,
-						w: 32,
-						h: 32,
-						pos: {
-							x: enemy.pos.x,
-							y: enemy.pos.y,
-							w: 32,
-							h: 32
 						}
-					}
-					pic.x = this.curFrame * 32
-					this.curFrame++
-					if (this.tFrames <= this.curFrame) {
-						this.curFrame = 0
-					}
-					this.picArr = []
-					this.picArr.push(pic)
-				}, 200, 2, Math.floor(Special.shock.duration * Special.shock.level / 10))
-				gl.highLayer.push(Special.shock.highLayer)
+						// increase distance
+						Special.shock.distance += 4
+						//check collision
+						if (
+							this.pos.x < 0 ||
+							this.pos.x + 32 > 672 ||
+							_Map.grid[Math.floor(this.pos.x / 32)][Math.floor(this.pos.y / 32)].object.block ||
+							_Map.grid[Math.floor((this.pos.x + 31) / 32)][Math.floor((this.pos.y + 31) / 32)].object.block
+							) {
+							this.reset(0)
+							this.reset(2)
+							return
+						}
+						//check enemy
+						this.enemy = Col.checkEnemy.call(this)
 
-				Special.shock.handle = _Tools.setTimeout.call(enemy, function () {
-					behaviorController.setPassive.call(this)
-					Special.shock.enemy = false
-					Special.shock.highLayer.removeBuffer()
-				}, Math.floor(Special.shock.duration * Special.shock.level / 10))
-			}
+						if (this.enemy) {
 
-			this.picArr = []
-			this.picArr.push(pic)
+							this.reset(0)
+							this.state = 1
 
-			Special.shock.distance += 4
+							if (this.enemy.behavior == 'fear' || this.enemy.behavior == 'fearPreTimeout') {
+								this.isFeared = true
+							} else {
+								this.isFeared = false
+							}
+							this.behavior = this.enemy.behavior
+
+							behaviorController.setShocked.call(this.enemy)
+							// shocked animation
+							this.hLB = new HighLayerBuffer(Imgs.shocked, function () {
+
+								this.picArr[0].x = this.curFrame * 32
+
+								this.curFrame++
+								if (this.curFrame == this.tFrames) {
+									this.curFrame = 0
+								}
+							}, 200, 2)
+							var pic = new Pic(0, 0, 32, 32, this.enemy.pos.x, this.enemy.pos.y, 32, 32)
+							this.hLB.picArr.push(pic)
+							gl.highLayer.push(this.hLB)							
+						}
+
+					break
+					case 1:
+						this.timeToEnd += this.speed
+						if (this.timeToEnd >= this.duration * (this.level / 10)) {
+							if (Events.energiser.activated) {
+								if (Events.energiser.timeToEnd <= Events.energiser.duration * 0.3) {
+									behaviorController.setFearPreTimeout.call(this.enemy)
+								} else {
+									behaviorController.setFear.call(this.enemy)
+								}
+							} else {
+								switch (this.behavior) {
+									case 'chase':
+										behaviorController.setChase.call(this.enemy)
+									break
+									case 'passive':
+										behaviorController.setPassive.call(this.enemy)
+									break
+								}
+							}
+							this.reset(1)
+							this.reset(2)
+						}
+					break
+				}
+			}, this.speed)
+
+			//emitter
+			this.emitter = Effects.emitter.add(Imgs.shockParticle, this.pos.x + 16, this.pos.y + 16, 64, 4, 50, 16, 'line', function () {
+				this.pos.x = Special.shock.pos.x + 16
+				this.pos.y = Special.shock.pos.y + 16
+			})
+
+			//ball
+			this.lLB = new LowLayerBuffer(Imgs.shock, function () {
+				this.picArr[0].pos.x = Special.shock.pos.x
+				this.picArr[0].pos.y = Special.shock.pos.y
+			}, this.speed, 1, 1000)
+			var pic = new Pic(0, 0, 32, 32, Special.shock.pos.x, Special.shock.pos.y, 32, 32)
+			this.lLB.picArr.push(pic)
+			gl.lowLayer.push(this.lLB)
+
+			//cooldown
+			this.cooldownEnable()
 		}
 	},
 	icons: {

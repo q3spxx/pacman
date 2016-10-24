@@ -42,7 +42,9 @@ var Effects = {
 			}
 
 			while (distance != this.maxDistance) {
-				if (_Map.grid[Math.floor((effectPos.x + distance * direction.x) / 32)][Math.floor((effectPos.y + distance * direction.y) / 32)].object.block) {
+				if (Math.floor((effectPos.x + distance * direction.x) / 32) >= 0 ||
+					Math.floor((effectPos.x + distance * direction.x) / 32) < 21 ||
+					_Map.grid[Math.floor((effectPos.x + distance * direction.x) / 32)][Math.floor((effectPos.y + distance * direction.y) / 32)].object.block) {
 					distance--
 					break
 				}
@@ -98,11 +100,11 @@ var Effects = {
 			this.parent = parent
 			this.distance = 0
 			this.maxSize = Math.floor(Math.random() * parent.maxSize)
-			this.speed = Math.floor(Math.random() * parent.maxSpeed + 1)
+			this.speed = Math.random() * parent.maxSpeed + 1
 			this.size = this.maxSize
 			this.x = 0
 			this.y = 0
-			this.angle = Math.floor(360 * Math.random())
+			this.angle = 2 * Math.PI * Math.random()
 		},
 		particleProto: {
 			removeParticle: function () {
@@ -119,7 +121,7 @@ var Effects = {
 				this.parent.callback.call(this)
 			}
 		},
-		emitter: function (img, x, y, radius, maxSpeed, countParticles, maxSize, callback, ms) {
+		emitter: function (img, x, y, radius, maxSpeed, countParticles, maxSize, callback, getParams, ms) {
 			this.id = _Tools.genId()
 			this.__proto__ = Effects.emitter.emitterProto
 			this.pos = {
@@ -150,11 +152,18 @@ var Effects = {
 				}.bind(this), ms)
 			}
 
+			if (getParams != undefined) {
+				this.getParams = getParams
+			}
+
 			this.interval = _Tools.setInterval.call(this, function () {
+				if ('getParams' in this) {
+					this.getParams()
+				}
 				this.particles.forEach(function (particle) {
 					particle.update()
 				})
-			}.bind(this), 1000 / Game.fps * Math.random())
+			}.bind(this), 1000 / Game.fps)
 		},
 		emitterProto: {
 			createParticle: function (callback) {
@@ -175,8 +184,8 @@ var Effects = {
 				}
 			}
 		},
-		add: function (img, x, y, radius, speed, countParticles, sizeParticle, callback, ms) {
-			var emitter = new this.emitter(img, x, y, radius, speed, countParticles, sizeParticle, callback, ms)
+		add: function (img, x, y, radius, speed, countParticles, sizeParticle, callback, getParams, ms) {
+			var emitter = new this.emitter(img, x, y, radius, speed, countParticles, sizeParticle, callback, getParams, ms)
 			gl.emitters.push(emitter)
 			return emitter
 		},
@@ -195,7 +204,7 @@ var Effects = {
 		}
 	},
 	earthquake: {
-		interval: null,
+		interval: false,
 		trigger: false,
 		start: function () {
 			_Data.main.y = 5
@@ -210,8 +219,12 @@ var Effects = {
 			}, 100)
 		},
 		stop: function () {
+			if (this.interval) {
+				_Tools.clearInterval(this.interval)
+				this.interval = false
+				this.trigger = false
+			}
 			_Data.main.y = 0
-			_Tools.clearInterval(this.interval)
 		}
 	}
 }

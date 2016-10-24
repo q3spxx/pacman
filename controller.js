@@ -115,13 +115,20 @@ var Controller = {
 		},
 		setIsBusted: function () {
 			this.behavior = 'isBusted'
+			this.path = []
+			this.mPos.x = 0
+			this.mPos.y = 0
 		},
 		setShocked: function () {
-			this.stop()
-			this.path = []
 			this.behavior = 'shocked'
+			this.path = []
+			this.stop()
 		},
 		killEnemy: function (enemy) {
+			if (enemy.behavior == 'shocked') {
+				Special.shock.reset(1)
+				Special.shock.reset(2)
+			}
 			enemy.goToRoom()
 			var points = 100 * Math.pow(2, Kill.getGain()) * Events.gain.value
 			_Data.addPoints(points)
@@ -131,8 +138,11 @@ var Controller = {
 		},
 		killPlayer: function () {
 			Game.stop()
+			Sounds.fon.pause()
+			Sounds.dead.play()
 			Player.isDead();
 			_Data.lifes--
+			Kill.massKill.reset()
 			_Tools.setTimeout(function () {
 				if (_Data.lifes > 0) {
 					Game.default()
@@ -140,7 +150,7 @@ var Controller = {
 				} else {
 					Mess.setMess('gameOver')
 				}
-			}, 900)
+			}, 1800)
 		}
 	};
 
@@ -190,6 +200,9 @@ var Controller = {
 						enemy.behavior == "fearPreTimeout"
 						) {
 						behaviorController.setFear.call(enemy)
+					} else if (enemy.behavior == "shocked") {
+						Special.shock.isFeared = true
+						enemy.changeAnimation('fearLeft')
 					}
 				})
 
@@ -228,8 +241,9 @@ var Controller = {
 			timeToDeactivate: 10,
 			value: 1,
 			quaddamage: false,
-			lowLayerBuffer: null,
+			lowLayerBuffer: false,
 			eventMap: [],
+			quaddamageReady: false,
 			countDown: function () {
 				this.timeToStart = 10 + Math.floor(Math.random() * 10)
 				this.timer = _Tools.setInterval.call(this, function () {
@@ -354,15 +368,10 @@ var Controller = {
 				}, function () {
 					Events.gain.value = 1
 				})
-				this.addGain(Imgs.star, function () {
-					Sounds.quaddamage.play()
-					Events.gain.quaddamage = true
-				}, function () {
-					Events.gain.quaddamage = false
-				})
 			}
 		},
 		tosty: {
+			ready: false,
 			timer: null,
 			sustain: 30,
 			timeToStart: 0,
@@ -426,6 +435,212 @@ var Controller = {
 				if (this.highLayerBuffer != false) {
 					this.highLayerBuffer.removeBuffer()
 					this.highLayerBuffer = false
+				}
+			}
+		},
+		finishHim: {
+			lowLayerBuffer: null,
+			highLayerBuffer: null,
+			ready: false,
+			activated: false,
+			execution: false,
+			enemy: false,
+			word: '',
+			cursor: false,
+			openedWords: ['boom'],
+			activate: function (enemy) {
+				this.enemy = enemy
+				this.cursor = new LowLayerBuffer(Imgs.fhcursor, function () {
+					if (this.picArr.length == 0) {
+						var pic = new Pic(0, 0, 32, 32, Events.finishHim.enemy.pos.x, Events.finishHim.enemy.pos.y, 32, 32)
+						this.picArr.push(pic)
+					}
+				}, 33, 1)
+				gl.lowLayer.push(this.cursor)
+
+				this.activated = true
+				_Data.status = 'finishHimKeyword'
+				Sounds.finishHim.play()
+				Sounds.finishHimFx.play()
+				_Tools.setTimeout.call(this, function () {
+					Sounds.finishHimFon.play()
+				}, 500)
+				Mess.setMess('enterKeyword')
+				Mess.setMess('keyword')
+				this.lowLayerBuffer = new LowLayerBuffer(Imgs.gray, function () {
+					this.picArr = []
+					for (var x = 0; x < 21; x++) {
+						for (var y = 0; y < 21; y++) {
+							this.picArr.push({
+								x: 32 * this.curFrame,
+								y: 0,
+								w: 32,
+								h: 32,
+								pos: {
+									x: x * 32,
+									y: y * 32,
+									w: 32,
+									h: 32
+								}
+							})
+						}
+					}
+					this.curFrame++
+					if (this.curFrame > this.tFrames) {
+						this.curFrame = this.tFrames
+					}
+				}, 200, 4)
+				gl.lowLayer.push(this.lowLayerBuffer)
+
+				this.highLayerBuffer = new HighLayerBuffer(Imgs.finishHim, function () {
+					this.picArr = []
+					this.picArr.push({
+						x: 308 * this.curFrame,
+						y: 0,
+						w: 308,
+						h: 178,
+						pos: {
+							x: 182,
+							y: 64,
+							w: 308,
+							h: 178
+						}
+					})
+					this.curFrame++
+					if (this.curFrame > 9 &&  !Events.finishHim.execution) {
+						this.curFrame = 8
+					} else {
+						if (this.curFrame > this.tFrames) {
+							this.removeBuffer()
+						}
+					}
+				}, 1000 / Game.fps * 2, 15)
+				gl.highLayer.push(this.highLayerBuffer)
+			},
+			addChar: function (char) {
+				this.word = this.word + char
+				if (this.checkAccess()) {
+					_Data.status = 'finishHimExecution'
+					Mess.hideMess('enterKeyword')
+					Mess.hideMess('keyword')
+					Sounds.finishHimFon.pause()
+					Sounds.finishHimFon.currentTime = 0
+					Sounds.finishHimFx2.play()
+					this.execution = true
+					console.log("access")
+					this.cursor.removeBuffer()
+					this.lib[this.word].method()
+				}
+			},
+			deleteChar: function () {
+				var word = this.word.split("")
+				word.splice(word.length - 1, 1)
+				this.word = word.join('')
+			},
+			checkAccess: function () {
+				for (var i = 0; i < this.openedWords.length; i++) {
+					if (this.word == this.openedWords[i]) {
+						return true
+					}
+				}
+				return false
+			},
+			fatality: function () {
+				Sounds.fatality.play()
+				var highLayerBuffer = new HighLayerBuffer(Imgs.fatality, function () {
+					this.picArr = []
+					this.picArr.push({
+						x: 0,
+						y: 0,
+						w: 512,
+						h: 177,
+						pos: {
+							x: 80,
+							y: 80,
+							w: 512,
+							h: 177
+						}
+					})
+				}, 1000 / Game.fps, 1, 2000)
+				gl.highLayer.push(highLayerBuffer)
+
+			},
+			lib: {
+				boom: {
+					width: 0,
+					emitter: false,
+					highLayerBuffer: false,
+					method: function () {
+						var enemy = Events.finishHim.enemy
+						var boom = Events.finishHim.lib.boom
+
+						Sounds.boomdeath.play()
+
+						_Tools.setTimeout.call(this, function () {
+							this.emitter = Effects.emitter.add(Imgs.blood, enemy.pos.x + 16, enemy.pos.y + 16, 64, 8, 50, 32, 'line', function() {}, 200)
+							this.highLayerBuffer = new HighLayerBuffer(Imgs.boomblood, function () {
+								if (this.picArr.length == 0) {
+									var pic = new Pic(	0, 
+														0, 
+														96, 
+														96, 
+														enemy.pos.x + 16 + (boom.width / 2 * -1),
+														enemy.pos.y + 16 + (boom.width / 2 * -1),
+														boom.width,
+														boom.width
+														)
+									this.picArr.push(pic)
+								}
+
+								this.picArr[0].pos.x = enemy.pos.x + 16 + (boom.width / 2 * -1)
+								this.picArr[0].pos.y = enemy.pos.y + 16 + (boom.width / 2 * -1)
+								this.picArr[0].pos.w = boom.width
+								this.picArr[0].pos.h = boom.width
+
+								boom.width += 8
+								if (boom.width > 128) {
+									boom.width = 128
+								}
+							}, 10, 1)
+							gl.highLayer.push(this.highLayerBuffer)
+						}, 330)
+
+						var distance = Math.sqrt(Math.pow(enemy.pos.x - 672, 2) + Math.pow(enemy.pos.y - 672, 2))
+						var speed = distance / 24
+						var vec = {
+							x: (672 - enemy.pos.x) / distance,
+							y: (672 - enemy.pos.y) / distance
+						}
+						var highLayerBuffer = new HighLayerBuffer(Imgs.ball, function () {
+							if (this.picArr.length == 0) {
+								var pic = new Pic(0, 0, 128, 128, 672, 672, 128, 128)
+								this.size = 1
+								this.picArr.push(pic)
+							}
+							this.picArr[0].pos.x -= vec.x * speed
+							this.picArr[0].pos.y -= vec.y * speed
+							if (this.picArr[0].pos.w == 32 || this.picArr[0].pos.h == 32) {
+								this.size = -1
+							}
+							this.picArr[0].pos.w -= 4 * this.size
+							this.picArr[0].pos.h -= 4 * this.size
+						}, 16, 1, 1584)
+						gl.highLayer.push(highLayerBuffer)
+
+
+						_Tools.setTimeout.call(this, function () {
+							Events.finishHim.fatality()
+						}, 1000)
+						_Tools.setTimeout.call(this, function () {
+							this.highLayerBuffer.removeBuffer()
+							Events.finishHim.lowLayerBuffer.removeBuffer()
+							Events.finishHim.word = ""
+							Events.finishHim.enemy = false
+							Events.finishHim.execution = false
+							Events.finishHim.activated = false
+							Shop.open()
+						}, 3000)
+					}
 				}
 			}
 		}
