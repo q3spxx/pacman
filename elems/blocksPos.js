@@ -70,5 +70,53 @@ var BlocksPos = {
 					'wweeeeeeeeeeeeeeeeeww' +
 					'wwwwwwwwwwwwwwwwwwwww' 
 		return res
+	},
+	getAreas: function () {
+		var res =   'wwwwwwwwwwwwwwwwwwwww' +
+					'wwaaaaaaaawbbbbbbbbww' +
+					'wwawwawwwawbwwwbwwbww' +
+					'wwaaaaaaaaebbbbbbbbww' +
+					'wwawwawawwwwwbwbwwbww' +
+					'wwaaaawaaawbbbwbbbbww' +
+					'wwwwwewwwewewwwewwwww' +
+					'wwwwweweeeeeeewewwwww' +
+					'wwwwwewewwewwewewwwww' +
+					'eeeeeeeeweeeweeeeeeee' +
+					'wwwwwewewwwwwewewwwww' +
+					'wwwwweweeeeeeeweweeew' +
+					'wwwwwewewwwwwewewwwww' +
+					'wwccccccccwddddddddww' +
+					'wwcwwcwwwcwewwwewwdww' +
+					'wwccwccccceeddddwddww' +
+					'wwwcwcwcwwwwwdwdwdwww' +
+					'wwccccwcccwdddwddddww' +
+					'wwcwwwwwwcwdwwwwwwdww' +
+					'wwcccccccceddddddddww' +
+					'wwwwwwwwwwwwwwwwwwwww' 
+		return res
+	},
+	getNodes: function () {
+		var res =   'wwwwwwwwwwwwwwwwwwwww' +
+					'wwannannnawbnnnbnnbww' +
+					'wwnwwnwwwnwnwwwnwwnww' +
+					'wwannanananbnbnbnnbww' +
+					'wwnwwnwnwwwwwnwnwwnww' +
+					'wwannawanawbnbwbnnbww' +
+					'wwwwwewwwnwnwwwewwwww' +
+					'wwwwwnwenenenewnwwwww' +
+					'wwwwwnwnwwnwwnwnwwwww' +
+					'nnnnnenewnnnwenennnnn' +
+					'wwwwwnwnwwwwwnwnwwwww' +
+					'wwwwwnwennnnnewnwnnnw' +
+					'wwwwwewnwwwwwnwewwwww' +
+					'wwcnncncncwdndndnndww' +
+					'wwnwwnwwwnwnwwwnwwnww' +
+					'wwncwcncncndndndwdnww' +
+					'wwwnwnwnwwwwwnwnwnwww' +
+					'wwccncwnncwdndwdnddww' +
+					'wwnwwwwwwnwnwwwwwwnww' +
+					'wwcnnnnnncndnnnnnndww' +
+					'wwwwwwwwwwwwwwwwwwwww' 
+		return res
 	}
 }

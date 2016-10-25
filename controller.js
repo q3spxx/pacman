@@ -10,7 +10,7 @@ var Controller = {
 						break
 						case "fearPreTimeout": ai.fear.call(this)
 						break
-						case 'passive': ai.passive.call(this)
+						case 'passive': ai.passive.method.call(this)
 						break
 						case 'shocked': return
 						break

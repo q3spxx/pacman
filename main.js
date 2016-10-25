@@ -171,6 +171,7 @@ var Game = {
 		this.changeInit()
 	},
 	ready: function () {
+		ai.passive.init()
 		Events.gain.init()
 		Shop.init()
 		Special.icons.init()
