@@ -1,3 +1,18 @@
+
+var AreaProto = {
+	appoint: function (unit) {
+		this.unit = unit
+		unit.area = this
+		unit.notChecked = this.nodes.map(function (node) {
+			return {x: node.x, y: node.y}
+		})
+	}
+}
+function Area () {
+	this.__proto__ = AreaProto
+	this.nodes = []
+	this.unit = false
+}
 function Pic (x, y, w, h, pX, pY, pW, pH) {
 	this.x = x
 	this.y = y

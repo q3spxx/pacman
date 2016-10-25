@@ -151,29 +151,121 @@ var ai = {
 		neigh = ai.getMaxF(neighs);
 		self.path.push(neigh);
 	},
-	passive: function () {
-		var self = this;
+	passive: {
+		areas: {
+			all: [],
+			select: function () {
+				var random
+				do {
+					random = Math.round(Math.random() * (this.all.length - 1))
+				}
+				while(this.all[random].unit)
+				return this.all[random]
+			}
+		},
+		player: false,
+		units:[],
+		addUnit: function (enemy) {
+			for (var i = 0; i < this.units.length; i++) {
+				if (this.units[i].id == enemy.id) {
+					return this.units[i]
+				}
+			}
+			var unit = {
+				id: enemy.id,
+				unit: enemy,
+				area: false,
+				notChecked: [],
+				selectNode: function () {
+					if (this.notChecked.length == 0) {
+						var area = ai.passive.areas.select()
+						this.area.unit = false
+						this.area = false
+						area.appoint(this)
+					}
+					var random = Math.round(Math.random() * (this.notChecked.length - 1))
+					var selectedNode = this.notChecked[random]
+					this.notChecked.splice(random, 1)
+					return selectedNode
+				}
+			}
+			this.units.push(unit)
+			return unit
+		},
+		remove: function (enemy) {
+			for (var i = 0; i < this.units.length; i++) {
+				if (this.units[i].id == enemy.id) {
+					this.units.splice(i, 1)
+					return
+				}
+			}
+		},
+		checkPlayer: function () {
+			return this.player
+		},
+		addArea: function (name) {
+			this.areas[name] = new Area()
+			this.areas.all.push(this.areas[name])
+		},
+		init: function () {
+			this.addArea('a')
+			this.addArea('b')
+			this.addArea('c')
+			this.addArea('d')
+			this.addArea('e')
+			var charsNodes = BlocksPos.getNodes().split('')
+			var i = 0
+			for (var y = 0; y < 21; y++) {
+				for (var x = 0; x < 21; x++) {
+					if (charsNodes[i] == "a") {
+						this.areas.a.nodes.push({x: x, y: y})
+					}
+					if (charsNodes[i] == "b") {
+						this.areas.b.nodes.push({x: x, y: y})
+					}
+					if (charsNodes[i] == "c") {
+						this.areas.c.nodes.push({x: x, y: y})
+					}
+					if (charsNodes[i] == "d") {
+						this.areas.d.nodes.push({x: x, y: y})
+					}
+					if (charsNodes[i] == "e") {
+						this.areas.e.nodes.push({x: x, y: y})
+					}
+					i++
+				}
+			}
+		},
+		method: function () {
+			if (this.path.length != 0) {
+				return
+			}
 
-		if (this.path.length != 0) {
-			return
+			var unit = ai.passive.addUnit(this)
+
+			if (!unit.area) {
+				var area = ai.passive.areas.select()
+				area.appoint(unit)
+			}
+
+			this.pointPos = unit.selectNode()
+			// var currentPos = {
+			// 	x: Math.floor(self.pos.x / 32),
+			// 	y: Math.floor(self.pos.y / 32)
+			// };
+
+			// var num = Astar.defineNum(currentPos);
+
+			// var random;
+
+			// do {
+			// 	random = Math.round((_Map.graph[num].neighs.length - 1) * Math.random());
+			// } while (_Map.grid[_Map.graph[num].neighs[random].x][_Map.graph[num].neighs[random].y].object.block || _Map.graph[num].neighs[random].x == 10 && _Map.graph[num].neighs[random].y == 8);
+
+			// self.pointPos = _Map.graph[num].neighs[random];
+
+			ai.searchPath.call(this);
 		}
-
-		var currentPos = {
-			x: Math.floor(self.pos.x / 32),
-			y: Math.floor(self.pos.y / 32)
-		};
-
-		var num = Astar.defineNum(currentPos);
-
-		var random;
-
-		do {
-			random = Math.round((_Map.graph[num].neighs.length - 1) * Math.random());
-		} while (_Map.grid[_Map.graph[num].neighs[random].x][_Map.graph[num].neighs[random].y].object.block || _Map.graph[num].neighs[random].x == 10 && _Map.graph[num].neighs[random].y == 8);
-
-		self.pointPos = _Map.graph[num].neighs[random];
-
-		ai.searchPath.call(self);
 	},
 	free: function () {
 		ai.searchPath.call(this);
