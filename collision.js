@@ -1,8 +1,5 @@
 var Col = {
 	check: function (offset) {
-		/*if (this.id != 4 && this.shocked) {
-			return true
-		}*/
 
 		var newPos = {};
 		newPos.x = this.pos.x + this.mPos.x;
@@ -32,10 +29,26 @@ var Col = {
 			return false;
 		};
 	},
+	checkPlayerInline:function (x, y, vec) {
+		do {
+			x += vec.x
+			y += vec.y
+			if (x < 0 || x > 20) {
+				return false
+			}
+			if (
+				Player.pos.x + 16 > x * 32 &&
+				Player.pos.x + 16 < x * 32 + 31 &&
+				Player.pos.y + 16 > y * 32 &&
+				Player.pos.y + 16 < y * 32 + 31
+				) {
+				return true
+			}
+		}
+		while(!_Map.grid[x][y].object.block)
+		return false
+	},
 	offsetCheck: function () {
-		/*if (this.id != 4 && this.shocked) {
-			return false
-		}*/
 		var offset = {};
 		if (this.mPos.y != 0) {
 			offset.y = 0;
@@ -106,29 +119,6 @@ var Col = {
 			}
 		}
 		return true
-	},
-	bomb_check: function () {
-		var r_x = Player.pos.x + 16;
-		var r_y = Player.pos.y + 16;
-
-		enemy_arr.forEach(function (enemy) {
-			if (Col.hypotenuse(enemy.pos.x, enemy.pos.y, r_x, r_y, Special.bomb.radius)) {
-				Controller.kill_enemy(enemy);
-				return
-			}
-			if (Col.hypotenuse(enemy.pos.x + 32, enemy.pos.y, r_x, r_y, Special.bomb.radius)) {
-				Controller.kill_enemy(enemy);
-				return
-			}
-			if (Col.hypotenuse(enemy.pos.x, enemy.pos.y + 32, r_x, r_y, Special.bomb.radius)) {
-				Controller.kill_enemy(enemy);
-				return
-			}
-			if (Col.hypotenuse(enemy.pos.x + 32, enemy.pos.y + 32, r_x, r_y, Special.bomb.radius)) {
-				Controller.kill_enemy(enemy);
-				return
-			}
-		});
 	},
 	bitch_check: function () {
 		var r_x = Player.pos.x + 16;
@@ -220,36 +210,6 @@ var Col = {
 		} else {
 			return false
 		}
-	},
-	shock_enemy_check: function () {
-		for (var i = 0; i < enemy_arr.length; i++) {
-			if (this.x < enemy_arr[i].pos.x + 16 &&
-				this.x + 31 > enemy_arr[i].pos.x + 16 &&
-				this.y < enemy_arr[i].pos.y + 16 &&
-				this.y + 31 > enemy_arr[i].pos.y + 16 &&
-				enemy_arr[i].behavior != 'go_to_room' &&
-				enemy_arr[i].behavior != 'grab') {
-				return enemy_arr[i]
-			}
-		}
-		return false
-	},
-	shock_check: function () {
-		var x = Math.floor(this.x / 32)
-		var y = Math.floor(this.y / 32)
-		var w = Math.floor((this.x + 31) / 32)
-		var h = Math.floor((this.y + 31) / 32)
-		if (x < 0 || w > 20) {
-			return true
-		}
-		if (_Map.grid[x][y].block ||
-			_Map.grid[w][y].block ||
-			_Map.grid[x][h].block ||
-			_Map.grid[w][h].block
-			) {
-			return true
-		}
-		return false
 	},
 	checkGain: function () {
 		var x = this.pos.x

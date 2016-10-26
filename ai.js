@@ -173,9 +173,10 @@ var ai = {
 			}
 			var unit = {
 				id: enemy.id,
-				unit: enemy,
+				enemy: enemy,
 				area: false,
 				notChecked: [],
+				visionVec: [],
 				selectNode: function () {
 					if (this.notChecked.length == 0) {
 						var area = ai.passive.areas.select()
@@ -185,6 +186,7 @@ var ai = {
 					}
 					var random = Math.round(Math.random() * (this.notChecked.length - 1))
 					var selectedNode = this.notChecked[random]
+					this.visionVec = selectedNode.visionVec
 					this.notChecked.splice(random, 1)
 					return selectedNode
 				}
@@ -214,27 +216,60 @@ var ai = {
 			this.addArea('d')
 			this.addArea('e')
 			var charsNodes = BlocksPos.getNodes().split('')
+			var nodesMap = []
 			var i = 0
 			for (var y = 0; y < 21; y++) {
 				for (var x = 0; x < 21; x++) {
-					if (charsNodes[i] == "a") {
-						this.areas.a.nodes.push({x: x, y: y})
+					if (y == 0) {
+						nodesMap.push([])
 					}
-					if (charsNodes[i] == "b") {
-						this.areas.b.nodes.push({x: x, y: y})
-					}
-					if (charsNodes[i] == "c") {
-						this.areas.c.nodes.push({x: x, y: y})
-					}
-					if (charsNodes[i] == "d") {
-						this.areas.d.nodes.push({x: x, y: y})
-					}
-					if (charsNodes[i] == "e") {
-						this.areas.e.nodes.push({x: x, y: y})
-					}
+					nodesMap[x][y] = charsNodes[i]
 					i++
 				}
 			}
+
+			var visionVec = [
+				{x: -1, y: 0},
+				{x: 0, y: -1},
+				{x: 1, y: 0},
+				{x: 0, y: 1}
+			]
+			nodesMap.forEach(function (line, x) {
+				line.forEach(function (node, y) {
+
+					if (node != 'w' && node != 'n') {
+						var areaNode = {
+							x: x,
+							y: y,
+							visionVec: []
+						}
+						visionVec.forEach(function (vec) {
+							if (
+								nodesMap[x + vec.x][y + vec.y] == 'a'||
+								nodesMap[x + vec.x][y + vec.y] == 'b'||
+								nodesMap[x + vec.x][y + vec.y] == 'c'||
+								nodesMap[x + vec.x][y + vec.y] == 'd'||
+								nodesMap[x + vec.x][y + vec.y] == 'e'||
+								nodesMap[x + vec.x][y + vec.y] == 'n'
+								) {
+								areaNode.visionVec.push(vec)
+							}
+						})
+					}
+
+					if (node == "a") {
+						ai.passive.areas.a.nodes.push(areaNode)
+					} else if (node == "b") {
+						ai.passive.areas.b.nodes.push(areaNode)
+					} else if (node == "c") {
+						ai.passive.areas.c.nodes.push(areaNode)
+					} else if (node == "d") {
+						ai.passive.areas.d.nodes.push(areaNode)
+					} else if (node == "e") {
+						ai.passive.areas.e.nodes.push(areaNode)
+					}
+				})
+			})
 		},
 		method: function () {
 			if (this.path.length != 0) {
@@ -246,23 +281,16 @@ var ai = {
 			if (!unit.area) {
 				var area = ai.passive.areas.select()
 				area.appoint(unit)
+			} else {
+				for (var i = 0; i < unit.visionVec.length; i++) {
+					if (Col.checkPlayerInline(Math.floor(unit.enemy.pos.x / 32), Math.floor(unit.enemy.pos.y / 32), unit.visionVec[i])) {
+						behaviorController.setChase.call(unit.enemy)
+						return
+					}
+				}
 			}
 
 			this.pointPos = unit.selectNode()
-			// var currentPos = {
-			// 	x: Math.floor(self.pos.x / 32),
-			// 	y: Math.floor(self.pos.y / 32)
-			// };
-
-			// var num = Astar.defineNum(currentPos);
-
-			// var random;
-
-			// do {
-			// 	random = Math.round((_Map.graph[num].neighs.length - 1) * Math.random());
-			// } while (_Map.grid[_Map.graph[num].neighs[random].x][_Map.graph[num].neighs[random].y].object.block || _Map.graph[num].neighs[random].x == 10 && _Map.graph[num].neighs[random].y == 8);
-
-			// self.pointPos = _Map.graph[num].neighs[random];
 
 			ai.searchPath.call(this);
 		}
