@@ -511,7 +511,7 @@ var Special = {
 		timer: 0,
 		interval: false,
 		ready: true,
-		level: 0,
+		level: 10,
 		distance: 0,
 		duration: 5000,
 		speed: 7,
@@ -614,6 +614,15 @@ var Special = {
 						this.enemy = Col.checkEnemy.call(this)
 
 						if (this.enemy) {
+
+							if (
+								this.enemy.behavior == 'goToRoom'||
+								this.enemy.behavior == 'enterToRoom'||
+								this.enemy.behavior == 'exitFromRoom'||
+								this.enemy.behavior == 'inRoom'
+								) {
+								return
+							}
 
 							this.reset(0)
 							this.state = 1

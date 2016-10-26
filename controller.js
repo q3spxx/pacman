@@ -92,6 +92,10 @@ var Controller = {
 			this.behavior = "fearPreTimeout"
 		},
 		setPassive: function () {
+			if (ai.passive.player) {
+				behaviorController.setChase.call(this)
+				return
+			}
 			this.behavior = "passive";
 		},
 		setWaiting: function () {
@@ -130,6 +134,19 @@ var Controller = {
 				Special.shock.reset(2)
 			}
 			enemy.goToRoom()
+
+			var chase = false
+			for (var i = 0; i < enemyArr.length; i++) {
+				if (enemyArr[i].behavior == 'chase') {
+					chase = true
+					break
+				}
+			}
+
+			if (!chase) {
+				ai.passive.player = false
+			}
+
 			var points = 100 * Math.pow(2, Kill.getGain()) * Events.gain.value
 			_Data.addPoints(points)
 			Mess.setMess(points, enemy.pos)
@@ -204,6 +221,7 @@ var Controller = {
 						Special.shock.isFeared = true
 						enemy.changeAnimation('fearLeft')
 					}
+					ai.passive.player = false
 				})
 
 				this.handle = _Tools.setInterval(function () {

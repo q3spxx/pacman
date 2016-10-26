@@ -165,6 +165,13 @@ var ai = {
 		},
 		player: false,
 		units:[],
+		setDefault: function () {
+			this.units = []
+			this.areas.all.forEach(function (area) {
+				area.unit = false
+			})
+			this.player = false
+		},
 		addUnit: function (enemy) {
 			for (var i = 0; i < this.units.length; i++) {
 				if (this.units[i].id == enemy.id) {
@@ -201,9 +208,6 @@ var ai = {
 					return
 				}
 			}
-		},
-		checkPlayer: function () {
-			return this.player
 		},
 		addArea: function (name) {
 			this.areas[name] = new Area()
@@ -284,7 +288,12 @@ var ai = {
 			} else {
 				for (var i = 0; i < unit.visionVec.length; i++) {
 					if (Col.checkPlayerInline(Math.floor(unit.enemy.pos.x / 32), Math.floor(unit.enemy.pos.y / 32), unit.visionVec[i])) {
-						behaviorController.setChase.call(unit.enemy)
+						ai.passive.player = true
+						enemyArr.forEach(function (enemy) {
+							if (enemy.behavior == 'passive') {
+								behaviorController.setChase.call(enemy)
+							}
+						})
 						return
 					}
 				}
