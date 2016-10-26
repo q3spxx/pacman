@@ -4,7 +4,7 @@ var AreaProto = {
 		this.unit = unit
 		unit.area = this
 		unit.notChecked = this.nodes.map(function (node) {
-			return {x: node.x, y: node.y}
+			return {x: node.x, y: node.y, visionVec: node.visionVec}
 		})
 	}
 }
