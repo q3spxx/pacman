@@ -235,6 +235,7 @@ var Game = {
 		Room.setDefault()
 		Events.gain.setDefault()
 		Events.tosty.setDefault()
+		ai.passive.setDefault()
 		Controller.stop.call(Player)
 		enemyArr.forEach(function (enemy) {
 			Controller.stop.call(enemy)

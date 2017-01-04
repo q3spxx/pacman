@@ -615,6 +615,15 @@ var Special = {
 
 						if (this.enemy) {
 
+							if (
+								this.enemy.behavior == 'goToRoom'||
+								this.enemy.behavior == 'enterToRoom'||
+								this.enemy.behavior == 'exitFromRoom'||
+								this.enemy.behavior == 'inRoom'
+								) {
+								return
+							}
+
 							this.reset(0)
 							this.state = 1
 

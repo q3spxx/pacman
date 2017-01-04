@@ -144,7 +144,12 @@ var Move = {
 			var res = behaviorController.checkVisibility.call(this);
 			if (res) {
 				console.log('looked')
-				behaviorController.setChase.call(this);
+				ai.passive.player = true					
+				enemyArr.forEach(function (enemy) {
+					if (enemy.behavior == 'passive') {
+						behaviorController.setChase.call(enemy)
+					}
+				})
 			};
 		};
 	}
