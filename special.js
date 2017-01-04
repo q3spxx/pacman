@@ -511,7 +511,7 @@ var Special = {
 		timer: 0,
 		interval: false,
 		ready: true,
-		level: 10,
+		level: 0,
 		distance: 0,
 		duration: 5000,
 		speed: 7,
