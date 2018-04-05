@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta name="description" content="This is classic pacman game with new small opportunities.">
+	<meta property="og:title" content="This is classic pacman game with new small opportunities.">
+	<meta property="og:image" content="images/pacman.jpg">
 	<title>Pacman</title>
 	<style>
 		* {
@@ -31,13 +32,10 @@
 		#volume:hover {
 			cursor: pointer;
 		}
-		#preview {
-			display: none;
-		}
+
 	</style>
 </head>
 <body onmouseup="_Tools.inputs.volume.mousedownDisable()">
-	<img id="preview" src="images/pacman.jpg" alt="pacman">
 	<img class="tv" src="images/tv.png" alt="">
 	<img id="volume" src="images/volume.png" alt="" onmousedown="_Tools.inputs.volume.mousedownEnable()" draggable="false">
 	<canvas id="map"></canvas>
