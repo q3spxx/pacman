@@ -32,10 +32,36 @@
 		#volume:hover {
 			cursor: pointer;
 		}
-
+		.faq {
+			width: 260px;
+			position: absolute;
+			text-align: left;
+			font-size: 14px;
+			color: #eee;
+		}
+		.faq span {
+		}
 	</style>
 </head>
 <body onmouseup="_Tools.inputs.volume.mousedownDisable()">
+	<div class="faq">
+		<span>This game supporting only in browser for PC</span><br/><br/>
+		<span>Controls:</span><br/>
+		<span>Up: arrow Up</span><br/>
+		<span>Down: arrow Down</span><br/>
+		<span>Left: arrow Left</span><br/>
+		<span>Right: arrow Right</span><br/>
+		<span>Pause: esc</span><br/><br/>
+		<span>Skills:</span><br/>
+		<span>Skills will become access for using after buy it in a shop.</span><br/>
+		<span>Spell 1: q</span><br/>
+		<span>Spell 2: w</span><br/>
+		<span>Spell 3: e</span><br/>
+		<span>Spell 4: r</span><br/><br/>
+		<span>Other:</span><br/>
+		<span>Fatality will become access for using after buy it in a shop.</span><br/>
+		<span>Key word for fatality: boom</span><br/>
+	</div>
 	<img class="tv" src="images/tv.png" alt="">
 	<img id="volume" src="images/volume.png" alt="" onmousedown="_Tools.inputs.volume.mousedownEnable()" draggable="false">
 	<canvas id="map"></canvas>
